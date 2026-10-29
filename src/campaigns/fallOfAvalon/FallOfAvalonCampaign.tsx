@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, Card, CardContent, Typography, TextField, Button, Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, Slider } from '@mui/material';
+import { Grid, Card, CardContent, Typography, TextField, Button, ButtonBase, Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Slider } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -923,29 +923,35 @@ const FallOfAvalonCampaign = () => {
         onClose={() => setAddCharacterDialogOpen(false)}
         aria-labelledby="add-character-dialog-title"
         className="character-selection-dialog"
-        maxWidth="xs"
+        maxWidth="sm"
         fullWidth
       >
         <DialogTitle id="add-character-dialog-title">
           {t('fallOfAvalon.characters.selectCharacter', 'Select Character')}
         </DialogTitle>
-        <DialogContent>
-          <TextField
-            select
-            fullWidth
-            label={t('fallOfAvalon.characters.characterName', 'Character Name')}
-            value={selectedCharacterName}
-            onChange={(event) => setSelectedCharacterName(event.target.value)}
-          >
-            <MenuItem value="" disabled>
-              {t('fallOfAvalon.characters.selectCharacterPlaceholder', 'Choose a character')}
-            </MenuItem>
+        <DialogContent className="character-selection-content">
+          <Box className="character-selection-grid" role="group" aria-label={t('fallOfAvalon.characters.selectCharacter', 'Select Character')}>
             {availableCharacterNames.map(characterName => (
-              <MenuItem key={characterName} value={characterName}>
-                {t(`characterNames.${characterName}`, characterName)}
-              </MenuItem>
+              <ButtonBase
+                key={characterName}
+                className={`character-selection-card${selectedCharacterName === characterName ? ' selected' : ''}`}
+                aria-label={t(`characterNames.${characterName}`, characterName)}
+                aria-pressed={selectedCharacterName === characterName}
+                onClick={() => setSelectedCharacterName(characterName)}
+              >
+                <span
+                  className="character-selection-portrait"
+                  aria-hidden="true"
+                  style={{
+                    backgroundImage: `url("${import.meta.env.BASE_URL}assets/characters/${characterName.toLowerCase()}.jpg")`
+                  }}
+                />
+                <span className="character-selection-name">
+                  {t(`characterNames.${characterName}`, characterName)}
+                </span>
+              </ButtonBase>
             ))}
-          </TextField>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setAddCharacterDialogOpen(false)}>

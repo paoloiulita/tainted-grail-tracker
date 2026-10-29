@@ -507,8 +507,95 @@ a,
 }
 
 .character-selection-dialog .MuiDialogContent-root {
-  overflow: visible;
+  max-height: min(60vh, 560px);
+  overflow-y: auto;
   padding: 0;
+}
+
+.character-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  gap: 12px;
+}
+
+.character-selection-card.MuiButtonBase-root {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  aspect-ratio: 4 / 3;
+  align-items: flex-end;
+  justify-content: flex-start;
+  overflow: hidden;
+  border: 0;
+  border-radius: 8px;
+  background-color: #222c35;
+  color: #fff;
+  text-align: left;
+  transition: box-shadow 160ms ease;
+}
+
+.character-selection-card.MuiButtonBase-root::after {
+  position: absolute;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(10, 15, 20, 0.06) 20%, rgba(10, 15, 20, 0.86) 100%);
+  content: '';
+  inset: 0;
+  pointer-events: none;
+}
+
+.character-selection-portrait {
+  position: absolute;
+  background-position: center 28%;
+  background-size: cover;
+  inset: 0;
+}
+
+.character-selection-card.MuiButtonBase-root.selected {
+  box-shadow: 0 0 0 2px rgba(230, 202, 131, 0.72);
+}
+
+.character-selection-card > .character-selection-name {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 28px 10px 10px;
+  font-weight: 700;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
+}
+
+.character-selection-card.Mui-focusVisible {
+  outline: 2px solid #e6ca83;
+  outline-offset: 2px;
+}
+
+@media (min-width: 601px) and (hover: hover) {
+  .character-selection-card.MuiButtonBase-root {
+    border: 0;
+  }
+
+  .character-selection-portrait {
+    filter: grayscale(1);
+    transition: filter 320ms ease;
+  }
+
+  .character-selection-card.MuiButtonBase-root:hover,
+  .character-selection-card.MuiButtonBase-root.selected {
+    transform: none;
+  }
+
+  .character-selection-card.MuiButtonBase-root:hover .character-selection-portrait,
+  .character-selection-card.MuiButtonBase-root.selected .character-selection-portrait {
+    filter: grayscale(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .character-selection-card.MuiButtonBase-root,
+  .character-selection-card.MuiButtonBase-root:hover,
+  .character-selection-card.MuiButtonBase-root:active {
+    border: 0;
+    transform: none;
+  }
 }
 
 .character-selection-dialog .MuiDialogActions-root {
