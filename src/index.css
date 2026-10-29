@@ -447,6 +447,24 @@ a,
   margin-bottom: 20px;
 }
 
+.character-stat-field {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.character-stat-icon {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  object-fit: contain;
+}
+
+.character-stat-field > .MuiFormControl-root {
+  min-width: 0;
+}
+
 .character-card > .character-card-content.MuiCardContent-root:last-child {
   padding-bottom: 20px;
 }
@@ -480,20 +498,20 @@ a,
   gap: 4px;
 }
 
-.character-name-dialog .MuiDialog-paper {
+.character-selection-dialog .MuiDialog-paper {
   padding: 24px;
 }
 
-.character-name-dialog .MuiDialogTitle-root {
+.character-selection-dialog .MuiDialogTitle-root {
   padding: 0 0 16px;
 }
 
-.character-name-dialog .MuiDialogContent-root {
+.character-selection-dialog .MuiDialogContent-root {
   overflow: visible;
   padding: 0;
 }
 
-.character-name-dialog .MuiDialogActions-root {
+.character-selection-dialog .MuiDialogActions-root {
   padding: 16px 0 0;
 }
 

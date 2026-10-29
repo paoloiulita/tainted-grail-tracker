@@ -74,6 +74,25 @@
     "placeholder": "Placeholder",
     "planned": "Planned"
   },
+  "characterNames": {
+    "Beor": "Beor",
+    "Ailei": "Ailei",
+    "Arev": "Arev",
+    "Maggot": "Maggot",
+    "Niamh": "Niamh",
+    "Mabd": "Mabd",
+    "Dagan": "Dagan",
+    "Sloan": "Sloan",
+    "Fyul": "Fyul",
+    "Naazer": "Naazer",
+    "Thebalt": "Thebalt",
+    "Caolin": "Caolin",
+    "Duana": "Duana",
+    "Gerdwyn": "Gerdwyn",
+    "Elgan": "Elgan",
+    "Iunis": "Iunis",
+    "Osbert": "Osbert"
+  },
   "snapshots": {
     "title": "Save History",
     "createNew": "Create New Save",
@@ -131,13 +150,15 @@
       "title": "Characters",
       "characterName": "Character Name",
       "playerName": "Player Name",
-      "unnamed": "Character {{number}}",
       "addCharacter": "Add Character",
-      "editCharacter": "Edit Character",
+      "selectCharacter": "Select Character",
+      "selectCharacterPlaceholder": "Choose a character",
+      "addSelectedCharacter": "Add Character",
       "deleteCharacter": "Delete Character",
       "confirmDeleteTitle": "Delete character?",
       "confirmDelete": "Are you sure you want to delete {{characterName}}? This action cannot be undone.",
-      "maximumCharacters": "Maximum 4 characters"
+      "maximumCharacters": "Maximum 4 characters",
+      "allCharactersAdded": "All characters available in this campaign have been added."
     },
     "attributes": {
       "aggression": "Aggression",

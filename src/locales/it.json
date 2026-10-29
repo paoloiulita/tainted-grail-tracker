@@ -74,6 +74,25 @@
     "placeholder": "Placeholder",
     "planned": "Planned"
   },
+  "characterNames": {
+    "Beor": "Beor",
+    "Ailei": "Ailei",
+    "Arev": "Arev",
+    "Maggot": "Maggot",
+    "Niamh": "Niamh",
+    "Mabd": "Mabd",
+    "Dagan": "Dagan",
+    "Sloan": "Sloan",
+    "Fyul": "Fyul",
+    "Naazer": "Naazer",
+    "Thebalt": "Thebalt",
+    "Caolin": "Caolin",
+    "Duana": "Duana",
+    "Gerdwyn": "Gerdwyn",
+    "Elgan": "Elgan",
+    "Iunis": "Iunis",
+    "Osbert": "Osbert"
+  },
   "snapshots": {
     "title": "Save History",
     "createNew": "Create New Save",
@@ -131,13 +150,15 @@
       "title": "Personaggi",
       "characterName": "Nome personaggio",
       "playerName": "Nome giocatore",
-      "unnamed": "Personaggio {{number}}",
       "addCharacter": "Aggiungi personaggio",
-      "editCharacter": "Modifica personaggio",
+      "selectCharacter": "Seleziona personaggio",
+      "selectCharacterPlaceholder": "Scegli un personaggio",
+      "addSelectedCharacter": "Aggiungi personaggio",
       "deleteCharacter": "Elimina personaggio",
       "confirmDeleteTitle": "Eliminare il personaggio?",
       "confirmDelete": "Vuoi davvero eliminare {{characterName}}? Questa azione non può essere annullata.",
-      "maximumCharacters": "Massimo 4 personaggi"
+      "maximumCharacters": "Massimo 4 personaggi",
+      "allCharactersAdded": "Tutti i personaggi disponibili in questa campagna sono stati aggiunti."
     },
     "attributes": {
       "aggression": "Aggression",

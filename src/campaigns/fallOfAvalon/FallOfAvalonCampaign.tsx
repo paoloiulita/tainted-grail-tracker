@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, Card, CardContent, Typography, TextField, Button, Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Slider } from '@mui/material';
+import { Grid, Card, CardContent, Typography, TextField, Button, Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, Slider } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppState } from '../../hooks/useAppState';
 import { useCampaign } from '../../contexts/CampaignContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import CharacterNotesEditor from '../../components/CharacterNotesEditor';
+import { CHARACTER_ROSTERS, type CharacterName } from '../characterRoster';
 import type {
   CampaignState,
   Guardian,
@@ -82,10 +82,8 @@ const FallOfAvalonCampaign = () => {
   const [state, setState] = useState<CampaignState | null>(null);
   const [activeTab, setActiveTab] = useState(0);
   const [focusedMenhirIndex, setFocusedMenhirIndex] = useState<number | null>(null);
-  const [editCharacterDialog, setEditCharacterDialog] = useState<{ open: boolean; character: Character | null }>({
-    open: false,
-    character: null
-  });
+  const [addCharacterDialogOpen, setAddCharacterDialogOpen] = useState(false);
+  const [selectedCharacterName, setSelectedCharacterName] = useState('');
   const [characterPendingDeletion, setCharacterPendingDeletion] = useState<Character | null>(null);
   const updateState = (updater: (current: CampaignState) => CampaignState) => {
     setState((current) => current ? updater(current) : current);
@@ -132,96 +130,7 @@ const FallOfAvalonCampaign = () => {
             { location: '' }
           ],
           characterNotes: '',
-          characters: [
-            {
-              id: 'character-1',
-              characterName: 'Character 1',
-              playerName: '',
-              dial: 0,
-              health: 10,
-              energy: 10,
-              terror: 0,
-              experience: 0,
-              reputation: 0,
-              magic: 0,
-              food: 0,
-              wealth: 0,
-              attributes: {
-                aggression: 0,
-                caution: 0,
-                courage: 0,
-                empathy: 0,
-                practicality: 0,
-                spirituality: 0
-              }
-            },
-            {
-              id: 'character-2',
-              characterName: 'Character 2',
-              playerName: '',
-              dial: 0,
-              health: 10,
-              energy: 10,
-              terror: 0,
-              experience: 0,
-              reputation: 0,
-              magic: 0,
-              food: 0,
-              wealth: 0,
-              attributes: {
-                aggression: 0,
-                caution: 0,
-                courage: 0,
-                empathy: 0,
-                practicality: 0,
-                spirituality: 0
-              }
-            },
-            {
-              id: 'character-3',
-              characterName: 'Character 3',
-              playerName: '',
-              dial: 0,
-              health: 10,
-              energy: 10,
-              terror: 0,
-              experience: 0,
-              reputation: 0,
-              magic: 0,
-              food: 0,
-              wealth: 0,
-              attributes: {
-                aggression: 0,
-                caution: 0,
-                courage: 0,
-                empathy: 0,
-                practicality: 0,
-                spirituality: 0
-              }
-            },
-            {
-              id: 'character-4',
-              characterName: 'Character 4',
-              playerName: '',
-              dial: 0,
-              health: 10,
-              energy: 10,
-              terror: 0,
-              experience: 0,
-              reputation: 0,
-              magic: 0,
-              food: 0,
-              wealth: 0,
-              attributes: {
-                aggression: 0,
-                caution: 0,
-                courage: 0,
-                empathy: 0,
-                practicality: 0,
-                spirituality: 0
-              }
-            }
-          ],
+          characters: [],
           statuses: {
             // All 88 statuses with their step configurations
             'Allies of Avalon': { steps: 5, completed: [], caption: '' },
@@ -322,6 +231,10 @@ const FallOfAvalonCampaign = () => {
     return <LoadingSpinner message={t('common.loading', 'Loading...')} />;
   }
 
+  const availableCharacterNames = CHARACTER_ROSTERS.fallOfAvalon.filter(
+    characterName => !state.characters.some(character => character.characterName === characterName)
+  );
+
   // Update chapter and day
   const updateCampaignInfo = (field: 'chapter' | 'day', value: number) => {
     updateState(prev => ({
@@ -364,7 +277,7 @@ const FallOfAvalonCampaign = () => {
     };
 
     // Character handlers
-    const updateCharacter = <K extends Exclude<keyof Character, 'id' | 'attributes'>>(
+    const updateCharacter = <K extends Exclude<keyof Character, 'id' | 'attributes' | 'characterName'>>(
       characterId: string,
       field: K,
       value: Character[K]
@@ -423,37 +336,43 @@ const FallOfAvalonCampaign = () => {
       }));
     };
 
-    const addCharacter = () => {
-      if (state.characters.length >= MAX_CHARACTERS) {
+    const addCharacter = (characterName: CharacterName) => {
+      if (!CHARACTER_ROSTERS.fallOfAvalon.includes(characterName)) {
         return;
       }
 
-      const newCharacter = {
-        id: `character-${Date.now()}`,
-        characterName: `Character ${state.characters.length + 1}`,
-        playerName: '',
-        dial: 0,
-        health: 10,
-        energy: 10,
-        terror: 0,
-        experience: 0,
-        reputation: 0,
-        magic: 0,
-        food: 0,
-        wealth: 0,
-        attributes: {
-          aggression: 0,
-          caution: 0,
-          courage: 0,
-          empathy: 0,
-          practicality: 0,
-          spirituality: 0
+      updateState(prev => {
+        if (prev.characters.length >= MAX_CHARACTERS
+          || prev.characters.some(character => character.characterName === characterName)) {
+          return prev;
         }
-      };
-      updateState(prev => ({
-        ...prev,
-        characters: [...prev.characters, newCharacter]
-      }));
+
+        return {
+          ...prev,
+          characters: [...prev.characters, {
+            id: `character-${Date.now()}-${characterName}`,
+            characterName,
+            playerName: '',
+            dial: 0,
+            health: 10,
+            energy: 10,
+            terror: 0,
+            experience: 0,
+            reputation: 0,
+            magic: 0,
+            food: 0,
+            wealth: 0,
+            attributes: {
+              aggression: 0,
+              caution: 0,
+              courage: 0,
+              empathy: 0,
+              practicality: 0,
+              spirituality: 0
+            }
+          }]
+        };
+      });
     };
 
     const confirmDeleteCharacter = () => {
@@ -643,38 +562,36 @@ const FallOfAvalonCampaign = () => {
           <Button
             variant="contained"
             startIcon={<AddIcon />}
-            onClick={addCharacter}
-            disabled={state.characters.length >= MAX_CHARACTERS}
+            onClick={() => {
+              setSelectedCharacterName('');
+              setAddCharacterDialogOpen(true);
+            }}
+            disabled={state.characters.length >= MAX_CHARACTERS || availableCharacterNames.length === 0}
             className="btn btn-primary"
           >
             {t('fallOfAvalon.characters.addCharacter', 'Add Character')}
           </Button>
-          {state.characters.length >= MAX_CHARACTERS && (
+          {state.characters.length >= MAX_CHARACTERS ? (
             <Typography variant="body2" color="text.secondary" className="character-limit-message">
               {t('fallOfAvalon.characters.maximumCharacters', 'Maximum 4 characters')}
             </Typography>
-          )}
+          ) : availableCharacterNames.length === 0 ? (
+            <Typography variant="body2" color="text.secondary" className="character-limit-message">
+              {t('fallOfAvalon.characters.allCharactersAdded', 'All characters available in this campaign have been added.')}
+            </Typography>
+          ) : null}
         </Box>
 
         <Grid container spacing={3}>
-          {state.characters.map((character, index) => (
+          {state.characters.map((character) => (
             <Grid item xs={12} md={6} lg={4} key={character.id}>
               <Card className="card character-card">
                 <CardContent className="character-card-content">
                   <Box className="character-card-header">
                     <Typography variant="h6" className="text-gold">
-                      {character.characterName || t('fallOfAvalon.characters.unnamed', {
-                        number: index + 1,
-                        defaultValue: `Character ${index + 1}`
-                      })}
+                      {t(`characterNames.${character.characterName}`, character.characterName)}
                     </Typography>
                     <Box className="character-actions">
-                      <IconButton
-                        size="small"
-                        onClick={() => setEditCharacterDialog({ open: true, character })}
-                      >
-                        <EditIcon />
-                      </IconButton>
                       <IconButton
                         size="small"
                         aria-label={t('fallOfAvalon.characters.deleteCharacter', 'Delete Character')}
@@ -707,105 +624,129 @@ const FallOfAvalonCampaign = () => {
 
                   <Grid container spacing={1} className="character-field-spacing">
                     <Grid item xs={6}>
-                      <TextField
-                        fullWidth
-                        className="character-stat-health"
-                        label="Health"
-                        type="number"
-                        inputProps={{ min: 0, max: 10, step: 1 }}
-                        value={character.health}
-                        onChange={(e) => updateCharacter(character.id, 'health', boundedCharacterStat(e.target.value))}
-                        size="small"
-                      />
+                      <Box className="character-stat-field">
+                        <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/health.png`} alt="" aria-hidden="true" />
+                        <TextField
+                          fullWidth
+                          className="character-stat-health"
+                          label="Health"
+                          type="number"
+                          inputProps={{ min: 0, max: 10, step: 1 }}
+                          value={character.health}
+                          onChange={(e) => updateCharacter(character.id, 'health', boundedCharacterStat(e.target.value))}
+                          size="small"
+                        />
+                      </Box>
                     </Grid>
                     <Grid item xs={6}>
-                      <TextField
-                        fullWidth
-                        className="character-stat-energy"
-                        label="Energy"
-                        type="number"
-                        inputProps={{ min: 0, max: 10, step: 1 }}
-                        value={character.energy}
-                        onChange={(e) => updateCharacter(character.id, 'energy', boundedCharacterStat(e.target.value))}
-                        size="small"
-                      />
-                    </Grid>
-                  </Grid>
-
-                  <Grid container spacing={1} className="character-field-spacing">
-                    <Grid item xs={6}>
-                      <TextField
-                        fullWidth
-                        className="character-stat-terror"
-                        label="Terror"
-                        type="number"
-                        inputProps={{ min: 0, max: 10, step: 1 }}
-                        value={character.terror}
-                        onChange={(e) => updateCharacter(character.id, 'terror', boundedCharacterStat(e.target.value))}
-                        size="small"
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        fullWidth
-                        className="character-stat-experience"
-                        label="Experience"
-                        type="number"
-                        inputProps={{ min: 0, max: 10, step: 1 }}
-                        value={character.experience}
-                        onChange={(e) => updateCharacter(character.id, 'experience', boundedCharacterStat(e.target.value))}
-                        size="small"
-                      />
+                      <Box className="character-stat-field">
+                        <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/energy.png`} alt="" aria-hidden="true" />
+                        <TextField
+                          fullWidth
+                          className="character-stat-energy"
+                          label="Energy"
+                          type="number"
+                          inputProps={{ min: 0, max: 10, step: 1 }}
+                          value={character.energy}
+                          onChange={(e) => updateCharacter(character.id, 'energy', boundedCharacterStat(e.target.value))}
+                          size="small"
+                        />
+                      </Box>
                     </Grid>
                   </Grid>
 
                   <Grid container spacing={1} className="character-field-spacing">
                     <Grid item xs={6}>
-                      <TextField
-                        fullWidth
-                        label="Reputation"
-                        type="number"
-                        inputProps={{ min: 0, max: 10, step: 1 }}
-                        value={character.reputation}
-                        onChange={(e) => updateCharacter(character.id, 'reputation', boundedCharacterStat(e.target.value))}
-                        size="small"
-                      />
+                      <Box className="character-stat-field">
+                        <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/terror.png`} alt="" aria-hidden="true" />
+                        <TextField
+                          fullWidth
+                          className="character-stat-terror"
+                          label="Terror"
+                          type="number"
+                          inputProps={{ min: 0, max: 10, step: 1 }}
+                          value={character.terror}
+                          onChange={(e) => updateCharacter(character.id, 'terror', boundedCharacterStat(e.target.value))}
+                          size="small"
+                        />
+                      </Box>
                     </Grid>
                     <Grid item xs={6}>
-                      <TextField
-                        fullWidth
-                        label="Magic"
-                        type="number"
-                        inputProps={{ min: 0, max: 10, step: 1 }}
-                        value={character.magic}
-                        onChange={(e) => updateCharacter(character.id, 'magic', boundedCharacterStat(e.target.value))}
-                        size="small"
-                      />
+                      <Box className="character-stat-field">
+                        <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/experience.png`} alt="" aria-hidden="true" />
+                        <TextField
+                          fullWidth
+                          className="character-stat-experience"
+                          label="Experience"
+                          type="number"
+                          inputProps={{ min: 0, max: 10, step: 1 }}
+                          value={character.experience}
+                          onChange={(e) => updateCharacter(character.id, 'experience', boundedCharacterStat(e.target.value))}
+                          size="small"
+                        />
+                      </Box>
                     </Grid>
                   </Grid>
 
                   <Grid container spacing={1} className="character-field-spacing">
                     <Grid item xs={6}>
-                      <TextField
-                        fullWidth
-                        label="Food"
-                        type="number"
-                        inputProps={{ min: 0, max: 10, step: 1 }}
-                        value={character.food}
-                        onChange={(e) => updateCharacter(character.id, 'food', boundedCharacterStat(e.target.value))}
-                        size="small"
-                      />
+                      <Box className="character-stat-field">
+                        <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/cube.png`} alt="" aria-hidden="true" />
+                        <TextField
+                          fullWidth
+                          label="Reputation"
+                          type="number"
+                          inputProps={{ min: 0, max: 10, step: 1 }}
+                          value={character.reputation}
+                          onChange={(e) => updateCharacter(character.id, 'reputation', boundedCharacterStat(e.target.value))}
+                          size="small"
+                        />
+                      </Box>
                     </Grid>
                     <Grid item xs={6}>
-                      <TextField
-                        fullWidth
-                        label="Wealth"
-                        type="number"
-                        inputProps={{ min: 0, max: 10, step: 1 }}
-                        value={character.wealth}
-                        onChange={(e) => updateCharacter(character.id, 'wealth', boundedCharacterStat(e.target.value))}
-                        size="small"
-                      />
+                      <Box className="character-stat-field">
+                        <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/cube.png`} alt="" aria-hidden="true" />
+                        <TextField
+                          fullWidth
+                          label="Magic"
+                          type="number"
+                          inputProps={{ min: 0, max: 10, step: 1 }}
+                          value={character.magic}
+                          onChange={(e) => updateCharacter(character.id, 'magic', boundedCharacterStat(e.target.value))}
+                          size="small"
+                        />
+                      </Box>
+                    </Grid>
+                  </Grid>
+
+                  <Grid container spacing={1} className="character-field-spacing">
+                    <Grid item xs={6}>
+                      <Box className="character-stat-field">
+                        <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/cube.png`} alt="" aria-hidden="true" />
+                        <TextField
+                          fullWidth
+                          label="Food"
+                          type="number"
+                          inputProps={{ min: 0, max: 10, step: 1 }}
+                          value={character.food}
+                          onChange={(e) => updateCharacter(character.id, 'food', boundedCharacterStat(e.target.value))}
+                          size="small"
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box className="character-stat-field">
+                        <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/cube.png`} alt="" aria-hidden="true" />
+                        <TextField
+                          fullWidth
+                          label="Wealth"
+                          type="number"
+                          inputProps={{ min: 0, max: 10, step: 1 }}
+                          value={character.wealth}
+                          onChange={(e) => updateCharacter(character.id, 'wealth', boundedCharacterStat(e.target.value))}
+                          size="small"
+                        />
+                      </Box>
                     </Grid>
                   </Grid>
 
@@ -976,55 +917,54 @@ const FallOfAvalonCampaign = () => {
       </Card>
     );
 
-    const renderEditCharacterDialog = () => (
+    const renderAddCharacterDialog = () => (
       <Dialog
-        open={editCharacterDialog.open}
-        onClose={() => setEditCharacterDialog({ open: false, character: null })}
-        className="character-name-dialog"
+        open={addCharacterDialogOpen}
+        onClose={() => setAddCharacterDialogOpen(false)}
+        aria-labelledby="add-character-dialog-title"
+        className="character-selection-dialog"
         maxWidth="xs"
         fullWidth
       >
-        <DialogTitle>
-          {t('fallOfAvalon.characters.editCharacter', 'Edit Character')}
+        <DialogTitle id="add-character-dialog-title">
+          {t('fallOfAvalon.characters.selectCharacter', 'Select Character')}
         </DialogTitle>
         <DialogContent>
-          {editCharacterDialog.character && (
-            <Grid container spacing={2} className="mt-1">
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label={t('fallOfAvalon.characters.characterName', 'Character Name')}
-                  value={editCharacterDialog.character.characterName}
-                  onChange={(e) => setEditCharacterDialog(prev => prev.character
-                    ? { ...prev, character: { ...prev.character, characterName: e.target.value } }
-                    : prev
-                  )}
-                />
-              </Grid>
-              {/* Add more fields as needed */}
-            </Grid>
-          )}
+          <TextField
+            select
+            fullWidth
+            label={t('fallOfAvalon.characters.characterName', 'Character Name')}
+            value={selectedCharacterName}
+            onChange={(event) => setSelectedCharacterName(event.target.value)}
+          >
+            <MenuItem value="" disabled>
+              {t('fallOfAvalon.characters.selectCharacterPlaceholder', 'Choose a character')}
+            </MenuItem>
+            {availableCharacterNames.map(characterName => (
+              <MenuItem key={characterName} value={characterName}>
+                {t(`characterNames.${characterName}`, characterName)}
+              </MenuItem>
+            ))}
+          </TextField>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setEditCharacterDialog({ open: false, character: null })}>
+          <Button onClick={() => setAddCharacterDialogOpen(false)}>
             {t('common.cancel', 'Cancel')}
           </Button>
           <Button
             onClick={() => {
-              if (editCharacterDialog.character) {
-                const updatedCharacter = editCharacterDialog.character;
-                updateState(prev => ({
-                  ...prev,
-                  characters: prev.characters.map(p =>
-                    p.id === updatedCharacter.id ? updatedCharacter : p
-                  )
-                }));
+              const characterName = availableCharacterNames.find(
+                availableName => availableName === selectedCharacterName
+              );
+              if (characterName) {
+                addCharacter(characterName);
+                setAddCharacterDialogOpen(false);
               }
-              setEditCharacterDialog({ open: false, character: null });
             }}
+            disabled={!availableCharacterNames.some(name => name === selectedCharacterName)}
             className="btn btn-primary"
           >
-            {t('common.save', 'Save')}
+            {t('fallOfAvalon.characters.addSelectedCharacter', 'Add Character')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -1045,7 +985,9 @@ const FallOfAvalonCampaign = () => {
         <DialogContent>
           <Typography id="delete-character-dialog-description" color="text.secondary">
             {t('fallOfAvalon.characters.confirmDelete', {
-              characterName: characterPendingDeletion?.characterName || '',
+              characterName: characterPendingDeletion
+                ? t(`characterNames.${characterPendingDeletion.characterName}`, characterPendingDeletion.characterName)
+                : '',
               defaultValue: `Are you sure you want to delete ${characterPendingDeletion?.characterName || 'this character'}? This action cannot be undone.`
             })}
           </Typography>
@@ -1084,7 +1026,7 @@ const FallOfAvalonCampaign = () => {
           {renderTabContent()}
         </Box>
 
-        {renderEditCharacterDialog()}
+        {renderAddCharacterDialog()}
         {renderDeleteCharacterDialog()}
       </div>
     );
