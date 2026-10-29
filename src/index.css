@@ -178,6 +178,16 @@ a,
   padding: 8px;
 }
 
+.mobile-menu-actions .language-selector,
+.mobile-menu-actions .snapshot-manager-button,
+.mobile-menu-actions .MuiButton-root {
+  width: 100%;
+}
+
+.mobile-menu-actions .MuiButton-root {
+  justify-content: flex-start;
+}
+
 .current-campaign-info {
   display: flex;
   flex-direction: column;
