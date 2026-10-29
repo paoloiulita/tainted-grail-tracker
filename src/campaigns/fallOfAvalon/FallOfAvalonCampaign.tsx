@@ -5,11 +5,15 @@ import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { useAppState } from '../../hooks/useAppState';
+import { CAMPAIGN_REGISTRY, useAppState } from '../../hooks/useAppState';
 import { useCampaign } from '../../contexts/CampaignContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import CharacterNotesEditor from '../../components/CharacterNotesEditor';
 import { CHARACTER_ROSTERS, type CharacterName } from '../characterRoster';
+import {
+  FALL_OF_AVALON_REMOVED_LOCATION_COUNT,
+  FALL_OF_AVALON_STATUS_DEFINITIONS
+} from './statusDefinitions';
 import type {
   CampaignState,
   Guardian,
@@ -39,7 +43,6 @@ function isCampaignState(value: unknown): value is CampaignState {
 const sliderNumber = (value: number | number[]) =>
   Array.isArray(value) ? value[0] ?? 0 : value;
 
-const REMOVED_LOCATION_COUNT = 16;
 const MAX_CHARACTERS = 4;
 
 const boundedCharacterStat = (value: string, maximum = 10) => {
@@ -48,17 +51,12 @@ const boundedCharacterStat = (value: string, maximum = 10) => {
 };
 
 const normalizeStatuses = (
-  savedStatuses: CampaignState['statuses'],
-  defaultStatuses: CampaignState['statuses']
+  savedStatuses: CampaignState['statuses']
 ): CampaignState['statuses'] => {
-  const statuses = { ...savedStatuses };
-  Object.entries(defaultStatuses).forEach(([statusName, defaultStatus]) => {
-    const savedStatus = savedStatuses[statusName];
+  const statuses: CampaignState['statuses'] = {};
+  Object.keys(FALL_OF_AVALON_STATUS_DEFINITIONS).forEach((statusName) => {
     statuses[statusName] = {
-      ...defaultStatus,
-      ...savedStatus,
-      steps: defaultStatus.steps,
-      enumerated: defaultStatus.enumerated
+      completed: savedStatuses[statusName]?.completed ?? []
     };
   });
   return statuses;
@@ -95,7 +93,7 @@ const normalizeCharacter = (character: Character): Character => {
 
 const FallOfAvalonCampaign = () => {
   const { t } = useTranslation();
-  const { getCampaignState, updateCampaignState, CAMPAIGN_REGISTRY } = useAppState();
+  const { getCampaignState, updateCampaignState } = useAppState();
   const { setCampaign } = useCampaign();
   const [state, setState] = useState<CampaignState | null>(null);
   const [activeTab, setActiveTab] = useState(0);
@@ -118,120 +116,25 @@ const FallOfAvalonCampaign = () => {
         setState({
           ...savedState,
           characters: savedState.characters.map(normalizeCharacter),
-          statuses: normalizeStatuses(
-            savedState.statuses,
-            CAMPAIGN_REGISTRY.fallOfAvalon.defaultState.statuses
-          ),
+          statuses: normalizeStatuses(savedState.statuses),
           removedLocations: Array.from(
-            { length: REMOVED_LOCATION_COUNT },
+            { length: FALL_OF_AVALON_REMOVED_LOCATION_COUNT },
             (_, index) => savedState.removedLocations[index] ?? { box1: '', box2: '' }
           )
         });
         return;
       }
 
-      // Initialize with default state
-      const defaultState: CampaignState = {
-          campaign: {
-            id: 'fallOfAvalon',
-            name: 'Fall of Avalon',
-            chapter: 1,
-            day: 1
-          },
-          menhirs: [
-            { location: '', dialValue: 0 },
-            { location: '', dialValue: 0 },
-            { location: '', dialValue: 0 }
-          ],
-          questDials: [
-            { location: '', dialValue: 0 },
-            { location: '', dialValue: 0 }
-          ],
-          guardians: [
-            { location: '' },
-            { location: '' }
-          ],
-          characterNotes: '',
-          characters: [],
-          statuses: {
-            // All 88 statuses with their step configurations
-            'Allies of Avalon': { steps: 5, completed: [], caption: '' },
-            'Black Cauldron': { steps: 3, completed: [], caption: '' },
-            'Burning Mystery': { steps: 8, completed: [], caption: '' },
-            'Call from Beyond': { steps: 1, completed: [], caption: '' },
-            'Charred Knowledge': { steps: 1, completed: [], caption: '' },
-            'Cherished Belongings': { steps: 1, completed: [], caption: '' },
-            'Cold Pyre': { steps: 1, completed: [], caption: '' },
-            'Cosuil': { steps: 5, completed: [], caption: '' },
-            'Deal Breaker': { steps: 1, completed: [], caption: '' },
-            'Deep Secret': { steps: 1, completed: [], caption: '' },
-            'Diplomat': { steps: 3, completed: [], caption: '' },
-            'Diplomatic Mission': { steps: 6, completed: [], caption: '' },
-            'Disturbing Information': { steps: 3, completed: [], caption: '' },
-            'Dreams and Prophecies': { steps: 8, completed: [], caption: '' },
-            'Enemies of Avalon': { steps: 3, completed: [], caption: '' },
-            'Escalation': { steps: 3, completed: [], caption: '' },
-            "Fael's Legacy": { steps: 1, completed: [], caption: '' },
-            'Fall of Chivalry': { steps: 8, completed: [], caption: 'When you have any six parts of this status, go to BoS, Verse 525' },
-            'Farpoint Clues': { steps: 5, completed: [], caption: '' },
-            'Fate of the Expedition': { steps: 9, completed: [], caption: 'When you have parts 1-8 of this status, go to BoS, Verse 405' },
-            'Final Confrontations': { steps: 7, completed: [], caption: '' },
-            'Final Lesson': { steps: 5, completed: [], caption: '' },
-            'Fortunate Meetings': { steps: 5, completed: [], caption: '' },
-            "Gerraint's Successor": { steps: 3, completed: [], caption: '' },
-            'Glen Ritual': { steps: 2, completed: [], caption: '' },
-            'Guest of Honor': { steps: 1, completed: [], caption: '' },
-            'Halfway Intrigue': { steps: 3, completed: [], caption: '' },
-            'Helping Hand': { steps: 6, completed: [], caption: '' },
-            'Helping the Knights': { steps: 4, completed: [], caption: '', enumerated: false },
-            'Hidden Treasures': { steps: 8, completed: [], caption: '' },
-            "Hunter's Mark": { steps: 1, completed: [], caption: '' },
-            "Lady's Task": { steps: 1, completed: [], caption: '' },
-            'Last Haven': { steps: 5, completed: [], caption: '' },
-            'Left Behind': { steps: 9, completed: [], caption: '' },
-            'Lost and Fallen': { steps: 7, completed: [], caption: '' },
-            "Maggot's Redemption": { steps: 1, completed: [], caption: '' },
-            'Matricide': { steps: 1, completed: [], caption: '' },
-            'Monastery Discovered': { steps: 1, completed: [], caption: '' },
-            'Moonring Mission': { steps: 1, completed: [], caption: '' },
-            "Morgaine's Task": { steps: 1, completed: [], caption: '' },
-            'Mourning Song': { steps: 2, completed: [], caption: '' },
-            'Mystery Solved': { steps: 1, completed: [], caption: '' },
-            'Pathfinder': { steps: 8, completed: [], caption: '' },
-            'Peace in Borough': { steps: 1, completed: [], caption: '' },
-            "People's Champion": { steps: 1, completed: [], caption: '' },
-            'Pillager': { steps: 5, completed: [], caption: '' },
-            'Reclamation': { steps: 1, completed: [], caption: '' },
-            'Redemption': { steps: 5, completed: [], caption: '', enumerated: false },
-            'Remedy': { steps: 4, completed: [], caption: '' },
-            'Remnants': { steps: 5, completed: [], caption: '' },
-            'Restoring the Order': { steps: 8, completed: [], caption: 'When you have any six parts of this status, go to BoS, Verse 512' },
-            'End of the Road': { steps: 1, completed: [], caption: '' },
-            'Riddle of the Oldsteel': { steps: 1, completed: [], caption: '' },
-            'Saved by the Goddess': { steps: 1, completed: [], caption: '' },
-            'Scrounger': { steps: 1, completed: [], caption: '' },
-            'Secrets of the Forest': { steps: 4, completed: [], caption: '' },
-            'Shelter in the Storm': { steps: 1, completed: [], caption: '' },
-            'Shrine Secure': { steps: 1, completed: [], caption: '' },
-            'Something is Watching': { steps: 4, completed: [], caption: 'When you have all four parts of this status, resolve Special Event C', enumerated: false },
-            "Stonemason's Secret": { steps: 1, completed: [], caption: '' },
-            'Strange Encounters': { steps: 8, completed: [], caption: '' },
-            'Supplying the Revolt': { steps: 4, completed: [], caption: '', enumerated: false },
-            'Tangleroot Knowledge': { steps: 2, completed: [], caption: '' },
-            'Traveling Menhir': { steps: 2, completed: [], caption: '' },
-            'Tuathan Exploration': { steps: 5, completed: [], caption: '', enumerated: false },
-            'Underfern': { steps: 5, completed: [], caption: '' },
-            'War for Avalon': { steps: 4, completed: [], caption: '' },
-            'Winds of Wyrdness': { steps: 1, completed: [], caption: '' }
-          },
-          removedLocations: Array.from({ length: REMOVED_LOCATION_COUNT }, () => ({ box1: '', box2: '' }))
-      };
+      const defaultState = CAMPAIGN_REGISTRY.fallOfAvalon.defaultState;
+      if (!isCampaignState(defaultState)) {
+        throw new Error('Fall of Avalon campaign default has an invalid shape.');
+      }
       setState(defaultState);
       updateCampaignState('fallOfAvalon', defaultState);
     };
 
     loadState();
-  }, [getCampaignState, updateCampaignState, CAMPAIGN_REGISTRY.fallOfAvalon.defaultState.statuses]);
+  }, [getCampaignState, updateCampaignState]);
 
   // Save state to localStorage when it changes
   useEffect(() => {
@@ -636,7 +539,7 @@ const FallOfAvalonCampaign = () => {
 
                   <TextField
                     fullWidth
-                    label="Dial"
+                    label={t('fallOfAvalon.characters.dial', 'Dial')}
                     type="number"
                     value={character.dial}
                     onChange={(e) => updateCharacter(character.id, 'dial', parseInt(e.target.value) || 0)}
@@ -651,7 +554,7 @@ const FallOfAvalonCampaign = () => {
                         <TextField
                           fullWidth
                           className="character-stat-health"
-                          label="Health"
+                          label={t('fallOfAvalon.characters.health', 'Health')}
                           type="number"
                           inputProps={{ min: 0, max: 10, step: 1 }}
                           value={character.health}
@@ -666,7 +569,7 @@ const FallOfAvalonCampaign = () => {
                         <TextField
                           fullWidth
                           className="character-stat-energy"
-                          label="Energy"
+                          label={t('fallOfAvalon.characters.energy', 'Energy')}
                           type="number"
                           inputProps={{ min: 0, max: 10, step: 1 }}
                           value={character.energy}
@@ -684,7 +587,7 @@ const FallOfAvalonCampaign = () => {
                         <TextField
                           fullWidth
                           className="character-stat-terror"
-                          label="Terror"
+                          label={t('fallOfAvalon.characters.terror', 'Terror')}
                           type="number"
                           inputProps={{ min: 0, max: 10, step: 1 }}
                           value={character.terror}
@@ -699,7 +602,7 @@ const FallOfAvalonCampaign = () => {
                         <TextField
                           fullWidth
                           className="character-stat-experience"
-                          label="Experience"
+                          label={t('fallOfAvalon.characters.experience', 'Experience')}
                           type="number"
                           inputProps={{ min: 0, max: 10, step: 1 }}
                           value={character.experience}
@@ -716,7 +619,7 @@ const FallOfAvalonCampaign = () => {
                         <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/cube.png`} alt="" aria-hidden="true" />
                         <TextField
                           fullWidth
-                          label="Reputation"
+                          label={t('fallOfAvalon.characters.reputation', 'Reputation')}
                           type="number"
                           inputProps={{ min: 0, max: 10, step: 1 }}
                           value={character.reputation}
@@ -730,7 +633,7 @@ const FallOfAvalonCampaign = () => {
                         <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/cube.png`} alt="" aria-hidden="true" />
                         <TextField
                           fullWidth
-                          label="Magic"
+                          label={t('fallOfAvalon.characters.magic', 'Magic')}
                           type="number"
                           inputProps={{ min: 0, max: 10, step: 1 }}
                           value={character.magic}
@@ -747,7 +650,7 @@ const FallOfAvalonCampaign = () => {
                         <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/cube.png`} alt="" aria-hidden="true" />
                         <TextField
                           fullWidth
-                          label="Food"
+                          label={t('fallOfAvalon.characters.food', 'Food')}
                           type="number"
                           inputProps={{ min: 0, max: 10, step: 1 }}
                           value={character.food}
@@ -761,7 +664,7 @@ const FallOfAvalonCampaign = () => {
                         <img className="character-stat-icon" src={`${import.meta.env.BASE_URL}assets/icons/cube.png`} alt="" aria-hidden="true" />
                         <TextField
                           fullWidth
-                          label="Wealth"
+                          label={t('fallOfAvalon.characters.wealth', 'Wealth')}
                           type="number"
                           inputProps={{ min: 0, max: 10, step: 1 }}
                           value={character.wealth}
@@ -828,7 +731,7 @@ const FallOfAvalonCampaign = () => {
 
     const renderStatusesTab = () => {
       // Get all status names sorted alphabetically
-      const statusNames = Object.keys(state.statuses).sort();
+      const statusNames = Object.keys(FALL_OF_AVALON_STATUS_DEFINITIONS).sort();
 
       return (
         <Card className="card">
@@ -840,22 +743,24 @@ const FallOfAvalonCampaign = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Status</TableCell>
-                    <TableCell align="center">Completed</TableCell>
+                    <TableCell>{t('fallOfAvalon.statuses.status', 'Status')}</TableCell>
+                    <TableCell align="center">{t('fallOfAvalon.statuses.completed', 'Completed')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {statusNames.map((statusName) => {
                     const status = state.statuses[statusName];
+                    const definition = FALL_OF_AVALON_STATUS_DEFINITIONS[statusName];
+                    const caption = t(`fallOfAvalon.statuses.captions.${statusName}`, '');
                     return (
                       <TableRow key={statusName} className="status-row">
                         <TableCell>
                           <Box display="flex" alignItems="center" gap={0.5}>
                             <Typography variant="subtitle2" className="font-semibold">
-                              {statusName}
+                              {t(`fallOfAvalon.statuses.names.${statusName}`, statusName)}
                             </Typography>
-                            {status.caption && (
-                              <Tooltip title={status.caption}>
+                            {caption && (
+                              <Tooltip title={caption}>
                                 <IconButton
                                   size="small"
                                   aria-label={t('fallOfAvalon.statuses.captionInfo', 'Status information')}
@@ -868,10 +773,10 @@ const FallOfAvalonCampaign = () => {
                         </TableCell>
                         <TableCell align="center">
                           <Box className="steps-container">
-                            {Array.from({ length: status.steps }, (_, i) => {
+                            {Array.from({ length: definition.steps }, (_, i) => {
                               const stepIndex = i + 1;
                               const isCompleted = status.completed.includes(stepIndex);
-                              const showStepNumber = status.steps > 1 && status.enumerated !== false;
+                              const showStepNumber = definition.steps > 1 && definition.enumerated !== false;
                               return (
                                 <IconButton
                                   key={stepIndex}

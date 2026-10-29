@@ -7,14 +7,9 @@ export type CampaignId =
 
 export type Language = 'en' | 'it';
 
-export type CampaignStatus = 'implemented' | 'placeholder';
-
 export interface CampaignSummary {
   id: CampaignId;
   name: string;
-  version: string;
-  description: string;
-  status: CampaignStatus;
 }
 
 export interface CampaignDefinition extends CampaignSummary {
@@ -67,11 +62,13 @@ export interface Character {
   attributes: CharacterAttributes;
 }
 
-export interface CampaignStatusEntry {
-  steps: number;
+export interface CampaignStatusProgress {
   completed: number[];
-  caption: string;
-  enumerated?: boolean;
+}
+
+export interface CampaignStatusDefinition {
+  steps: number;
+  enumerated?: false;
 }
 
 export interface RemovedLocation {
@@ -86,7 +83,7 @@ export interface CampaignState {
   guardians: Guardian[];
   characterNotes: string;
   characters: Character[];
-  statuses: Record<string, CampaignStatusEntry>;
+  statuses: Record<string, CampaignStatusProgress>;
   removedLocations: RemovedLocation[];
 }
 

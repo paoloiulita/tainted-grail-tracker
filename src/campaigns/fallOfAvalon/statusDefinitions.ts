@@ -1,0 +1,82 @@
+import type { CampaignStatusDefinition, CampaignStatusProgress } from '../../types';
+
+export const FALL_OF_AVALON_STATUS_DEFINITIONS: Record<string, CampaignStatusDefinition> = {
+  'Allies of Avalon': { steps: 5 },
+  'Black Cauldron': { steps: 3 },
+  'Burning Mystery': { steps: 8 },
+  'Call from Beyond': { steps: 1 },
+  'Charred Knowledge': { steps: 1 },
+  'Cherished Belongings': { steps: 1 },
+  'Cold Pyre': { steps: 1 },
+  Cosuil: { steps: 5 },
+  'Deal Breaker': { steps: 1 },
+  'Deep Secret': { steps: 1 },
+  Diplomat: { steps: 3 },
+  'Diplomatic Mission': { steps: 6 },
+  'Disturbing Information': { steps: 3 },
+  'Dreams and Prophecies': { steps: 8 },
+  'Enemies of Avalon': { steps: 3 },
+  Escalation: { steps: 3 },
+  "Fael's Legacy": { steps: 1 },
+  'Fall of Chivalry': { steps: 8 },
+  'Farpoint Clues': { steps: 5 },
+  'Fate of the Expedition': { steps: 9 },
+  'Final Confrontations': { steps: 7 },
+  'Final Lesson': { steps: 5 },
+  'Fortunate Meetings': { steps: 5 },
+  "Gerraint's Successor": { steps: 3 },
+  'Glen Ritual': { steps: 2 },
+  'Guest of Honor': { steps: 1 },
+  'Halfway Intrigue': { steps: 3 },
+  'Helping Hand': { steps: 6 },
+  'Helping the Knights': { steps: 4, enumerated: false },
+  'Hidden Treasures': { steps: 8 },
+  "Hunter's Mark": { steps: 1 },
+  "Lady's Task": { steps: 1 },
+  'Last Haven': { steps: 5 },
+  'Left Behind': { steps: 9 },
+  'Lost and Fallen': { steps: 7 },
+  "Maggot's Redemption": { steps: 1 },
+  Matricide: { steps: 1 },
+  'Monastery Discovered': { steps: 1 },
+  'Moonring Mission': { steps: 1 },
+  "Morgaine's Task": { steps: 1 },
+  'Mourning Song': { steps: 2 },
+  'Mystery Solved': { steps: 1 },
+  Pathfinder: { steps: 8 },
+  'Peace in Borough': { steps: 1 },
+  "People's Champion": { steps: 1 },
+  Pillager: { steps: 5 },
+  Reclamation: { steps: 1 },
+  Redemption: { steps: 5, enumerated: false },
+  Remedy: { steps: 4 },
+  Remnants: { steps: 5 },
+  'Restoring the Order': { steps: 8 },
+  'End of the Road': { steps: 1 },
+  'Riddle of the Oldsteel': { steps: 1 },
+  'Saved by the Goddess': { steps: 1 },
+  Scrounger: { steps: 1 },
+  'Secrets of the Forest': { steps: 4 },
+  'Shelter in the Storm': { steps: 1 },
+  'Shrine Secure': { steps: 1 },
+  'Something is Watching': { steps: 4, enumerated: false },
+  "Stonemason's Secret": { steps: 1 },
+  'Strange Encounters': { steps: 8 },
+  'Supplying the Revolt': { steps: 4, enumerated: false },
+  'Tangleroot Knowledge': { steps: 2 },
+  'Traveling Menhir': { steps: 2 },
+  'Tuathan Exploration': { steps: 5, enumerated: false },
+  Underfern: { steps: 5 },
+  'War for Avalon': { steps: 4 },
+  'Winds of Wyrdness': { steps: 1 }
+};
+
+export const FALL_OF_AVALON_REMOVED_LOCATION_COUNT = 16;
+
+export function createInitialStatusProgress(): Record<string, CampaignStatusProgress> {
+  const statuses: Record<string, CampaignStatusProgress> = {};
+  Object.keys(FALL_OF_AVALON_STATUS_DEFINITIONS).forEach((statusName) => {
+    statuses[statusName] = { completed: [] };
+  });
+  return statuses;
+}

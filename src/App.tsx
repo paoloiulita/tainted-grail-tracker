@@ -52,9 +52,9 @@ const App = () => {
         // Return placeholder for unimplemented campaigns
         return (
           <div className="campaign-placeholder">
-            <h2>{campaign.name}</h2>
-            <p>{t('campaigns.placeholder') || 'This campaign is under development.'}</p>
-            <p>{t('campaigns.comingSoon') || 'Coming soon!'}</p>
+            <h2>{t(`campaigns.${campaign.id}.name`, campaign.name)}</h2>
+            <p>{t('campaigns.underDevelopment', 'This campaign is under development.')}</p>
+            <p>{t('campaigns.comingSoon', 'Coming soon!')}</p>
           </div>
         );
     }
@@ -81,6 +81,7 @@ const App = () => {
               element={
                 <CampaignSelector
                   campaigns={campaigns}
+                  selectedCampaign={currentCampaign}
                   onSelect={handleCampaignSelect}
                 />
               }

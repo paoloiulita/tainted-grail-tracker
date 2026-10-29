@@ -40,19 +40,23 @@ const Header = ({
   return (
     <header className="header">
       <div className="header-content">
-        <Link to="/" className="logo-section" aria-label="Tainted Grail Save Sheet Tracker home">
+        <Link
+          to="/"
+          className="logo-section"
+          aria-label={t('header.homeLink', 'Tainted Grail Save Sheet Tracker home')}
+        >
           <img
             className="app-logo"
             src={`${import.meta.env.BASE_URL}assets/tainted-grail-logo-large.webp`}
             alt="Tainted Grail"
           />
-          <span className="app-subtitle">Save sheet tracker</span>
+          <span className="app-subtitle">{t('header.appSubtitle', 'Save sheet tracker')}</span>
         </Link>
 
         {isMobile ? (
           <div className="mobile-menu-trigger">
             <IconButton
-              aria-label="Open menu"
+              aria-label={t('header.openMenu', 'Open menu')}
               aria-controls={mobileMenuAnchor ? 'mobile-navigation-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={Boolean(mobileMenuAnchor)}
@@ -101,9 +105,12 @@ const Header = ({
             />
 
             <div className="current-campaign-info">
-              <span className="campaign-label">Campaign:</span>
+              <span className="campaign-label">{t('header.campaign', 'Campaign')}:</span>
               <span className="campaign-name">
-                {campaigns.find(c => c.id === currentCampaign)?.name || t('common.selectCampaign')}
+                {t(
+                  `campaigns.${currentCampaign}.name`,
+                  campaigns.find(c => c.id === currentCampaign)?.name || t('campaigns.select', 'Select Campaign...')
+                )}
               </span>
             </div>
           </div>

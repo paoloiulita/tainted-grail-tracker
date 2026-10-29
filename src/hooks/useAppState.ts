@@ -7,15 +7,16 @@ import type {
   CampaignSummary,
   Snapshot
 } from '../types';
+import {
+  createInitialStatusProgress,
+  FALL_OF_AVALON_REMOVED_LOCATION_COUNT
+} from '../campaigns/fallOfAvalon/statusDefinitions';
 
-// Campaign registry with status definitions
+// Central campaign metadata and default save states
 export const CAMPAIGN_REGISTRY = {
   fallOfAvalon: {
     id: 'fallOfAvalon',
     name: 'Fall of Avalon',
-    version: '1.0',
-    description: 'The first campaign in the Tainted Grail series, following the quest for the Holy Grail in medieval England',
-    status: 'implemented',
     defaultState: {
       campaign: {
         id: 'fallOfAvalon',
@@ -38,111 +39,29 @@ export const CAMPAIGN_REGISTRY = {
       ],
       characterNotes: '',
       characters: [],
-      statuses: {
-        // All 88 statuses with their step configurations
-        'Allies of Avalon': { steps: 5, completed: [], caption: '' },
-        'Black Cauldron': { steps: 3, completed: [], caption: '' },
-        'Burning Mystery': { steps: 8, completed: [], caption: '' },
-        'Call from Beyond': { steps: 1, completed: [], caption: '' },
-        'Charred Knowledge': { steps: 1, completed: [], caption: '' },
-        'Cherished Belongings': { steps: 1, completed: [], caption: '' },
-        'Cold Pyre': { steps: 1, completed: [], caption: '' },
-        'Cosuil': { steps: 5, completed: [], caption: '' },
-        'Deal Breaker': { steps: 1, completed: [], caption: '' },
-        'Deep Secret': { steps: 1, completed: [], caption: '' },
-        'Diplomat': { steps: 3, completed: [], caption: '' },
-        'Diplomatic Mission': { steps: 6, completed: [], caption: '' },
-        'Disturbing Information': { steps: 3, completed: [], caption: '' },
-        'Dreams and Prophecies': { steps: 8, completed: [], caption: '' },
-        'Enemies of Avalon': { steps: 3, completed: [], caption: '' },
-        'Escalation': { steps: 3, completed: [], caption: '' },
-        "Fael's Legacy": { steps: 1, completed: [], caption: '' },
-        'Fall of Chivalry': { steps: 8, completed: [], caption: 'When you have any six parts of this status, go to BoS, Verse 525' },
-        'Farpoint Clues': { steps: 5, completed: [], caption: '' },
-        'Fate of the Expedition': { steps: 9, completed: [], caption: 'When you have parts 1-8 of this status, go to BoS, Verse 405' },
-        'Final Confrontations': { steps: 7, completed: [], caption: '' },
-        'Final Lesson': { steps: 5, completed: [], caption: '' },
-        'Fortunate Meetings': { steps: 5, completed: [], caption: '' },
-        "Gerraint's Successor": { steps: 3, completed: [], caption: '' },
-        'Glen Ritual': { steps: 2, completed: [], caption: '' },
-        'Guest of Honor': { steps: 1, completed: [], caption: '' },
-        'Halfway Intrigue': { steps: 3, completed: [], caption: '' },
-        'Helping Hand': { steps: 6, completed: [], caption: '' },
-        'Helping the Knights': { steps: 4, completed: [], caption: '', enumerated: false },
-        'Hidden Treasures': { steps: 8, completed: [], caption: '' },
-        "Hunter's Mark": { steps: 1, completed: [], caption: '' },
-        "Lady's Task": { steps: 1, completed: [], caption: '' },
-        'Last Haven': { steps: 5, completed: [], caption: '' },
-        'Left Behind': { steps: 9, completed: [], caption: '' },
-        'Lost and Fallen': { steps: 7, completed: [], caption: '' },
-        "Maggot's Redemption": { steps: 1, completed: [], caption: '' },
-        'Matricide': { steps: 1, completed: [], caption: '' },
-        'Monastery Discovered': { steps: 1, completed: [], caption: '' },
-        'Moonring Mission': { steps: 1, completed: [], caption: '' },
-        "Morgaine's Task": { steps: 1, completed: [], caption: '' },
-        'Mourning Song': { steps: 2, completed: [], caption: '' },
-        'Mystery Solved': { steps: 1, completed: [], caption: '' },
-        'Pathfinder': { steps: 8, completed: [], caption: '' },
-        'Peace in Borough': { steps: 1, completed: [], caption: '' },
-        "People's Champion": { steps: 1, completed: [], caption: '' },
-        'Pillager': { steps: 5, completed: [], caption: '' },
-        'Reclamation': { steps: 1, completed: [], caption: '' },
-        'Redemption': { steps: 5, completed: [], caption: '', enumerated: false },
-        'Remedy': { steps: 4, completed: [], caption: '' },
-        'Remnants': { steps: 5, completed: [], caption: '' },
-        'Restoring the Order': { steps: 8, completed: [], caption: 'When you have any six parts of this status, go to BoS, Verse 512' },
-        'End of the Road': { steps: 1, completed: [], caption: '' },
-        'Riddle of the Oldsteel': { steps: 1, completed: [], caption: '' },
-        'Saved by the Goddess': { steps: 1, completed: [], caption: '' },
-        'Scrounger': { steps: 1, completed: [], caption: '' },
-        'Secrets of the Forest': { steps: 4, completed: [], caption: '' },
-        'Shelter in the Storm': { steps: 1, completed: [], caption: '' },
-        'Shrine Secure': { steps: 1, completed: [], caption: '' },
-        'Something is Watching': { steps: 4, completed: [], caption: 'When you have all four parts of this status, resolve Special Event C', enumerated: false },
-        "Stonemason's Secret": { steps: 1, completed: [], caption: '' },
-        'Strange Encounters': { steps: 8, completed: [], caption: '' },
-        'Supplying the Revolt': { steps: 4, completed: [], caption: '', enumerated: false },
-        'Tangleroot Knowledge': { steps: 2, completed: [], caption: '' },
-        'Traveling Menhir': { steps: 2, completed: [], caption: '' },
-        'Tuathan Exploration': { steps: 5, completed: [], caption: '', enumerated: false },
-        'Underfern': { steps: 5, completed: [], caption: '' },
-        'War for Avalon': { steps: 4, completed: [], caption: '' },
-        'Winds of Wyrdness': { steps: 1, completed: [], caption: '' }
-      },
-      removedLocations: Array.from({ length: 16 }, () => ({ box1: '', box2: '' }))
+      statuses: createInitialStatusProgress(),
+      removedLocations: Array.from({ length: FALL_OF_AVALON_REMOVED_LOCATION_COUNT }, () => ({ box1: '', box2: '' }))
     }
   },
   // Placeholder campaigns
   lastKnight: {
     id: 'lastKnight',
     name: 'Last Knight',
-    version: '0.1',
-    description: 'A standalone campaign focusing on the final orders of the Round Table',
-    status: 'placeholder',
     defaultState: {}
   },
   ageOfLegends: {
     id: 'ageOfLegends',
     name: 'Age of Legends',
-    version: '0.1',
-    description: 'An epic saga spanning the entire history of the Grail world',
-    status: 'placeholder',
     defaultState: {}
   },
   redDeath: {
     id: 'redDeath',
     name: 'Red Death',
-    version: '0.1',
-    description: 'A dark campaign set during the height of the Plague',
-    status: 'placeholder',
     defaultState: {}
   },
   kingsOfRuin: {
     id: 'kingsOfRuin',
     name: 'Kings of Ruin',
-    version: '0.1',
-    description: 'Post-apocalyptic adventures in a world shattered by war',
-    status: 'placeholder',
     defaultState: {}
   }
 } satisfies Record<CampaignId, CampaignDefinition>;
@@ -156,10 +75,7 @@ export const useAppState = () => {
   useEffect(() => {
     const campaignList = Object.values(CAMPAIGN_REGISTRY).map(campaign => ({
       id: campaign.id,
-      name: campaign.name,
-      version: campaign.version,
-      description: campaign.description,
-      status: campaign.status
+      name: campaign.name
     }));
     setCampaigns(campaignList);
 

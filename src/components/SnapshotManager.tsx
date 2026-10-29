@@ -153,7 +153,7 @@ const SnapshotManager = ({ snapshots, onSave, onRestore, onDelete, onClose, camp
                           }
                           secondary={
                             <Typography variant="caption" color="text.secondary">
-                              Campaign: {campaignId}
+                              {t('header.campaign', 'Campaign')}: {t(`campaigns.${campaignId}.name`, campaignId)}
                             </Typography>
                           }
                         />

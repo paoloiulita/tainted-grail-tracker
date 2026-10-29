@@ -30,7 +30,7 @@ const CampaignSelector = ({ campaigns, selectedCampaign, onSelect }: CampaignSel
               <Card
                 component="button"
                 type="button"
-                aria-label={campaign.name}
+                aria-label={t(`campaigns.${campaign.id}.name`, campaign.name)}
                 className={`campaign-card campaign-card-${campaign.id} ${campaign.id === selectedCampaign ? 'selected' : ''}`}
                 onClick={() => onSelect(campaign.id)}
                 elevation={campaign.id === selectedCampaign ? 8 : 2}
@@ -40,7 +40,7 @@ const CampaignSelector = ({ campaigns, selectedCampaign, onSelect }: CampaignSel
               >
                 <CardContent>
                   <Typography variant="h6" className="campaign-card-title">
-                    {campaign.name}
+                    {t(`campaigns.${campaign.id}.name`, campaign.name)}
                   </Typography>
                 </CardContent>
               </Card>
