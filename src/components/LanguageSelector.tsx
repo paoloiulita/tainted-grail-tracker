@@ -1,10 +1,18 @@
 import { Button, Menu, MenuItem, ListItemIcon, Typography } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
+import type { Language } from '../types';
 
-const LanguageSelector = ({ language, onChange, open, onOpenChange }) => {
+interface LanguageSelectorProps {
+  language: Language;
+  onChange: (language: Language) => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const LanguageSelector = ({ language, onChange, open, onOpenChange }: LanguageSelectorProps) => {
   const languages = [
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'it', name: 'Italian', flag: '🇮🇹' }
+    { code: 'en' as const, name: 'English', flag: '🇺🇸' },
+    { code: 'it' as const, name: 'Italian', flag: '🇮🇹' }
   ];
 
   const currentLanguage = languages.find(lang => lang.code === language);

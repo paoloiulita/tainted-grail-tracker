@@ -2,7 +2,12 @@ import { Button, Badge } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import HistoryIcon from '@mui/icons-material/History';
 
-const SnapshotManagerButton = ({ onClick, snapshotCount }) => {
+interface SnapshotManagerButtonProps {
+  onClick: () => void;
+  snapshotCount: number;
+}
+
+const SnapshotManagerButton = ({ onClick, snapshotCount }: SnapshotManagerButtonProps) => {
   return (
     <div className="snapshot-manager-button">
       <Button

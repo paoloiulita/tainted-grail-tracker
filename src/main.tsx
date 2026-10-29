@@ -21,7 +21,13 @@ i18n.init({
   }
 });
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root');
+
+if (!rootElement) {
+  throw new Error('Missing root element');
+}
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <CampaignProvider>
       <BrowserRouter basename="/tainted-grail-tracker/">

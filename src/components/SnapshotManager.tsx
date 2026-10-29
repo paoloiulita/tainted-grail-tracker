@@ -6,11 +6,21 @@ import AddIcon from '@mui/icons-material/Add';
 import RestoreIcon from '@mui/icons-material/Restore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { format } from 'date-fns';
+import type { Snapshot } from '../types';
 
-const SnapshotManager = ({ snapshots, onSave, onRestore, onDelete, onClose, campaignId }) => {
+interface SnapshotManagerProps {
+  snapshots: Snapshot[];
+  onSave: (name: string) => void;
+  onRestore: (snapshot: Snapshot) => void;
+  onDelete: (snapshotId: string) => void;
+  onClose: () => void;
+  campaignId: string;
+}
+
+const SnapshotManager = ({ snapshots, onSave, onRestore, onDelete, onClose, campaignId }: SnapshotManagerProps) => {
   const { t } = useTranslation();
   const [newSnapshotName, setNewSnapshotName] = useState('');
-  const [filteredSnapshots, setFilteredSnapshots] = useState([]);
+  const [filteredSnapshots, setFilteredSnapshots] = useState<Snapshot[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -18,7 +28,9 @@ const SnapshotManager = ({ snapshots, onSave, onRestore, onDelete, onClose, camp
       snapshot.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       format(new Date(snapshot.timestamp), 'yyyy-MM-dd').includes(searchTerm)
     );
-    setFilteredSnapshots(filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+    setFilteredSnapshots(filtered.sort((a, b) =>
+      new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    ));
   }, [snapshots, searchTerm]);
 
   const handleSave = () => {
@@ -27,13 +39,13 @@ const SnapshotManager = ({ snapshots, onSave, onRestore, onDelete, onClose, camp
     setNewSnapshotName('');
   };
 
-  const handleRestore = (snapshot) => {
+  const handleRestore = (snapshot: Snapshot) => {
     if (window.confirm(t('snapshots.confirmRestore', 'Are you sure you want to restore this save? This will overwrite the current game state.'))) {
       onRestore(snapshot);
     }
   };
 
-  const handleDelete = (snapshot) => {
+  const handleDelete = (snapshot: Snapshot) => {
     if (window.confirm(t('snapshots.confirmDelete', 'Are you sure you want to delete this save? This action cannot be undone.'))) {
       onDelete(snapshot.id);
     }

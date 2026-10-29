@@ -8,6 +8,7 @@ import { useAppState } from './hooks/useAppState';
 import SnapshotManager from './components/SnapshotManager';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
+import type { CampaignId, Language } from './types';
 
 const App = () => {
   const { t, i18n } = useTranslation();
@@ -27,7 +28,7 @@ const App = () => {
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
 
   // Campaign selection handler
-  const handleCampaignSelect = useCallback((campaignId) => {
+  const handleCampaignSelect = useCallback((campaignId: CampaignId) => {
     setIsLoading(true);
     setCurrentCampaign(campaignId);
     navigate(`/campaign/${campaignId}`);
@@ -35,9 +36,9 @@ const App = () => {
   }, [setCurrentCampaign, navigate]);
 
   // Language change handler
-  const handleLanguageChange = useCallback((lang) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem('preferred-language', lang);
+  const handleLanguageChange = useCallback((language: Language) => {
+    i18n.changeLanguage(language);
+    localStorage.setItem('preferred-language', language);
     setLanguageMenuOpen(false);
   }, [i18n]);
 
@@ -67,7 +68,7 @@ const App = () => {
         <Header
           currentCampaign={currentCampaign}
           onCampaignSelect={handleCampaignSelect}
-          language={i18n.language}
+          language={i18n.resolvedLanguage === 'it' ? 'it' : 'en'}
           onLanguageChange={handleLanguageChange}
           languageMenuOpen={languageMenuOpen}
           setLanguageMenuOpen={setLanguageMenuOpen}

@@ -1,8 +1,18 @@
 import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+  errorInfo: React.ErrorInfo | null;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
   }
@@ -11,7 +21,7 @@ class ErrorBoundary extends React.Component {
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     this.setState({
       error: error,
       errorInfo: errorInfo
@@ -34,7 +44,7 @@ class ErrorBoundary extends React.Component {
           <Typography variant="body1" paragraph>
             The application encountered an unexpected error. Please try refreshing the page.
           </Typography>
-          {process.env.NODE_ENV === 'development' && this.state.error && (
+          {import.meta.env.DEV && this.state.error && (
             <Box className="error-details">
               <Typography variant="subtitle2" color="error">
                 Error Details (Development Only):
@@ -42,7 +52,7 @@ class ErrorBoundary extends React.Component {
               <pre className="error-stack">
                 {this.state.error && this.state.error.toString()}
                 {'\n\nStack Trace:'}
-                {this.state.errorInfo.componentStack}
+                {this.state.errorInfo?.componentStack}
               </pre>
             </Box>
           )}

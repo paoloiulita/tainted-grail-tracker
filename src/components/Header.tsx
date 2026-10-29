@@ -2,6 +2,19 @@ import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import CampaignSelector from './CampaignSelector';
 import SnapshotManagerButton from './SnapshotManagerButton';
+import type { CampaignId, CampaignSummary, Language, Snapshot } from '../types';
+
+interface HeaderProps {
+  currentCampaign: CampaignId;
+  onCampaignSelect: (campaignId: CampaignId) => void;
+  language: Language;
+  onLanguageChange: (language: Language) => void;
+  languageMenuOpen: boolean;
+  setLanguageMenuOpen: (open: boolean) => void;
+  campaigns: CampaignSummary[];
+  snapshots: Partial<Record<CampaignId, Snapshot[]>>;
+  onToggleSnapshotManager: () => void;
+}
 
 const Header = ({
   currentCampaign,
@@ -13,7 +26,7 @@ const Header = ({
   campaigns,
   snapshots,
   onToggleSnapshotManager
-}) => {
+}: HeaderProps) => {
   const { t } = useTranslation();
 
   return (

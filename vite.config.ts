@@ -1,7 +1,10 @@
 // https://vitejs.dev/config/
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import sass from 'sass'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
+
+const rootDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [react()],
@@ -22,21 +25,14 @@ export default defineConfig({
       }
     }
   },
-  css: {
-    preprocessorOptions: {
-      sass: {
-        implementation: sass
-      }
-    }
-  },
   resolve: {
     alias: {
-      '@': '/src',
-      '@components': '/src/components',
-      '@hooks': '/src/hooks',
-      '@services': '/src/services',
-      '@styles': '/src/styles',
-      '@campaigns': '/src/campaigns'
+      '@': resolve(rootDir, 'src'),
+      '@components': resolve(rootDir, 'src/components'),
+      '@hooks': resolve(rootDir, 'src/hooks'),
+      '@services': resolve(rootDir, 'src/services'),
+      '@styles': resolve(rootDir, 'src/styles'),
+      '@campaigns': resolve(rootDir, 'src/campaigns')
     }
   },
   base: '/tainted-grail-tracker/',

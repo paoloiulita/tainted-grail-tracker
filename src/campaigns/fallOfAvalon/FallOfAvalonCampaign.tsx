@@ -7,24 +7,63 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppState } from '../../hooks/useAppState';
 import { useCampaign } from '../../contexts/CampaignContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import type {
+  CampaignState,
+  Guardian,
+  Menhir,
+  Player,
+  PlayerAttribute,
+  RemovedLocation
+} from '../../types';
+
+function isCampaignState(value: unknown): value is CampaignState {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+
+  const candidate = value as Partial<CampaignState>;
+  return typeof candidate.campaign === 'object'
+    && candidate.campaign !== null
+    && Array.isArray(candidate.menhirs)
+    && Array.isArray(candidate.questDials)
+    && Array.isArray(candidate.guardians)
+    && Array.isArray(candidate.players)
+    && typeof candidate.statuses === 'object'
+    && candidate.statuses !== null
+    && Array.isArray(candidate.removedLocations);
+}
+
+const sliderNumber = (value: number | number[]) =>
+  Array.isArray(value) ? value[0] ?? 0 : value;
 
 const FallOfAvalonCampaign = () => {
   const { t } = useTranslation();
   const { getCampaignState, updateCampaignState } = useAppState();
   const { setCampaign } = useCampaign();
-  const [state, setState] = useState(null);
+  const [state, setState] = useState<CampaignState | null>(null);
   const [activeTab, setActiveTab] = useState(0);
-  const [editPlayerDialog, setEditPlayerDialog] = useState({ open: false, player: null });
+  const [editPlayerDialog, setEditPlayerDialog] = useState<{ open: boolean; player: Player | null }>({
+    open: false,
+    player: null
+  });
+  const updateState = (updater: (current: CampaignState) => CampaignState) => {
+    setState((current) => current ? updater(current) : current);
+  };
 
   // Load campaign state
   useEffect(() => {
     const loadState = () => {
       const savedState = getCampaignState('fallOfAvalon');
-      if (savedState) {
+      if (savedState !== null) {
+        if (!isCampaignState(savedState)) {
+          throw new Error('Stored Fall of Avalon campaign data has an invalid shape.');
+        }
         setState(savedState);
-      } else {
-        // Initialize with default state
-        const defaultState = {
+        return;
+      }
+
+      // Initialize with default state
+      const defaultState: CampaignState = {
           campaign: {
             id: 'fallOfAvalon',
             name: 'Fall of Avalon',
@@ -222,10 +261,9 @@ const FallOfAvalonCampaign = () => {
             { box1: '', box2: '' },
             { box1: '', box2: '' }
           ]
-        };
-        setState(defaultState);
-        updateCampaignState('fallOfAvalon', defaultState);
-      }
+      };
+      setState(defaultState);
+      updateCampaignState('fallOfAvalon', defaultState);
     };
 
     loadState();
@@ -248,9 +286,13 @@ const FallOfAvalonCampaign = () => {
     });
   }, [state, setCampaign]);
 
+  if (!state) {
+    return <LoadingSpinner message={t('common.loading', 'Loading...')} />;
+  }
+
   // Update chapter and day
-  const updateCampaignInfo = (field, value) => {
-    setState(prev => ({
+  const updateCampaignInfo = (field: 'chapter' | 'day', value: number) => {
+    updateState(prev => ({
       ...prev,
       campaign: {
         ...prev.campaign,
@@ -260,8 +302,8 @@ const FallOfAvalonCampaign = () => {
   };
 
     // Menhir handlers
-    const updateMenhir = (index, field, value) => {
-      setState(prev => ({
+    const updateMenhir = <K extends keyof Menhir>(index: number, field: K, value: Menhir[K]) => {
+      updateState(prev => ({
         ...prev,
         menhirs: prev.menhirs.map((menhir, i) =>
           i === index ? { ...menhir, [field]: value } : menhir
@@ -270,8 +312,8 @@ const FallOfAvalonCampaign = () => {
     };
 
     // Quest dial handlers
-    const updateQuestDial = (index, field, value) => {
-      setState(prev => ({
+    const updateQuestDial = <K extends keyof Menhir>(index: number, field: K, value: Menhir[K]) => {
+      updateState(prev => ({
         ...prev,
         questDials: prev.questDials.map((dial, i) =>
           i === index ? { ...dial, [field]: value } : dial
@@ -280,8 +322,8 @@ const FallOfAvalonCampaign = () => {
     };
 
     // Guardian handlers
-    const updateGuardian = (index, field, value) => {
-      setState(prev => ({
+    const updateGuardian = (index: number, field: keyof Guardian, value: string) => {
+      updateState(prev => ({
         ...prev,
         guardians: prev.guardians.map((guardian, i) =>
           i === index ? { ...guardian, [field]: value } : guardian
@@ -290,8 +332,12 @@ const FallOfAvalonCampaign = () => {
     };
 
     // Player handlers
-    const updatePlayer = (playerId, field, value) => {
-      setState(prev => ({
+    const updatePlayer = <K extends Exclude<keyof Player, 'id' | 'attributes'>>(
+      playerId: string,
+      field: K,
+      value: Player[K]
+    ) => {
+      updateState(prev => ({
         ...prev,
         players: prev.players.map(player =>
           player.id === playerId ? { ...player, [field]: value } : player
@@ -299,8 +345,8 @@ const FallOfAvalonCampaign = () => {
       }));
     };
 
-    const updatePlayerAttribute = (playerId, attribute, value) => {
-      setState(prev => ({
+    const updatePlayerAttribute = (playerId: string, attribute: PlayerAttribute, value: number) => {
+      updateState(prev => ({
         ...prev,
         players: prev.players.map(player =>
           player.id === playerId
@@ -316,8 +362,8 @@ const FallOfAvalonCampaign = () => {
       }));
     };
 
-    const toggleStatusStep = (statusName, stepIndex) => {
-      setState(prev => ({
+    const toggleStatusStep = (statusName: string, stepIndex: number) => {
+      updateState(prev => ({
         ...prev,
         statuses: {
           ...prev.statuses,
@@ -331,8 +377,12 @@ const FallOfAvalonCampaign = () => {
       }));
     };
 
-    const updateRemovedLocation = (index, field, value) => {
-      setState(prev => ({
+    const updateRemovedLocation = <K extends keyof RemovedLocation>(
+      index: number,
+      field: K,
+      value: RemovedLocation[K]
+    ) => {
+      updateState(prev => ({
         ...prev,
         removedLocations: prev.removedLocations.map((location, i) =>
           i === index ? { ...location, [field]: value } : location
@@ -363,14 +413,14 @@ const FallOfAvalonCampaign = () => {
           spirituality: 0
         }
       };
-      setState(prev => ({
+      updateState(prev => ({
         ...prev,
         players: [...prev.players, newPlayer]
       }));
     };
 
-    const deletePlayer = (playerId) => {
-      setState(prev => ({
+    const deletePlayer = (playerId: string) => {
+      updateState(prev => ({
         ...prev,
         players: prev.players.filter(player => player.id !== playerId)
       }));
@@ -463,7 +513,7 @@ const FallOfAvalonCampaign = () => {
                   <Grid item xs={4}>
                     <Slider
                       value={menhir.dialValue}
-                      onChange={(e, value) => updateMenhir(index, 'dialValue', value)}
+                      onChange={(_event, value) => updateMenhir(index, 'dialValue', sliderNumber(value))}
                       min={0}
                       max={10}
                       size="small"
@@ -507,7 +557,7 @@ const FallOfAvalonCampaign = () => {
                   <Grid item xs={4}>
                     <Slider
                       value={dial.dialValue}
-                      onChange={(e, value) => updateQuestDial(index, 'dialValue', value)}
+                      onChange={(_event, value) => updateQuestDial(index, 'dialValue', sliderNumber(value))}
                       min={0}
                       max={10}
                       size="small"
@@ -572,7 +622,7 @@ const FallOfAvalonCampaign = () => {
                       </Typography>
                       <Slider
                         value={menhir.dialValue}
-                        onChange={(e, value) => updateMenhir(index, 'dialValue', value)}
+                        onChange={(_event, value) => updateMenhir(index, 'dialValue', sliderNumber(value))}
                         min={0}
                         max={10}
                         marks
@@ -616,7 +666,7 @@ const FallOfAvalonCampaign = () => {
                       </Typography>
                       <Slider
                         value={dial.dialValue}
-                        onChange={(e, value) => updateQuestDial(index, 'dialValue', value)}
+                        onChange={(_event, value) => updateQuestDial(index, 'dialValue', sliderNumber(value))}
                         min={0}
                         max={10}
                         marks
@@ -824,7 +874,7 @@ const FallOfAvalonCampaign = () => {
                   <Typography variant="subtitle2" className="mt-3 mb-2">
                     {t('fallOfAvalon.attributes.title', 'Attributes')}
                   </Typography>
-                  {Object.entries(player.attributes).map(([attr, value]) => (
+                  {(Object.entries(player.attributes) as Array<[PlayerAttribute, number]>).map(([attr, value]) => (
                     <Box key={attr} className="attribute-row">
                       <Grid container alignItems="center" spacing={1} className="mb-1">
                         <Grid item xs={4}>
@@ -835,7 +885,7 @@ const FallOfAvalonCampaign = () => {
                         <Grid item xs={8}>
                           <Slider
                             value={value}
-                            onChange={(e, val) => updatePlayerAttribute(player.id, attr, val)}
+                            onChange={(_event, value) => updatePlayerAttribute(player.id, attr, sliderNumber(value))}
                             min={0}
                             max={10}
                             size="small"
@@ -984,7 +1034,7 @@ const FallOfAvalonCampaign = () => {
             multiline
             rows={10}
             value={state.playerNotes}
-            onChange={(e) => setState(prev => ({ ...prev, playerNotes: e.target.value }))}
+            onChange={(e) => updateState(prev => ({ ...prev, playerNotes: e.target.value }))}
             placeholder={t('fallOfAvalon.playerNotes.placeholder', 'Enter notes about your campaign...')}
             className="notes-textarea"
           />
@@ -1010,10 +1060,10 @@ const FallOfAvalonCampaign = () => {
                   fullWidth
                   label={t('fallOfAvalon.playerNotes.title', 'Name')}
                   value={editPlayerDialog.player.name}
-                  onChange={(e) => setEditPlayerDialog(prev => ({
-                    ...prev,
-                    player: { ...prev.player, name: e.target.value }
-                  }))}
+                  onChange={(e) => setEditPlayerDialog(prev => prev.player
+                    ? { ...prev, player: { ...prev.player, name: e.target.value } }
+                    : prev
+                  )}
                 />
               </Grid>
               {/* Add more fields as needed */}
@@ -1027,10 +1077,11 @@ const FallOfAvalonCampaign = () => {
           <Button
             onClick={() => {
               if (editPlayerDialog.player) {
-                setState(prev => ({
+                const updatedPlayer = editPlayerDialog.player;
+                updateState(prev => ({
                   ...prev,
                   players: prev.players.map(p =>
-                    p.id === editPlayerDialog.player.id ? editPlayerDialog.player : p
+                    p.id === updatedPlayer.id ? updatedPlayer : p
                   )
                 }));
               }
@@ -1043,10 +1094,6 @@ const FallOfAvalonCampaign = () => {
         </DialogActions>
       </Dialog>
     );
-
-    if (!state) {
-      return <LoadingSpinner message={t('common.loading', 'Loading...')} />;
-    }
 
     return (
       <div className="campaign-container">

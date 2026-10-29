@@ -1,16 +1,31 @@
 import { useTranslation } from 'react-i18next';
 import { Select, MenuItem, FormControl, Card, CardContent, Typography, Grid, Chip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import type { SelectChangeEvent } from '@mui/material';
+import type { CampaignId, CampaignSummary } from '../types';
 
-const CampaignSelector = ({ campaigns, selectedCampaign, onSelect, compact = false }) => {
+interface CampaignSelectorProps {
+  campaigns: CampaignSummary[];
+  selectedCampaign?: CampaignId;
+  onSelect: (campaignId: CampaignId) => void;
+  compact?: boolean;
+}
+
+const CampaignSelector = ({ campaigns, selectedCampaign, onSelect, compact = false }: CampaignSelectorProps) => {
   const { t } = useTranslation();
+  const handleSelect = (event: SelectChangeEvent<CampaignId>) => {
+    const campaign = campaigns.find(({ id }) => id === event.target.value);
+    if (campaign) {
+      onSelect(campaign.id);
+    }
+  };
 
   if (compact) {
     return (
       <FormControl size="small" className="campaign-select-compact">
         <Select
-          value={selectedCampaign}
-          onChange={(e) => onSelect(e.target.value)}
+          value={selectedCampaign ?? ''}
+          onChange={handleSelect}
           displayEmpty
           IconComponent={ExpandMoreIcon}
           className="campaign-select"

@@ -17,7 +17,7 @@ This application provides a comprehensive digital replacement for physical save 
 
 ## Tech Stack
 
-- **Framework**: React + Vite
+- **Framework**: React + Vite + TypeScript (strict mode)
 - **UI Library**: Material-UI (MUI)
 - **Styling**: Sass with custom dark theme
 - **State Management**: React + localStorage
@@ -52,24 +52,25 @@ npm run build
 ```
 src/
 ├── components/           # Reusable UI components
-│   ├── CampaignSelector.jsx
-│   ├── Header.jsx
-│   ├── LanguageSelector.jsx
-│   ├── SnapshotManager.jsx
-│   ├── SnapshotManagerButton.jsx
-│   ├── LoadingSpinner.jsx
-│   └── ErrorBoundary.jsx
+│   ├── CampaignSelector.tsx
+│   ├── Header.tsx
+│   ├── LanguageSelector.tsx
+│   ├── SnapshotManager.tsx
+│   ├── SnapshotManagerButton.tsx
+│   ├── LoadingSpinner.tsx
+│   └── ErrorBoundary.tsx
 │
 ├── contexts/             # React contexts
-│   ├── CampaignContext.js
-│   └── LanguageContext.js
+│   ├── CampaignContext.tsx
+│   ├── CampaignContext.test.tsx
+│   └── LanguageContext.tsx
 │
 ├── hooks/                # Custom hooks
-│   └── useAppState.js
+│   └── useAppState.ts
 │
 ├── campaigns/            # Campaign implementations
 │   ├── fallOfAvalon/     # Fall of Avalon campaign
-│   │   └── FallOfAvalonCampaign.jsx
+│   │   └── FallOfAvalonCampaign.tsx
 │   ├── lastKnight/      # Placeholder campaign
 │   ├── ageOfLegends/     # Placeholder campaign
 │   ├── redDeath/         # Placeholder campaign
@@ -82,14 +83,9 @@ src/
 │   ├── en.json
 │   └── it.json
 │
-├── services/             # Business logic and utilities
-│   └── index.js
-│
-├── assets/               # Static assets
-│   └── attribute-icons/  # Player attribute icons
-│
-├── App.jsx              # Main application component
-├── main.jsx             # Application entry point
+├── types.ts              # Shared application types
+├── App.tsx               # Main application component
+├── main.tsx              # Application entry point
 └── index.css            # Global styles
 ├── .github/workflows/    # GitHub Actions configuration
 ├── CONTRIBUTING.md       # Contribution guidelines

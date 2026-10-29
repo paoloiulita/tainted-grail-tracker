@@ -1,5 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import type {
+  CampaignDefinition,
+  CampaignId,
+  CampaignSaveState,
+  CampaignSummary,
+  Snapshot
+} from '../types';
 
 // Campaign registry with status definitions
 export const CAMPAIGN_REGISTRY = {
@@ -242,12 +249,12 @@ export const CAMPAIGN_REGISTRY = {
     status: 'placeholder',
     defaultState: {}
   }
-};
+} satisfies Record<CampaignId, CampaignDefinition>;
 
 export const useAppState = () => {
-  const [campaigns, setCampaigns] = useState([]);
-  const [currentCampaign, setCurrentCampaign] = useState('fallOfAvalon');
-  const [snapshots, setSnapshots] = useState({});
+  const [campaigns, setCampaigns] = useState<CampaignSummary[]>([]);
+  const [currentCampaign, setCurrentCampaign] = useState<CampaignId>('fallOfAvalon');
+  const [snapshots, setSnapshots] = useState<Partial<Record<CampaignId, Snapshot[]>>>({});
 
   // Initialize campaigns from registry
   useEffect(() => {
@@ -261,11 +268,11 @@ export const useAppState = () => {
     setCampaigns(campaignList);
 
     // Load saved snapshots for each campaign
-    const initialSnapshots = {};
+    const initialSnapshots: Partial<Record<CampaignId, Snapshot[]>> = {};
     campaignList.forEach(campaign => {
       const savedSnapshots = localStorage.getItem(`snapshots-${campaign.id}`);
       if (savedSnapshots) {
-        initialSnapshots[campaign.id] = JSON.parse(savedSnapshots);
+        initialSnapshots[campaign.id] = JSON.parse(savedSnapshots) as Snapshot[];
       } else {
         initialSnapshots[campaign.id] = [];
       }
@@ -275,27 +282,29 @@ export const useAppState = () => {
 
   // Save snapshots to localStorage when they change
   useEffect(() => {
-    Object.keys(snapshots).forEach(campaignId => {
-      localStorage.setItem(`snapshots-${campaignId}`, JSON.stringify(snapshots[campaignId]));
+    Object.entries(snapshots).forEach(([campaignId, campaignSnapshots]) => {
+      if (campaignSnapshots) {
+        localStorage.setItem(`snapshots-${campaignId}`, JSON.stringify(campaignSnapshots));
+      }
     });
   }, [snapshots]);
 
   // Get current campaign state
-  const getCampaignState = useCallback((campaignId) => {
+  const getCampaignState = useCallback((campaignId: CampaignId): CampaignSaveState | null => {
     const campaign = CAMPAIGN_REGISTRY[campaignId];
     if (!campaign) return null;
 
     const savedState = localStorage.getItem(`campaign-state-${campaignId}`);
-    return savedState ? JSON.parse(savedState) : campaign.defaultState;
+    return savedState ? JSON.parse(savedState) as CampaignSaveState : campaign.defaultState;
   }, []);
 
   // Save current campaign state
-  const updateCampaignState = useCallback((campaignId, state) => {
+  const updateCampaignState = useCallback((campaignId: CampaignId, state: CampaignSaveState) => {
     localStorage.setItem(`campaign-state-${campaignId}`, JSON.stringify(state));
   }, []);
 
   // Add a new snapshot
-  const addSnapshot = useCallback((name) => {
+  const addSnapshot = useCallback((name: string) => {
     const campaignState = getCampaignState(currentCampaign);
     if (!campaignState) return;
 
@@ -314,7 +323,7 @@ export const useAppState = () => {
   }, [currentCampaign, getCampaignState]);
 
   // Restore a snapshot
-  const restoreSnapshot = useCallback((snapshot) => {
+  const restoreSnapshot = useCallback((snapshot: Snapshot) => {
     const campaign = CAMPAIGN_REGISTRY[snapshot.campaignId];
     if (!campaign) return;
 
@@ -330,7 +339,7 @@ export const useAppState = () => {
   }, [updateCampaignState]);
 
   // Delete a snapshot
-  const deleteSnapshot = useCallback((snapshotId) => {
+  const deleteSnapshot = useCallback((snapshotId: string) => {
     setSnapshots(prev => ({
       ...prev,
       [currentCampaign]: (prev[currentCampaign] || []).filter(s => s.id !== snapshotId)
