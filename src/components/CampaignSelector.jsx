@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Select, MenuItem, FormControl, InputLabel, Card, CardContent, Typography, Grid, Chip, Button } from '@mui/material';
+import { Select, MenuItem, FormControl, Card, CardContent, Typography, Grid, Chip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const CampaignSelector = ({ campaigns, selectedCampaign, onSelect, compact = false }) => {
   const { t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
 
   if (compact) {
     return (

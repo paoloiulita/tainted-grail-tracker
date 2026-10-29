@@ -8,7 +8,6 @@ export const CAMPAIGN_REGISTRY = {
     name: 'Fall of Avalon',
     version: '1.0',
     description: 'The first campaign in the Tainted Grail series, following the quest for the Holy Grail in medieval England',
-    component: () => import('@/campaigns/fallOfAvalon/FallOfAvalonCampaign'),
     status: 'implemented',
     defaultState: {
       campaign: {

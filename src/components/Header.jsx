@@ -1,8 +1,7 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { LanguageSelector } from './LanguageSelector';
-import { CampaignSelector } from './CampaignSelector';
-import { SnapshotManagerButton } from './SnapshotManagerButton';
+import LanguageSelector from './LanguageSelector';
+import CampaignSelector from './CampaignSelector';
+import SnapshotManagerButton from './SnapshotManagerButton';
 
 const Header = ({
   currentCampaign,

@@ -1,21 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, Card, CardContent, Typography, TextField, Button, Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, FormControlLabel, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Slider } from '@mui/material';
+import { Grid, Card, CardContent, Typography, TextField, Button, Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Slider } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CloseIcon from '@mui/icons-material/Close';
 import { useAppState } from '../../hooks/useAppState';
 import { useCampaign } from '../../contexts/CampaignContext';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const FallOfAvalonCampaign = () => {
   const { t } = useTranslation();
   const { getCampaignState, updateCampaignState } = useAppState();
-  const { campaign, setCampaign } = useCampaign();
+  const { setCampaign } = useCampaign();
   const [state, setState] = useState(null);
   const [activeTab, setActiveTab] = useState(0);
   const [editPlayerDialog, setEditPlayerDialog] = useState({ open: false, player: null });
-  const [newPlayerDialog, setNewPlayerDialog] = useState(false);
 
   // Load campaign state
   useEffect(() => {
@@ -230,34 +229,35 @@ const FallOfAvalonCampaign = () => {
     };
 
     loadState();
+  }, [getCampaignState, updateCampaignState]);
 
-    // Save state to localStorage when it changes
-    useEffect(() => {
-      if (state) {
-        updateCampaignState('fallOfAvalon', state);
+  // Save state to localStorage when it changes
+  useEffect(() => {
+    if (state) {
+      updateCampaignState('fallOfAvalon', state);
+    }
+  }, [state, updateCampaignState]);
+
+  // Update campaign info when component mounts
+  useEffect(() => {
+    setCampaign({
+      id: 'fallOfAvalon',
+      name: 'Fall of Avalon',
+      chapter: state?.campaign?.chapter || 1,
+      day: state?.campaign?.day || 1
+    });
+  }, [state, setCampaign]);
+
+  // Update chapter and day
+  const updateCampaignInfo = (field, value) => {
+    setState(prev => ({
+      ...prev,
+      campaign: {
+        ...prev.campaign,
+        [field]: value
       }
-    }, [state, updateCampaignState]);
-
-    // Update campaign info when component mounts
-    useEffect(() => {
-      setCampaign({
-        id: 'fallOfAvalon',
-        name: 'Fall of Avalon',
-        chapter: state?.campaign?.chapter || 1,
-        day: state?.campaign?.day || 1
-      });
-    }, [state, setCampaign]);
-
-    // Update chapter and day
-    const updateCampaignInfo = (field, value) => {
-      setState(prev => ({
-        ...prev,
-        campaign: {
-          ...prev.campaign,
-          [field]: value
-        }
-      }));
-    };
+    }));
+  };
 
     // Menhir handlers
     const updateMenhir = (index, field, value) => {
@@ -597,7 +597,7 @@ const FallOfAvalonCampaign = () => {
           <Grid container spacing={2}>
             {state.questDials.map((dial, index) => (
               <Grid item xs={12} md={6} key={index}>
-                <Card variant="outlined}>
+                <Card variant="outlined">
                   <CardContent>
                     <Typography variant="subtitle1" className="text-gold mb-2">
                       {t('fallOfAvalon.questDials.0', `Quest Dial ${index + 1}`)}
@@ -641,7 +641,7 @@ const FallOfAvalonCampaign = () => {
           <Grid container spacing={2}>
             {state.guardians.map((guardian, index) => (
               <Grid item xs={12} md={6} key={index}>
-                <Card variant="outlined}>
+                <Card variant="outlined">
                   <CardContent>
                     <Typography variant="subtitle1" className="text-gold mb-2">
                       {t('fallOfAvalon.guardians.0', `Guardian ${index + 1}`)}
@@ -939,7 +939,7 @@ const FallOfAvalonCampaign = () => {
           <Grid container spacing={2}>
             {state.removedLocations.map((location, index) => (
               <Grid item xs={12} md={6} key={index}>
-                <Card variant="outlined}>
+                <Card variant="outlined">
                   <CardContent>
                     <Typography variant="subtitle1" className="text-gold mb-2">
                       {t('fallOfAvalon.removedLocations.boxPlaceholder', 'Box')} {index + 1}

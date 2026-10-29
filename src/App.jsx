@@ -1,16 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuidv4 } from 'uuid';
-import { CampaignSelector } from './components/CampaignSelector';
-import { Header } from './components/Header';
-import { FallOfAvalonCampaign } from './campaigns/fallOfAvalon/FallOfAvalonCampaign';
+import CampaignSelector from './components/CampaignSelector';
+import Header from './components/Header';
+import FallOfAvalonCampaign from './campaigns/fallOfAvalon/FallOfAvalonCampaign';
 import { useAppState } from './hooks/useAppState';
-import { SnapshotManager } from './components/SnapshotManager';
-import { CampaignProvider } from './contexts/CampaignContext';
-import { LanguageProvider } from './contexts/LanguageContext';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { LoadingSpinner } from './components/LoadingSpinner';
+import SnapshotManager from './components/SnapshotManager';
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingSpinner from './components/LoadingSpinner';
 
 const App = () => {
   const { t, i18n } = useTranslation();
@@ -22,9 +19,7 @@ const App = () => {
     snapshots,
     addSnapshot,
     restoreSnapshot,
-    deleteSnapshot,
-    updateCampaignState,
-    getCampaignState
+    deleteSnapshot
   } = useAppState();
 
   const [isLoading, setIsLoading] = useState(false);

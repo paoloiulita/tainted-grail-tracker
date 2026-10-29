@@ -3,18 +3,16 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
+import { CampaignProvider } from './contexts/CampaignContext';
 import App from './App';
 import './index.css';
+import en from './locales/en.json';
+import it from './locales/it.json';
 
-// Initialize i18next
-i18n.configure({
+i18n.init({
   resources: {
-    en: {
-      translation: require('./locales/en.json')
-    },
-    it: {
-      translation: require('./locales/it.json')
-    }
+    en: { translation: en },
+    it: { translation: it }
   },
   lng: 'en',
   fallbackLng: 'en',
@@ -25,10 +23,12 @@ i18n.configure({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/tainted-grail-tracker/">
-      <I18nextProvider i18n={i18n}>
-        <App />
-      </I18nextProvider>
-    </BrowserRouter>
+    <CampaignProvider>
+      <BrowserRouter basename="/tainted-grail-tracker/">
+        <I18nextProvider i18n={i18n}>
+          <App />
+        </I18nextProvider>
+      </BrowserRouter>
+    </CampaignProvider>
   </React.StrictMode>
 );

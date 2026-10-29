@@ -1,4 +1,3 @@
-import React from 'react';
 import { Backdrop, CircularProgress, Typography } from '@mui/material';
 
 const LoadingSpinner = ({ message = 'Loading...' }) => {

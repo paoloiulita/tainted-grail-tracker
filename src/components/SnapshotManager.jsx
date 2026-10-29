@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, Box, Typography, List, ListItem, ListItemText, IconButton, TextField, Button, Grid, Card, CardContent } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';

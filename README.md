@@ -25,6 +25,8 @@ This application provides a comprehensive digital replacement for physical save 
 
 ## Quick Start
 
+Requires Node.js 20.19+ or 22.12+.
+
 ```bash
 # Clone the repository
 cp /d/Documents/tainted-grail-tracker ~/projects/tainted-grail-tracker
@@ -35,6 +37,11 @@ npm install
 
 # Run the development server
 npm run dev
+
+# Run checks
+npm run lint
+npm run type-check
+npm test
 
 # Build for production
 npm run build

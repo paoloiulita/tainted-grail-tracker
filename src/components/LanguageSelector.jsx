@@ -1,11 +1,7 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, Menu, MenuItem, ListItemIcon, Typography } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 
 const LanguageSelector = ({ language, onChange, open, onOpenChange }) => {
-  const { t } = useTranslation();
-
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
     { code: 'it', name: 'Italian', flag: '🇮🇹' }
