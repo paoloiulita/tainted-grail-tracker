@@ -443,6 +443,10 @@ a,
   padding: 20px;
 }
 
+.character-card .character-field-spacing {
+  margin-bottom: 20px;
+}
+
 .character-card > .character-card-content.MuiCardContent-root:last-child {
   padding-bottom: 20px;
 }
@@ -474,6 +478,23 @@ a,
 .character-actions {
   display: flex;
   gap: 4px;
+}
+
+.character-name-dialog .MuiDialog-paper {
+  padding: 24px;
+}
+
+.character-name-dialog .MuiDialogTitle-root {
+  padding: 0 0 16px;
+}
+
+.character-name-dialog .MuiDialogContent-root {
+  overflow: visible;
+  padding: 0;
+}
+
+.character-name-dialog .MuiDialogActions-root {
+  padding: 16px 0 0;
 }
 
 .character-stat-health .MuiOutlinedInput-root {

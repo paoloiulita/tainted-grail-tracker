@@ -692,7 +692,7 @@ const FallOfAvalonCampaign = () => {
                     value={character.playerName}
                     onChange={(e) => updateCharacter(character.id, 'playerName', e.target.value)}
                     size="small"
-                    className="mb-2"
+                    className="character-field-spacing"
                   />
 
                   <TextField
@@ -702,10 +702,10 @@ const FallOfAvalonCampaign = () => {
                     value={character.dial}
                     onChange={(e) => updateCharacter(character.id, 'dial', parseInt(e.target.value) || 0)}
                     size="small"
-                    className="mb-2"
+                    className="character-field-spacing"
                   />
 
-                  <Grid container spacing={1} className="mb-2">
+                  <Grid container spacing={1} className="character-field-spacing">
                     <Grid item xs={6}>
                       <TextField
                         fullWidth
@@ -732,7 +732,7 @@ const FallOfAvalonCampaign = () => {
                     </Grid>
                   </Grid>
 
-                  <Grid container spacing={1} className="mb-2">
+                  <Grid container spacing={1} className="character-field-spacing">
                     <Grid item xs={6}>
                       <TextField
                         fullWidth
@@ -759,7 +759,7 @@ const FallOfAvalonCampaign = () => {
                     </Grid>
                   </Grid>
 
-                  <Grid container spacing={1} className="mb-2">
+                  <Grid container spacing={1} className="character-field-spacing">
                     <Grid item xs={6}>
                       <TextField
                         fullWidth
@@ -784,7 +784,7 @@ const FallOfAvalonCampaign = () => {
                     </Grid>
                   </Grid>
 
-                  <Grid container spacing={1} className="mb-2">
+                  <Grid container spacing={1} className="character-field-spacing">
                     <Grid item xs={6}>
                       <TextField
                         fullWidth
@@ -980,7 +980,8 @@ const FallOfAvalonCampaign = () => {
       <Dialog
         open={editCharacterDialog.open}
         onClose={() => setEditCharacterDialog({ open: false, character: null })}
-        maxWidth="md"
+        className="character-name-dialog"
+        maxWidth="xs"
         fullWidth
       >
         <DialogTitle>
