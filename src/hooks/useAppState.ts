@@ -36,11 +36,11 @@ export const CAMPAIGN_REGISTRY = {
         { location: '' },
         { location: '' }
       ],
-      playerNotes: '',
-      players: [
+      characterNotes: '',
+      characters: [
         {
-          id: 'player-1',
-          name: 'Player 1',
+          id: 'character-1',
+          name: 'Character 1',
           location: '',
           dial: 0,
           health: 10,
@@ -61,8 +61,8 @@ export const CAMPAIGN_REGISTRY = {
           }
         },
         {
-          id: 'player-2',
-          name: 'Player 2',
+          id: 'character-2',
+          name: 'Character 2',
           location: '',
           dial: 0,
           health: 10,
@@ -83,8 +83,8 @@ export const CAMPAIGN_REGISTRY = {
           }
         },
         {
-          id: 'player-3',
-          name: 'Player 3',
+          id: 'character-3',
+          name: 'Character 3',
           location: '',
           dial: 0,
           health: 10,
@@ -105,8 +105,8 @@ export const CAMPAIGN_REGISTRY = {
           }
         },
         {
-          id: 'player-4',
-          name: 'Player 4',
+          id: 'character-4',
+          name: 'Character 4',
           location: '',
           dial: 0,
           health: 10,

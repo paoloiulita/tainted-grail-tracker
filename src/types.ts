@@ -40,7 +40,7 @@ export interface Guardian {
   location: string;
 }
 
-export interface PlayerAttributes {
+export interface CharacterAttributes {
   aggression: number;
   caution: number;
   courage: number;
@@ -49,9 +49,9 @@ export interface PlayerAttributes {
   spirituality: number;
 }
 
-export type PlayerAttribute = keyof PlayerAttributes;
+export type CharacterAttribute = keyof CharacterAttributes;
 
-export interface Player {
+export interface Character {
   id: string;
   name: string;
   location: string;
@@ -64,7 +64,7 @@ export interface Player {
   magic: number;
   food: number;
   wealth: number;
-  attributes: PlayerAttributes;
+  attributes: CharacterAttributes;
 }
 
 export interface CampaignStatusEntry {
@@ -83,8 +83,8 @@ export interface CampaignState {
   menhirs: Menhir[];
   questDials: Menhir[];
   guardians: Guardian[];
-  playerNotes: string;
-  players: Player[];
+  characterNotes: string;
+  characters: Character[];
   statuses: Record<string, CampaignStatusEntry>;
   removedLocations: RemovedLocation[];
 }

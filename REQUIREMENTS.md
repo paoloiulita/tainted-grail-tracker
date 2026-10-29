@@ -33,7 +33,7 @@ Please structure the application state, project folders, and core components to 
 
 ### Core Functional Requirements for the phase 1
 1. **Save Sheet Sections:** Replicate all sections present in the Tainted Grail save sheet PDF. See detailed Fall of Avalon requirements and structure below.
-2. **Responsive Design:** Fully responsive layout optimized for tablets and smartphones, allowing players to use a mobile device comfortably at the gaming table.
+2. **Responsive Design:** Fully responsive layout optimized for tablets and smartphones, allowing users to use a mobile device comfortably at the gaming table.
 3. **Project Structure & Files:**
    - Provide the complete folder structure and modular component files (`components/`, `hooks/`, `styles/`, etc.).
    - Configure `vite.config.ts` with the correct `base` path for GitHub Pages.
@@ -41,7 +41,7 @@ Please structure the application state, project folders, and core components to 
 4. **Game State History & Saved Snapshots**
 	- Manual Save / Snapshot System: Provide a prominent "Save" button that captures a complete snapshot of the current game state at that exact moment.
 	- Named Save States: Allow users to assign custom, descriptive names/titles to these snapshots (e.g., "End of Chapter 2", "Before boss fight at Location 104").
-	- Version History List & Restoration: Maintain a manageable list of all saved snapshots stored in `localStorage`. Players must be able to view this list, inspect snapshot details, restore/load any previous version into the active save sheet, or delete obsolete snapshots.
+	- Version History List & Restoration: Maintain a manageable list of all saved snapshots stored in `localStorage`. Users must be able to view this list, inspect snapshot details, restore/load any previous version into the active save sheet, or delete obsolete snapshots.
 5. **Multi-Language Support (i18n)**
 	- Static JSON Localization: Implement multi-language support (e.g., using `react-i18next` or a lightweight custom i18n hook) powered by external, static JSON translation files (e.g., `locales/en.json`, `locales/it.json`).
 	- Language Selector: Add an intuitive UI element (such as a dropdown or flag selector) in the app header/settings to easily switch languages at runtime.
@@ -58,8 +58,8 @@ Please structure the application state, project folders, and core components to 
       - Dial Value
    - 2 Guardian status. For every Guardian:
       - Location
-   - Player Notes: An open text area where players can input whatever they want
-   - 4 Player Save sheet Box. For each one:
+   - Character Notes: An open text area where users can input whatever they want
+   - 4 Character Save sheet Box. For each one:
       - Name
       - Location
       - Dial
@@ -78,7 +78,7 @@ Please structure the application state, project folders, and core components to 
          - Empathy
          - Practicality
          - Spirituality
-   - Statuses and steps: throughout the campaign, players receive statuses which may be represented by a variable number of steps. See details below.
+   - Statuses and steps: throughout the campaign, characters receive statuses which may be represented by a variable number of steps. See details below.
       - The app should give the user the possibility to mark which step is reached for every status.
       - Steps are **NOT** to be considered consecutive. Render them as separate clickable boxes numbered from 1 to N (where N is the number of steps for that specific status). Every one of those can be checked or unchecked independently.
       - A status can also have a caption text. Render it only if present

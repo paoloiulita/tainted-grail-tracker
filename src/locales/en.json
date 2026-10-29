@@ -116,8 +116,8 @@
       "0": "Guardian 1",
       "1": "Guardian 2"
     },
-    "playerNotes": {
-      "title": "Player Notes",
+    "characterNotes": {
+      "title": "Character Notes",
       "placeholder": "Enter notes about your campaign...",
       "formatting": "Text formatting",
       "bold": "Bold",
@@ -127,14 +127,14 @@
       "numberedList": "Numbered list",
       "clearFormatting": "Clear formatting"
     },
-    "players": {
-      "title": "Players",
-      "addPlayer": "Add Player",
-      "editPlayer": "Edit Player",
-      "deletePlayer": "Delete Player",
-      "confirmDeleteTitle": "Delete player?",
+    "characters": {
+      "title": "Characters",
+      "addCharacter": "Add Character",
+      "editCharacter": "Edit Character",
+      "deleteCharacter": "Delete Character",
+      "confirmDeleteTitle": "Delete character?",
       "confirmDelete": "Are you sure you want to delete {{name}}? This action cannot be undone.",
-      "maximumPlayers": "Maximum 4 players"
+      "maximumCharacters": "Maximum 4 characters"
     },
     "attributes": {
       "aggression": "Aggression",

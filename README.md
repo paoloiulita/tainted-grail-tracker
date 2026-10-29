@@ -104,10 +104,10 @@ src/
 - 3 Menhir status tracking (Location, Dial Value)
 - 2 Quest Dial status tracking
 - 2 Guardian status tracking
-- 4 Player save sheets with all attributes
+- 4 Character save sheets with all attributes
 - 88 Statuses with step tracking
 - Removed locations grid (15 pairs)
-- Player notes area
+- Character notes area
 
 ### State Management
 - Autosave to localStorage
@@ -147,4 +147,4 @@ For issues, feature requests, or questions, please visit the project's issue tra
 
 ---
 
-*Built with ❤️ for Tainted Grail players*
+*Built with ❤️ for Tainted Grail adventurers*

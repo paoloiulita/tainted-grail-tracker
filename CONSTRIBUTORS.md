@@ -130,15 +130,15 @@ The application supports multi-language functionality with static JSON translati
       "0": "Guardian 1",
       "1": "Guardian 2"
     },
-    "playerNotes": {
-      "title": "Player Notes",
+    "characterNotes": {
+      "title": "Character Notes",
       "placeholder": "Enter notes about your campaign..."
     },
-    "players": {
-      "title": "Players",
-      "addPlayer": "Add Player",
-      "editPlayer": "Edit Player",
-      "deletePlayer": "Delete Player"
+    "characters": {
+      "title": "Characters",
+      "addCharacter": "Add Character",
+      "editCharacter": "Edit Character",
+      "deleteCharacter": "Delete Character"
     },
     "attributes": {
       "aggression": "Aggression",
@@ -400,7 +400,7 @@ src/
 │   └── index.js
 │
 ├── assets/               # Static assets
-│   └── attribute-icons/  # Player attribute icons
+│   └── attribute-icons/  # Character attribute icons
 │
 ├── App.jsx              # Main application component
 ├── main.jsx             # Application entry point
@@ -442,7 +442,7 @@ If you have questions or need assistance:
 
 ## Acknowledgments
 
-Thank you for contributing to the Tainted Grail Save Sheet application! Your help makes this project better for all Tainted Grail players.
+Thank you for contributing to the Tainted Grail Save Sheet application! Your help makes this project better for all Tainted Grail characters.
 
 The application aims to provide a comprehensive digital replacement for physical save sheets, with full support for multiple campaigns and languages.
 
