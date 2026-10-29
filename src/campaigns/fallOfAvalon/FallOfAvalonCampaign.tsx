@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, Card, CardContent, Typography, TextField, Button, Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Slider } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppState } from '../../hooks/useAppState';
@@ -36,6 +37,8 @@ function isCampaignState(value: unknown): value is CampaignState {
 const sliderNumber = (value: number | number[]) =>
   Array.isArray(value) ? value[0] ?? 0 : value;
 
+const REMOVED_LOCATION_COUNT = 16;
+
 const FallOfAvalonCampaign = () => {
   const { t } = useTranslation();
   const { getCampaignState, updateCampaignState } = useAppState();
@@ -59,7 +62,13 @@ const FallOfAvalonCampaign = () => {
         if (!isCampaignState(savedState)) {
           throw new Error('Stored Fall of Avalon campaign data has an invalid shape.');
         }
-        setState(savedState);
+        setState({
+          ...savedState,
+          removedLocations: Array.from(
+            { length: REMOVED_LOCATION_COUNT },
+            (_, index) => savedState.removedLocations[index] ?? { box1: '', box2: '' }
+          )
+        });
         return;
       }
 
@@ -245,23 +254,7 @@ const FallOfAvalonCampaign = () => {
             'War for Avalon': { steps: 4, completed: [], caption: '' },
             'Winds of Wyrdness': { steps: 1, completed: [], caption: '' }
           },
-          removedLocations: [
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' },
-            { box1: '', box2: '' }
-          ]
+          removedLocations: Array.from({ length: REMOVED_LOCATION_COUNT }, () => ({ box1: '', box2: '' }))
       };
       setState(defaultState);
       updateCampaignState('fallOfAvalon', defaultState);
@@ -877,42 +870,31 @@ const FallOfAvalonCampaign = () => {
           <Typography variant="h6" className="card-header">
             {t('fallOfAvalon.removedLocations.title', 'Removed Locations')}
           </Typography>
-          <Typography variant="body2" color="text.secondary" className="mb-4">
-            {t('fallOfAvalon.removedLocations.subtitle', 'Track replaced/removed map locations with box pairs.')}
-          </Typography>
-          <Grid container spacing={2}>
+          <div className="removed-locations-grid">
             {state.removedLocations.map((location, index) => (
-              <Grid item xs={12} md={6} key={index}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="subtitle1" className="text-gold mb-2">
-                      {t('fallOfAvalon.removedLocations.boxPlaceholder', 'Box')} {index + 1}
-                    </Typography>
-                    <Grid container spacing={1}>
-                      <Grid item xs={6}>
-                        <TextField
-                          fullWidth
-                          label={t('fallOfAvalon.removedLocations.boxPlaceholder', 'Box 1')}
-                          value={location.box1}
-                          onChange={(e) => updateRemovedLocation(index, 'box1', e.target.value)}
-                          size="small"
-                        />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <TextField
-                          fullWidth
-                          label={t('fallOfAvalon.removedLocations.boxPlaceholder', 'Box 2')}
-                          value={location.box2}
-                          onChange={(e) => updateRemovedLocation(index, 'box2', e.target.value)}
-                          size="small"
-                        />
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                </Card>
-              </Grid>
+              <div className="removed-location-pair" key={index}>
+                <TextField
+                  className="removed-location-input"
+                  value={location.box1}
+                  onChange={(e) => updateRemovedLocation(index, 'box1', e.target.value)}
+                  inputProps={{
+                    'aria-label': `${t('fallOfAvalon.removedLocations.from', 'Removed location from')} ${index + 1}`
+                  }}
+                  size="small"
+                />
+                <ArrowForwardIcon fontSize="small" aria-hidden="true" />
+                <TextField
+                  className="removed-location-input"
+                  value={location.box2}
+                  onChange={(e) => updateRemovedLocation(index, 'box2', e.target.value)}
+                  inputProps={{
+                    'aria-label': `${t('fallOfAvalon.removedLocations.to', 'Removed location to')} ${index + 1}`
+                  }}
+                  size="small"
+                />
+              </div>
             ))}
-          </Grid>
+          </div>
         </CardContent>
       </Card>
     );

@@ -400,6 +400,29 @@ a,
   margin: 0;
 }
 
+.removed-locations-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.removed-location-pair {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.removed-location-input.MuiTextField-root {
+  width: 7ch;
+}
+
+.removed-location-input .MuiInputBase-input {
+  padding-inline: 2px;
+  text-align: center;
+}
+
 .tab-content > .MuiCard-root,
 .card.MuiCard-root {
   overflow: hidden;
@@ -721,6 +744,10 @@ a,
     border-right: 0;
     border-left: 0;
     border-radius: 0;
+  }
+
+  .removed-locations-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .snapshot-modal {

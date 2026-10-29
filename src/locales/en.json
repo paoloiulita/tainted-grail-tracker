@@ -205,7 +205,8 @@
     },
     "removedLocations": {
       "title": "Removed Locations",
-      "boxPlaceholder": "Box"
+      "from": "Removed location from",
+      "to": "Removed location to"
     }
   },
   "ui": {

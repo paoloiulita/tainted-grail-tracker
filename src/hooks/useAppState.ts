@@ -197,23 +197,7 @@ export const CAMPAIGN_REGISTRY = {
         'War for Avalon': { steps: 4, completed: [], caption: '' },
         'Winds of Wyrdness': { steps: 1, completed: [], caption: '' }
       },
-      removedLocations: [
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' },
-        { box1: '', box2: '' }
-      ]
+      removedLocations: Array.from({ length: 16 }, () => ({ box1: '', box2: '' }))
     }
   },
   // Placeholder campaigns
