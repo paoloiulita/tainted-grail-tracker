@@ -47,6 +47,23 @@ const boundedCharacterStat = (value: string, maximum = 10) => {
   return Number.isNaN(parsedValue) ? 0 : Math.min(maximum, Math.max(0, parsedValue));
 };
 
+const normalizeStatuses = (
+  savedStatuses: CampaignState['statuses'],
+  defaultStatuses: CampaignState['statuses']
+): CampaignState['statuses'] => {
+  const statuses = { ...savedStatuses };
+  Object.entries(defaultStatuses).forEach(([statusName, defaultStatus]) => {
+    const savedStatus = savedStatuses[statusName];
+    statuses[statusName] = {
+      ...defaultStatus,
+      ...savedStatus,
+      steps: defaultStatus.steps,
+      enumerated: defaultStatus.enumerated
+    };
+  });
+  return statuses;
+};
+
 const normalizeCharacter = (character: Character): Character => {
   const legacyName = 'name' in character && typeof character.name === 'string' ? character.name : '';
   const legacyCharacterName = 'characterName' in character && typeof character.characterName === 'string'
@@ -78,7 +95,7 @@ const normalizeCharacter = (character: Character): Character => {
 
 const FallOfAvalonCampaign = () => {
   const { t } = useTranslation();
-  const { getCampaignState, updateCampaignState } = useAppState();
+  const { getCampaignState, updateCampaignState, CAMPAIGN_REGISTRY } = useAppState();
   const { setCampaign } = useCampaign();
   const [state, setState] = useState<CampaignState | null>(null);
   const [activeTab, setActiveTab] = useState(0);
@@ -101,6 +118,10 @@ const FallOfAvalonCampaign = () => {
         setState({
           ...savedState,
           characters: savedState.characters.map(normalizeCharacter),
+          statuses: normalizeStatuses(
+            savedState.statuses,
+            CAMPAIGN_REGISTRY.fallOfAvalon.defaultState.statuses
+          ),
           removedLocations: Array.from(
             { length: REMOVED_LOCATION_COUNT },
             (_, index) => savedState.removedLocations[index] ?? { box1: '', box2: '' }
@@ -162,7 +183,7 @@ const FallOfAvalonCampaign = () => {
             'Guest of Honor': { steps: 1, completed: [], caption: '' },
             'Halfway Intrigue': { steps: 3, completed: [], caption: '' },
             'Helping Hand': { steps: 6, completed: [], caption: '' },
-            'Helping the Knights': { steps: 1, completed: [], caption: '' },
+            'Helping the Knights': { steps: 4, completed: [], caption: '', enumerated: false },
             'Hidden Treasures': { steps: 8, completed: [], caption: '' },
             "Hunter's Mark": { steps: 1, completed: [], caption: '' },
             "Lady's Task": { steps: 1, completed: [], caption: '' },
@@ -181,6 +202,7 @@ const FallOfAvalonCampaign = () => {
             "People's Champion": { steps: 1, completed: [], caption: '' },
             'Pillager': { steps: 5, completed: [], caption: '' },
             'Reclamation': { steps: 1, completed: [], caption: '' },
+            'Redemption': { steps: 5, completed: [], caption: '', enumerated: false },
             'Remedy': { steps: 4, completed: [], caption: '' },
             'Remnants': { steps: 5, completed: [], caption: '' },
             'Restoring the Order': { steps: 8, completed: [], caption: 'When you have any six parts of this status, go to BoS, Verse 512' },
@@ -191,13 +213,13 @@ const FallOfAvalonCampaign = () => {
             'Secrets of the Forest': { steps: 4, completed: [], caption: '' },
             'Shelter in the Storm': { steps: 1, completed: [], caption: '' },
             'Shrine Secure': { steps: 1, completed: [], caption: '' },
-            'Something is Watching': { steps: 1, completed: [], caption: 'When you have all four parts of this status, resolve Special Event C' },
+            'Something is Watching': { steps: 4, completed: [], caption: 'When you have all four parts of this status, resolve Special Event C', enumerated: false },
             "Stonemason's Secret": { steps: 1, completed: [], caption: '' },
             'Strange Encounters': { steps: 8, completed: [], caption: '' },
-            'Supplying the Revolt': { steps: 1, completed: [], caption: '' },
+            'Supplying the Revolt': { steps: 4, completed: [], caption: '', enumerated: false },
             'Tangleroot Knowledge': { steps: 2, completed: [], caption: '' },
             'Traveling Menhir': { steps: 2, completed: [], caption: '' },
-            'Tuathan Exploration': { steps: 5, completed: [], caption: '' },
+            'Tuathan Exploration': { steps: 5, completed: [], caption: '', enumerated: false },
             'Underfern': { steps: 5, completed: [], caption: '' },
             'War for Avalon': { steps: 4, completed: [], caption: '' },
             'Winds of Wyrdness': { steps: 1, completed: [], caption: '' }
@@ -209,7 +231,7 @@ const FallOfAvalonCampaign = () => {
     };
 
     loadState();
-  }, [getCampaignState, updateCampaignState]);
+  }, [getCampaignState, updateCampaignState, CAMPAIGN_REGISTRY.fallOfAvalon.defaultState.statuses]);
 
   // Save state to localStorage when it changes
   useEffect(() => {
@@ -849,6 +871,7 @@ const FallOfAvalonCampaign = () => {
                             {Array.from({ length: status.steps }, (_, i) => {
                               const stepIndex = i + 1;
                               const isCompleted = status.completed.includes(stepIndex);
+                              const showStepNumber = status.steps > 1 && status.enumerated !== false;
                               return (
                                 <IconButton
                                   key={stepIndex}
@@ -856,9 +879,11 @@ const FallOfAvalonCampaign = () => {
                                   onClick={() => toggleStatusStep(statusName, stepIndex)}
                                   className={`step-box ${isCompleted ? 'completed' : ''}`}
                                 >
-                                  <Typography variant="caption">
-                                    {stepIndex}
-                                  </Typography>
+                                  {showStepNumber && (
+                                    <Typography variant="caption">
+                                      {stepIndex}
+                                    </Typography>
+                                  )}
                                 </IconButton>
                               );
                             })}

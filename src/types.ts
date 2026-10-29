@@ -71,6 +71,7 @@ export interface CampaignStatusEntry {
   steps: number;
   completed: number[];
   caption: string;
+  enumerated?: boolean;
 }
 
 export interface RemovedLocation {
