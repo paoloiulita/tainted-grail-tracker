@@ -585,24 +585,23 @@ const FallOfAvalonCampaign = () => {
         <Grid container spacing={3}>
           {state.characters.map((character) => (
             <Grid item xs={12} md={6} lg={4} key={character.id}>
-              <Card className="card character-card">
+              <Card
+                className="card character-card"
+                style={{
+                  backgroundImage: `linear-gradient(180deg, rgba(17, 24, 32, 0.72), rgba(17, 24, 32, 0.9)), url("${import.meta.env.BASE_URL}assets/characters/${character.characterName.toLowerCase()}.jpg")`
+                }}
+              >
+                <Box
+                  className="character-nameplate"
+                  style={{
+                    backgroundImage: `url("${import.meta.env.BASE_URL}assets/characters/display/blue.png")`
+                  }}
+                >
+                  <Typography variant="h6">
+                    {t(`characterNames.${character.characterName}`, character.characterName)}
+                  </Typography>
+                </Box>
                 <CardContent className="character-card-content">
-                  <Box className="character-card-header">
-                    <Typography variant="h6" className="text-gold">
-                      {t(`characterNames.${character.characterName}`, character.characterName)}
-                    </Typography>
-                    <Box className="character-actions">
-                      <IconButton
-                        size="small"
-                        aria-label={t('fallOfAvalon.characters.deleteCharacter', 'Delete Character')}
-                        onClick={() => setCharacterPendingDeletion(character)}
-                        color="error"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Box>
-                  </Box>
-
                   <TextField
                     fullWidth
                     label={t('fallOfAvalon.characters.playerName', 'Player Name')}
@@ -785,6 +784,16 @@ const FallOfAvalonCampaign = () => {
                         />
                       </Box>
                     ))}
+                  </Box>
+                  <Box className="character-card-footer">
+                    <IconButton
+                      size="small"
+                      aria-label={t('fallOfAvalon.characters.deleteCharacter', 'Delete Character')}
+                      onClick={() => setCharacterPendingDeletion(character)}
+                      color="error"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </Box>
                 </CardContent>
               </Card>
