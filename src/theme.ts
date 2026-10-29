@@ -36,12 +36,6 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: '"Inter", "Segoe UI", sans-serif',
-    h1: { fontFamily: 'Georgia, serif', fontWeight: 600 },
-    h2: { fontFamily: 'Georgia, serif', fontWeight: 600 },
-    h3: { fontFamily: 'Georgia, serif', fontWeight: 600 },
-    h4: { fontFamily: 'Georgia, serif', fontWeight: 600 },
-    h5: { fontFamily: 'Georgia, serif', fontWeight: 600 },
-    h6: { fontFamily: 'Georgia, serif', fontWeight: 600 },
     button: { fontWeight: 600, textTransform: 'none' }
   },
   components: {
