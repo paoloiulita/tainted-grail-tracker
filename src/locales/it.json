@@ -128,10 +128,13 @@
       "clearFormatting": "Rimuovi formattazione"
     },
     "players": {
-      "title": "Players",
-      "addPlayer": "Add Player",
-      "editPlayer": "Edit Player",
-      "deletePlayer": "Delete Player"
+      "title": "Giocatori",
+      "addPlayer": "Aggiungi giocatore",
+      "editPlayer": "Modifica giocatore",
+      "deletePlayer": "Elimina giocatore",
+      "confirmDeleteTitle": "Eliminare il giocatore?",
+      "confirmDelete": "Vuoi davvero eliminare {{name}}? Questa azione non può essere annullata.",
+      "maximumPlayers": "Massimo 4 giocatori"
     },
     "attributes": {
       "aggression": "Aggression",

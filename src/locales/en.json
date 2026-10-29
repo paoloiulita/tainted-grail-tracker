@@ -131,7 +131,10 @@
       "title": "Players",
       "addPlayer": "Add Player",
       "editPlayer": "Edit Player",
-      "deletePlayer": "Delete Player"
+      "deletePlayer": "Delete Player",
+      "confirmDeleteTitle": "Delete player?",
+      "confirmDelete": "Are you sure you want to delete {{name}}? This action cannot be undone.",
+      "maximumPlayers": "Maximum 4 players"
     },
     "attributes": {
       "aggression": "Aggression",

@@ -443,6 +443,10 @@ a,
   padding: 20px;
 }
 
+.player-card .MuiCardContent-root:last-child {
+  padding-bottom: 20px;
+}
+
 .player-card-header {
   display: flex;
   align-items: center;
@@ -455,15 +459,57 @@ a,
   margin: 0;
 }
 
+.player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.player-limit-message.MuiTypography-root {
+  margin-left: auto;
+  text-align: right;
+}
+
 .player-actions {
   display: flex;
   gap: 4px;
 }
 
 .attribute-row {
-  padding: 5px 10px;
-  border-radius: 8px;
+  padding: 10px 12px;
+  border-radius: 0;
   background: rgba(255, 255, 255, 0.025);
+}
+
+.attribute-list > .attribute-row:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.attribute-list > .attribute-row:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+.attribute-list > .attribute-row:first-child:last-child {
+  border-radius: 8px;
+}
+
+.attribute-row .MuiSlider-root {
+  margin: 0;
+}
+
+.attribute-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.attribute-header .attribute-value.MuiTypography-root {
+  color: var(--accent-gold);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
 }
 
 .attribute-row .MuiTypography-root {
@@ -697,6 +743,7 @@ a,
 .mt-3 { margin-top: 12px !important; }
 .mt-4 { margin-top: 16px !important; }
 .mr-2 { margin-right: 8px; }
+.ml-2 { margin-left: 8px; }
 .font-semibold { font-weight: 600 !important; }
 
 @media (max-width: 900px) {

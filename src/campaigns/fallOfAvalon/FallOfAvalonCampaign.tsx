@@ -39,6 +39,32 @@ const sliderNumber = (value: number | number[]) =>
   Array.isArray(value) ? value[0] ?? 0 : value;
 
 const REMOVED_LOCATION_COUNT = 16;
+const MAX_PLAYERS = 4;
+
+const boundedPlayerStat = (value: string, maximum = 10) => {
+  const parsedValue = Number.parseInt(value, 10);
+  return Number.isNaN(parsedValue) ? 0 : Math.min(maximum, Math.max(0, parsedValue));
+};
+
+const normalizePlayer = (player: Player): Player => ({
+  ...player,
+  health: Math.min(10, Math.max(0, player.health)),
+  energy: Math.min(10, Math.max(0, player.energy)),
+  terror: Math.min(10, Math.max(0, player.terror)),
+  experience: Math.min(10, Math.max(0, player.experience)),
+  reputation: Math.min(10, Math.max(0, player.reputation)),
+  magic: Math.min(10, Math.max(0, player.magic)),
+  food: Math.min(10, Math.max(0, player.food)),
+  wealth: Math.min(10, Math.max(0, player.wealth)),
+  attributes: {
+    aggression: Math.min(5, Math.max(0, player.attributes.aggression)),
+    caution: Math.min(5, Math.max(0, player.attributes.caution)),
+    courage: Math.min(5, Math.max(0, player.attributes.courage)),
+    empathy: Math.min(5, Math.max(0, player.attributes.empathy)),
+    practicality: Math.min(5, Math.max(0, player.attributes.practicality)),
+    spirituality: Math.min(5, Math.max(0, player.attributes.spirituality))
+  }
+});
 
 const FallOfAvalonCampaign = () => {
   const { t } = useTranslation();
@@ -51,6 +77,7 @@ const FallOfAvalonCampaign = () => {
     open: false,
     player: null
   });
+  const [playerPendingDeletion, setPlayerPendingDeletion] = useState<Player | null>(null);
   const updateState = (updater: (current: CampaignState) => CampaignState) => {
     setState((current) => current ? updater(current) : current);
   };
@@ -65,6 +92,7 @@ const FallOfAvalonCampaign = () => {
         }
         setState({
           ...savedState,
+          players: savedState.players.map(normalizePlayer),
           removedLocations: Array.from(
             { length: REMOVED_LOCATION_COUNT },
             (_, index) => savedState.removedLocations[index] ?? { box1: '', box2: '' }
@@ -101,8 +129,8 @@ const FallOfAvalonCampaign = () => {
               name: 'Player 1',
               location: '',
               dial: 0,
-              health: 100,
-              energy: 100,
+              health: 10,
+              energy: 10,
               terror: 0,
               experience: 0,
               reputation: 0,
@@ -123,8 +151,8 @@ const FallOfAvalonCampaign = () => {
               name: 'Player 2',
               location: '',
               dial: 0,
-              health: 100,
-              energy: 100,
+              health: 10,
+              energy: 10,
               terror: 0,
               experience: 0,
               reputation: 0,
@@ -145,8 +173,8 @@ const FallOfAvalonCampaign = () => {
               name: 'Player 3',
               location: '',
               dial: 0,
-              health: 100,
-              energy: 100,
+              health: 10,
+              energy: 10,
               terror: 0,
               experience: 0,
               reputation: 0,
@@ -167,8 +195,8 @@ const FallOfAvalonCampaign = () => {
               name: 'Player 4',
               location: '',
               dial: 0,
-              health: 100,
-              energy: 100,
+              health: 10,
+              energy: 10,
               terror: 0,
               experience: 0,
               reputation: 0,
@@ -341,6 +369,7 @@ const FallOfAvalonCampaign = () => {
     };
 
     const updatePlayerAttribute = (playerId: string, attribute: PlayerAttribute, value: number) => {
+      const boundedValue = Math.min(5, Math.max(0, value));
       updateState(prev => ({
         ...prev,
         players: prev.players.map(player =>
@@ -349,7 +378,7 @@ const FallOfAvalonCampaign = () => {
                 ...player,
                 attributes: {
                   ...player.attributes,
-                  [attribute]: value
+                  [attribute]: boundedValue
                 }
               }
             : player
@@ -386,13 +415,17 @@ const FallOfAvalonCampaign = () => {
     };
 
     const addPlayer = () => {
+      if (state.players.length >= MAX_PLAYERS) {
+        return;
+      }
+
       const newPlayer = {
         id: `player-${Date.now()}`,
         name: `Player ${state.players.length + 1}`,
         location: '',
         dial: 0,
-        health: 100,
-        energy: 100,
+        health: 10,
+        energy: 10,
         terror: 0,
         experience: 0,
         reputation: 0,
@@ -414,11 +447,15 @@ const FallOfAvalonCampaign = () => {
       }));
     };
 
-    const deletePlayer = (playerId: string) => {
+    const confirmDeletePlayer = () => {
+      if (!playerPendingDeletion) {
+        return;
+      }
       updateState(prev => ({
         ...prev,
-        players: prev.players.filter(player => player.id !== playerId)
+        players: prev.players.filter(currentPlayer => currentPlayer.id !== playerPendingDeletion.id)
       }));
+      setPlayerPendingDeletion(null);
     };
 
     const renderTabContent = () => {
@@ -593,15 +630,21 @@ const FallOfAvalonCampaign = () => {
 
     const renderPlayersTab = () => (
       <Box>
-        <Box className="mb-4">
+        <Box className="player-controls mb-4">
           <Button
             variant="contained"
             startIcon={<AddIcon />}
             onClick={addPlayer}
+            disabled={state.players.length >= MAX_PLAYERS}
             className="btn btn-primary"
           >
             {t('fallOfAvalon.players.addPlayer', 'Add Player')}
           </Button>
+          {state.players.length >= MAX_PLAYERS && (
+            <Typography variant="body2" color="text.secondary" className="player-limit-message">
+              {t('fallOfAvalon.players.maximumPlayers', 'Maximum 4 players')}
+            </Typography>
+          )}
         </Box>
 
         <Grid container spacing={3}>
@@ -622,7 +665,8 @@ const FallOfAvalonCampaign = () => {
                       </IconButton>
                       <IconButton
                         size="small"
-                        onClick={() => deletePlayer(player.id)}
+                        aria-label={t('fallOfAvalon.players.deletePlayer', 'Delete Player')}
+                        onClick={() => setPlayerPendingDeletion(player)}
                         color="error"
                       >
                         <DeleteIcon />
@@ -664,8 +708,9 @@ const FallOfAvalonCampaign = () => {
                         fullWidth
                         label="Health"
                         type="number"
+                        inputProps={{ min: 0, max: 10, step: 1 }}
                         value={player.health}
-                        onChange={(e) => updatePlayer(player.id, 'health', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updatePlayer(player.id, 'health', boundedPlayerStat(e.target.value))}
                         size="small"
                       />
                     </Grid>
@@ -674,8 +719,9 @@ const FallOfAvalonCampaign = () => {
                         fullWidth
                         label="Energy"
                         type="number"
+                        inputProps={{ min: 0, max: 10, step: 1 }}
                         value={player.energy}
-                        onChange={(e) => updatePlayer(player.id, 'energy', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updatePlayer(player.id, 'energy', boundedPlayerStat(e.target.value))}
                         size="small"
                       />
                     </Grid>
@@ -687,8 +733,9 @@ const FallOfAvalonCampaign = () => {
                         fullWidth
                         label="Terror"
                         type="number"
+                        inputProps={{ min: 0, max: 10, step: 1 }}
                         value={player.terror}
-                        onChange={(e) => updatePlayer(player.id, 'terror', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updatePlayer(player.id, 'terror', boundedPlayerStat(e.target.value))}
                         size="small"
                       />
                     </Grid>
@@ -697,8 +744,9 @@ const FallOfAvalonCampaign = () => {
                         fullWidth
                         label="Experience"
                         type="number"
+                        inputProps={{ min: 0, max: 10, step: 1 }}
                         value={player.experience}
-                        onChange={(e) => updatePlayer(player.id, 'experience', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updatePlayer(player.id, 'experience', boundedPlayerStat(e.target.value))}
                         size="small"
                       />
                     </Grid>
@@ -710,8 +758,9 @@ const FallOfAvalonCampaign = () => {
                         fullWidth
                         label="Reputation"
                         type="number"
+                        inputProps={{ min: 0, max: 10, step: 1 }}
                         value={player.reputation}
-                        onChange={(e) => updatePlayer(player.id, 'reputation', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updatePlayer(player.id, 'reputation', boundedPlayerStat(e.target.value))}
                         size="small"
                       />
                     </Grid>
@@ -720,8 +769,9 @@ const FallOfAvalonCampaign = () => {
                         fullWidth
                         label="Magic"
                         type="number"
+                        inputProps={{ min: 0, max: 10, step: 1 }}
                         value={player.magic}
-                        onChange={(e) => updatePlayer(player.id, 'magic', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updatePlayer(player.id, 'magic', boundedPlayerStat(e.target.value))}
                         size="small"
                       />
                     </Grid>
@@ -733,8 +783,9 @@ const FallOfAvalonCampaign = () => {
                         fullWidth
                         label="Food"
                         type="number"
+                        inputProps={{ min: 0, max: 10, step: 1 }}
                         value={player.food}
-                        onChange={(e) => updatePlayer(player.id, 'food', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updatePlayer(player.id, 'food', boundedPlayerStat(e.target.value))}
                         size="small"
                       />
                     </Grid>
@@ -743,8 +794,9 @@ const FallOfAvalonCampaign = () => {
                         fullWidth
                         label="Wealth"
                         type="number"
+                        inputProps={{ min: 0, max: 10, step: 1 }}
                         value={player.wealth}
-                        onChange={(e) => updatePlayer(player.id, 'wealth', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updatePlayer(player.id, 'wealth', boundedPlayerStat(e.target.value))}
                         size="small"
                       />
                     </Grid>
@@ -753,10 +805,10 @@ const FallOfAvalonCampaign = () => {
                   <Typography variant="subtitle2" className="mt-3 mb-2">
                     {t('fallOfAvalon.attributes.title', 'Attributes')}
                   </Typography>
-                  {(Object.entries(player.attributes) as Array<[PlayerAttribute, number]>).map(([attr, value]) => (
-                    <Box key={attr} className="attribute-row">
-                      <Grid container alignItems="center" spacing={1} className="mb-1">
-                        <Grid item xs={5} className="dial-slider-grid">
+                  <Box className="attribute-list">
+                    {(Object.entries(player.attributes) as Array<[PlayerAttribute, number]>).map(([attr, value]) => (
+                      <Box key={attr} className="attribute-row">
+                        <Box className="attribute-header">
                           <Typography variant="body2">
                             <img
                               className="attribute-icon"
@@ -769,21 +821,23 @@ const FallOfAvalonCampaign = () => {
                             />
                             {t(`fallOfAvalon.attributes.${attr}`, attr.charAt(0).toUpperCase() + attr.slice(1))}
                           </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Slider
-                            value={value}
-                            onChange={(_event, value) => updatePlayerAttribute(player.id, attr, sliderNumber(value))}
-                            min={0}
-                            max={10}
-                            size="small"
-                            marks
-                            valueLabelDisplay="auto"
-                          />
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  ))}
+                          <Typography variant="body2" className="attribute-value">
+                            {value}
+                          </Typography>
+                        </Box>
+                        <Slider
+                          value={value}
+                          onChange={(_event, sliderValue) => updatePlayerAttribute(player.id, attr, sliderNumber(sliderValue))}
+                          min={0}
+                          max={5}
+                          size="small"
+                          marks
+                          valueLabelDisplay="auto"
+                          aria-label={t(`fallOfAvalon.attributes.${attr}`, attr)}
+                        />
+                      </Box>
+                    ))}
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>
@@ -968,6 +1022,37 @@ const FallOfAvalonCampaign = () => {
       </Dialog>
     );
 
+    const renderDeletePlayerDialog = () => (
+      <Dialog
+        open={playerPendingDeletion !== null}
+        onClose={() => setPlayerPendingDeletion(null)}
+        aria-labelledby="delete-player-dialog-title"
+        aria-describedby="delete-player-dialog-description"
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle id="delete-player-dialog-title">
+          {t('fallOfAvalon.players.confirmDeleteTitle', 'Delete player?')}
+        </DialogTitle>
+        <DialogContent>
+          <Typography id="delete-player-dialog-description" color="text.secondary">
+            {t('fallOfAvalon.players.confirmDelete', {
+              name: playerPendingDeletion?.name ?? '',
+              defaultValue: `Are you sure you want to delete ${playerPendingDeletion?.name ?? 'this player'}? This action cannot be undone.`
+            })}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setPlayerPendingDeletion(null)}>
+            {t('common.cancel', 'Cancel')}
+          </Button>
+          <Button onClick={confirmDeletePlayer} color="error" variant="contained">
+            {t('fallOfAvalon.players.deletePlayer', 'Delete Player')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+
     return (
       <div className="campaign-container">
         <Box className="campaign-header">
@@ -992,6 +1077,7 @@ const FallOfAvalonCampaign = () => {
         </Box>
 
         {renderEditPlayerDialog()}
+        {renderDeletePlayerDialog()}
       </div>
     );
   };
