@@ -490,7 +490,7 @@ a,
   height: 96px;
   align-items: center;
   justify-content: center;
-  padding: 0 24px 12px;
+  padding: 0 24px;
   transform: translate(-50%, -50%);
   background-position: center;
   background-repeat: no-repeat;
@@ -501,7 +501,7 @@ a,
   overflow: hidden;
   color: #f2eee5;
   font-family: "Cinzel Decorative", Georgia, "Times New Roman", serif;
-  font-size: 1.05rem;
+  font-size: 1.35rem;
   font-weight: 700;
   text-align: center;
   text-overflow: ellipsis;
