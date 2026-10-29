@@ -175,6 +175,34 @@ a,
   gap: 10px;
 }
 
+.language-selector-button.MuiButton-root {
+  align-items: center;
+}
+
+.language-selector-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+}
+
+.language-selector-content > .MuiSvgIcon-root {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.language-selector-flag {
+  display: block;
+  flex: 0 0 auto;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.language-selector-name.MuiTypography-root {
+  margin: 0;
+  line-height: 1.2;
+}
+
 .mobile-menu-trigger {
   display: none;
 }
@@ -551,7 +579,7 @@ a,
 }
 
 .character-selection-card.MuiButtonBase-root.selected {
-  box-shadow: 0 0 0 2px rgba(230, 202, 131, 0.72);
+  box-shadow: none;
 }
 
 .character-selection-card > .character-selection-name {

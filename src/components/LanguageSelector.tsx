@@ -31,13 +31,17 @@ const LanguageSelector = ({ language, onChange, open, onOpenChange }: LanguageSe
             onOpenChange(true);
           }
         }}
-        className="btn btn-secondary"
-        startIcon={<LanguageIcon />}
+        className="btn btn-secondary language-selector-button"
       >
-        <span className="mr-2">{currentLanguage?.flag}</span>
-        <Typography variant="body2" className="hidden md:inline">
-          {currentLanguage?.name}
-        </Typography>
+        <span className="language-selector-content">
+          <LanguageIcon aria-hidden="true" />
+          <span className="language-selector-flag" aria-hidden="true">
+            {currentLanguage?.flag}
+          </span>
+          <Typography variant="body2" className="hidden md:inline language-selector-name">
+            {currentLanguage?.name}
+          </Typography>
+        </span>
       </Button>
 
       <Menu
