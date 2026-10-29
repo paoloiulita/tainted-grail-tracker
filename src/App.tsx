@@ -81,7 +81,6 @@ const App = () => {
               element={
                 <CampaignSelector
                   campaigns={campaigns}
-                  selectedCampaign={currentCampaign}
                   onSelect={handleCampaignSelect}
                 />
               }
