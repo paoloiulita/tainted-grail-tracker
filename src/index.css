@@ -849,14 +849,43 @@ a,
 }
 
 .snapshot-item.MuiListItem-root {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-top: 8px;
+  padding: 8px 12px;
   border: 1px solid rgba(221, 207, 176, 0.13);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.025);
 }
 
+.snapshot-item .MuiListItemText-root {
+  min-width: 0;
+  margin: 0;
+}
+
+.snapshot-name.MuiTypography-root {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .snapshot-actions {
   display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+}
+
+.snapshot-timestamp.MuiTypography-root {
+  white-space: nowrap;
+}
+
+.snapshot-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .character-notes-editor {
@@ -1065,6 +1094,12 @@ a,
     width: calc(100vw - 20px);
     max-height: calc(100vh - 20px);
     margin: 10px auto;
+  }
+
+  .snapshot-actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
   }
 }
 

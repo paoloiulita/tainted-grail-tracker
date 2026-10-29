@@ -119,35 +119,12 @@ const SnapshotManager = ({ snapshots, onSave, onRestore, onDelete, onClose, camp
                       <ListItem
                         key={snapshot.id}
                         className="snapshot-item"
-                        secondaryAction={
-                          <Box className="snapshot-actions">
-                            <IconButton
-                              edge="end"
-                              onClick={() => handleRestore(snapshot)}
-                              color="primary"
-                              size="small"
-                            >
-                              <RestoreIcon />
-                            </IconButton>
-                            <IconButton
-                              edge="end"
-                              onClick={() => handleDelete(snapshot)}
-                              color="error"
-                              size="small"
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </Box>
-                        }
                       >
                         <ListItemText
                           primary={
                             <Box className="snapshot-info">
                               <Typography variant="subtitle2" className="snapshot-name">
                                 {snapshot.name}
-                              </Typography>
-                              <Typography variant="caption" color="text.secondary">
-                                {format(new Date(snapshot.timestamp), 'MMM dd, yyyy HH:mm')}
                               </Typography>
                             </Box>
                           }
@@ -157,6 +134,31 @@ const SnapshotManager = ({ snapshots, onSave, onRestore, onDelete, onClose, camp
                             </Typography>
                           }
                         />
+                        <Box className="snapshot-actions">
+                          <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            className="snapshot-timestamp"
+                          >
+                            {format(new Date(snapshot.timestamp), 'dd MMM yyyy HH:mm')}
+                          </Typography>
+                          <Box className="snapshot-action-buttons">
+                            <IconButton
+                              onClick={() => handleRestore(snapshot)}
+                              color="primary"
+                              size="small"
+                            >
+                              <RestoreIcon />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => handleDelete(snapshot)}
+                              color="error"
+                              size="small"
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Box>
+                        </Box>
                       </ListItem>
                     ))}
                   </List>
