@@ -700,6 +700,11 @@ a,
   .campaign-header {
     margin-bottom: 18px;
     padding: 20px;
+    justify-content: center;
+  }
+
+  .campaign-title.MuiTypography-root {
+    text-align: center;
   }
 
   .campaign-tabs.MuiTabs-root {
