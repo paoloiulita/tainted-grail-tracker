@@ -1110,9 +1110,6 @@ const FallOfAvalonCampaign = () => {
           <Typography variant="h4" className="campaign-title">
             {t('campaigns.fallOfAvalon.name', 'Fall of Avalon')}
           </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            Tainted Grail Board Game Save Sheet
-          </Typography>
         </Box>
 
         <Tabs
