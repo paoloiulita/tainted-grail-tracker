@@ -179,6 +179,10 @@ a,
   align-items: center;
 }
 
+.language-selector {
+  display: none !important;
+}
+
 .language-selector-content {
   display: inline-flex;
   align-items: center;

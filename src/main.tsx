@@ -8,13 +8,11 @@ import { CampaignProvider } from './contexts/CampaignContext';
 import App from './App';
 import './index.css';
 import en from './locales/en.json';
-import it from './locales/it.json';
 import theme from './theme';
 
 i18n.init({
   resources: {
-    en: { translation: en },
-    it: { translation: it }
+    en: { translation: en }
   },
   lng: 'en',
   fallbackLng: 'en',
