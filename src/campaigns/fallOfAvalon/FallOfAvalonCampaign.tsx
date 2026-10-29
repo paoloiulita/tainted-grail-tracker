@@ -545,7 +545,7 @@ const FallOfAvalonCampaign = () => {
                   <Grid item xs={4}>
                     <TextField
                       fullWidth
-                      label={t('fallOfAvalon.questDials.0', `Quest Dial ${index + 1}`)}
+                      label={t(`fallOfAvalon.questDials.${index}`, `Quest Dial ${index + 1}`)}
                       value={dial.location}
                       onChange={(e) => updateQuestDial(index, 'location', e.target.value)}
                       size="small"
@@ -588,7 +588,7 @@ const FallOfAvalonCampaign = () => {
                 <TextField
                   key={index}
                   fullWidth
-                  label={t('fallOfAvalon.guardians.0', `Guardian ${index + 1}`)}
+                  label={t(`fallOfAvalon.guardians.${index}`, `Guardian ${index + 1}`)}
                   value={guardian.location}
                   onChange={(e) => updateGuardian(index, 'location', e.target.value)}
                   className="mb-2"
@@ -657,7 +657,7 @@ const FallOfAvalonCampaign = () => {
                 <Card variant="outlined">
                   <CardContent>
                     <Typography variant="subtitle1" className="text-gold mb-2">
-                      {t('fallOfAvalon.questDials.0', `Quest Dial ${index + 1}`)}
+                      {t(`fallOfAvalon.questDials.${index}`, `Quest Dial ${index + 1}`)}
                     </Typography>
                     <TextField
                       fullWidth
@@ -701,7 +701,7 @@ const FallOfAvalonCampaign = () => {
                 <Card variant="outlined">
                   <CardContent>
                     <Typography variant="subtitle1" className="text-gold mb-2">
-                      {t('fallOfAvalon.guardians.0', `Guardian ${index + 1}`)}
+                      {t(`fallOfAvalon.guardians.${index}`, `Guardian ${index + 1}`)}
                     </Typography>
                     <TextField
                       fullWidth
