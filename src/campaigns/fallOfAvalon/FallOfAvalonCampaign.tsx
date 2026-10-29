@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppState } from '../../hooks/useAppState';
 import { useCampaign } from '../../contexts/CampaignContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import PlayerNotesEditor from '../../components/PlayerNotesEditor';
 import type {
   CampaignState,
   Guardian,
@@ -905,14 +906,10 @@ const FallOfAvalonCampaign = () => {
           <Typography variant="h6" className="card-header">
             {t('fallOfAvalon.playerNotes.title', 'Player Notes')}
           </Typography>
-          <TextField
-            fullWidth
-            multiline
-            rows={10}
+          <PlayerNotesEditor
             value={state.playerNotes}
-            onChange={(e) => updateState(prev => ({ ...prev, playerNotes: e.target.value }))}
+            onChange={(playerNotes) => updateState(prev => ({ ...prev, playerNotes }))}
             placeholder={t('fallOfAvalon.playerNotes.placeholder', 'Enter notes about your campaign...')}
-            className="notes-textarea"
           />
         </CardContent>
       </Card>

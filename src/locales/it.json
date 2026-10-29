@@ -118,7 +118,14 @@
     },
     "playerNotes": {
       "title": "Player Notes",
-      "placeholder": "Enter notes about your campaign..."
+      "placeholder": "Enter notes about your campaign...",
+      "formatting": "Formattazione del testo",
+      "bold": "Grassetto",
+      "italic": "Corsivo",
+      "underline": "Sottolineato",
+      "bulletedList": "Elenco puntato",
+      "numberedList": "Elenco numerato",
+      "clearFormatting": "Rimuovi formattazione"
     },
     "players": {
       "title": "Players",
