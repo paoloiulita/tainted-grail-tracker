@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, Card, CardContent, Typography, TextField, Button, ButtonBase, Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Slider } from '@mui/material';
+import { Grid, Card, CardContent, Typography, TextField, Button, ButtonBase, Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Slider, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useAppState } from '../../hooks/useAppState';
 import { useCampaign } from '../../contexts/CampaignContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -811,15 +812,13 @@ const FallOfAvalonCampaign = () => {
         <Card className="card">
           <CardContent>
             <Typography variant="h6" className="card-header">
-              {t('fallOfAvalon.statuses.title', 'Statuses and Steps')}
+              {t('fallOfAvalon.statuses.title', 'Statuses')}
             </Typography>
             <TableContainer>
               <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell>Status</TableCell>
-                    <TableCell align="center">Steps</TableCell>
-                    <TableCell>Caption</TableCell>
                     <TableCell align="center">Completed</TableCell>
                   </TableRow>
                 </TableHead>
@@ -829,21 +828,21 @@ const FallOfAvalonCampaign = () => {
                     return (
                       <TableRow key={statusName} className="status-row">
                         <TableCell>
-                          <Typography variant="subtitle2" className="font-semibold">
-                            {statusName}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="center">
-                          <Typography variant="body2">
-                            {status.steps}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          {status.caption && (
-                            <Typography variant="body2" color="text.secondary">
-                              {status.caption}
+                          <Box display="flex" alignItems="center" gap={0.5}>
+                            <Typography variant="subtitle2" className="font-semibold">
+                              {statusName}
                             </Typography>
-                          )}
+                            {status.caption && (
+                              <Tooltip title={status.caption}>
+                                <IconButton
+                                  size="small"
+                                  aria-label={t('fallOfAvalon.statuses.captionInfo', 'Status information')}
+                                >
+                                  <InfoOutlinedIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            )}
+                          </Box>
                         </TableCell>
                         <TableCell align="center">
                           <Box className="steps-container">

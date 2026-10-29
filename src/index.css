@@ -751,7 +751,7 @@ a,
 .steps-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 4px;
 }
 
