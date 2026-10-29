@@ -1,6 +1,14 @@
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, Typography, Grid, Chip } from '@mui/material';
+import { Card, CardContent, Typography, Grid } from '@mui/material';
 import type { CampaignId, CampaignSummary } from '../types';
+
+const campaignBackgrounds: Record<CampaignId, string> = {
+  fallOfAvalon: 'fall-of-avalon-cover.webp',
+  lastKnight: 'last-knight-cover.webp',
+  ageOfLegends: 'age-of-legends-cover.webp',
+  redDeath: 'red-death-cover.webp',
+  kingsOfRuin: 'kings-of-ruin-cover.webp'
+};
 
 interface CampaignSelectorProps {
   campaigns: CampaignSummary[];
@@ -20,31 +28,20 @@ const CampaignSelector = ({ campaigns, selectedCampaign, onSelect }: CampaignSel
           {campaigns.map((campaign) => (
             <Grid item xs={12} sm={6} md={4} key={campaign.id}>
               <Card
-                className={`campaign-card ${campaign.id === selectedCampaign ? 'selected' : ''}`}
+                component="button"
+                type="button"
+                aria-label={campaign.name}
+                className={`campaign-card campaign-card-${campaign.id} ${campaign.id === selectedCampaign ? 'selected' : ''}`}
                 onClick={() => onSelect(campaign.id)}
                 elevation={campaign.id === selectedCampaign ? 8 : 2}
+                style={{
+                  backgroundImage: `url("${import.meta.env.BASE_URL}assets/campaign-backgrounds/${campaignBackgrounds[campaign.id]}")`
+                }}
               >
                 <CardContent>
                   <Typography variant="h6" className="campaign-card-title">
                     {campaign.name}
                   </Typography>
-                  <Typography variant="body2" className="campaign-description">
-                    {campaign.description}
-                  </Typography>
-                  <Chip
-                    label={campaign.status}
-                    size="small"
-                    className={`campaign-status status-${campaign.status}`}
-                    sx={{ mt: 1 }}
-                  />
-                  {campaign.id === selectedCampaign && (
-                    <Chip
-                      label={t('campaigns.selected', 'Selected')}
-                      color="primary"
-                      size="small"
-                      sx={{ ml: 1, mt: 1 }}
-                    />
-                  )}
                 </CardContent>
               </Card>
             </Grid>
