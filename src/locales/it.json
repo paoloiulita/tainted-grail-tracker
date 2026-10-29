@@ -90,6 +90,7 @@
   },
   "fallOfAvalon": {
     "tracker": {
+      "title": "Tracker",
       "campaign": "Campaign",
       "chapter": "Chapter",
       "day": "Day"

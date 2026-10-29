@@ -432,19 +432,9 @@ const FallOfAvalonCampaign = () => {
         case 0:
           return renderTrackerTab();
         case 1:
-          return renderMenhirsTab();
-        case 2:
-          return renderQuestDialsTab();
-        case 3:
-          return renderGuardiansTab();
-        case 4:
           return renderPlayersTab();
-        case 5:
+        case 2:
           return renderStatusesTab();
-        case 6:
-          return renderRemovedLocationsTab();
-        case 7:
-          return renderPlayerNotesTab();
         default:
           return null;
       }
@@ -598,125 +588,13 @@ const FallOfAvalonCampaign = () => {
             </CardContent>
           </Card>
         </Grid>
+        <Grid item xs={12}>
+          {renderRemovedLocationsPanel()}
+        </Grid>
+        <Grid item xs={12}>
+          {renderPlayerNotesPanel()}
+        </Grid>
       </Grid>
-    );
-
-    const renderMenhirsTab = () => (
-      <Card className="card">
-        <CardContent>
-          <Typography variant="h6" className="card-header">
-            {t('fallOfAvalon.menhirs.title', 'Menhirs')}
-          </Typography>
-          <Grid container spacing={2}>
-            {state.menhirs.map((menhir, index) => (
-              <Grid item xs={12} md={4} key={index}>
-                <Card variant="outlined" className="menhir-card">
-                  <CardContent>
-                    <Typography variant="subtitle1" className="text-gold mb-2">
-                      {t('fallOfAvalon.menhirs.0', `Menhir ${index + 1}`)}
-                    </Typography>
-                    <TextField
-                      fullWidth
-                      label={t('fallOfAvalon.menhirs.location', 'Location')}
-                      value={menhir.location}
-                      onChange={(e) => updateMenhir(index, 'location', e.target.value)}
-                      size="small"
-                      className="mb-2"
-                    />
-                    <Box>
-                      <Typography variant="body2" className="mb-1">
-                        {t('fallOfAvalon.menhirs.dialValue', 'Dial Value')}: {menhir.dialValue}
-                      </Typography>
-                      <Slider
-                        value={menhir.dialValue}
-                        onChange={(_event, value) => updateMenhir(index, 'dialValue', sliderNumber(value))}
-                        min={0}
-                        max={10}
-                        marks
-                        valueLabelDisplay="auto"
-                      />
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </CardContent>
-      </Card>
-    );
-
-    const renderQuestDialsTab = () => (
-      <Card className="card">
-        <CardContent>
-          <Typography variant="h6" className="card-header">
-            {t('fallOfAvalon.questDials.title', 'Quest Dials')}
-          </Typography>
-          <Grid container spacing={2}>
-            {state.questDials.map((dial, index) => (
-              <Grid item xs={12} md={6} key={index}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="subtitle1" className="text-gold mb-2">
-                      {t(`fallOfAvalon.questDials.${index}`, `Quest Dial ${index + 1}`)}
-                    </Typography>
-                    <TextField
-                      fullWidth
-                      label={t('fallOfAvalon.questDials.location', 'Location')}
-                      value={dial.location}
-                      onChange={(e) => updateQuestDial(index, 'location', e.target.value)}
-                      size="small"
-                      className="mb-2"
-                    />
-                    <Box>
-                      <Typography variant="body2" className="mb-1">
-                        {t('fallOfAvalon.questDials.dialValue', 'Dial Value')}: {dial.dialValue}
-                      </Typography>
-                      <Slider
-                        value={dial.dialValue}
-                        onChange={(_event, value) => updateQuestDial(index, 'dialValue', sliderNumber(value))}
-                        min={0}
-                        max={10}
-                        marks
-                        valueLabelDisplay="auto"
-                      />
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </CardContent>
-      </Card>
-    );
-
-    const renderGuardiansTab = () => (
-      <Card className="card">
-        <CardContent>
-          <Typography variant="h6" className="card-header">
-            {t('fallOfAvalon.guardians.title', 'Guardians')}
-          </Typography>
-          <Grid container spacing={2}>
-            {state.guardians.map((guardian, index) => (
-              <Grid item xs={12} md={6} key={index}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="subtitle1" className="text-gold mb-2">
-                      {t(`fallOfAvalon.guardians.${index}`, `Guardian ${index + 1}`)}
-                    </Typography>
-                    <TextField
-                      fullWidth
-                      label={t('fallOfAvalon.guardians.location', 'Location')}
-                      value={guardian.location}
-                      onChange={(e) => updateGuardian(index, 'location', e.target.value)}
-                      size="small"
-                    />
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </CardContent>
-      </Card>
     );
 
     const renderPlayersTab = () => (
@@ -993,7 +871,7 @@ const FallOfAvalonCampaign = () => {
       );
     };
 
-    const renderRemovedLocationsTab = () => (
+    const renderRemovedLocationsPanel = () => (
       <Card className="card">
         <CardContent>
           <Typography variant="h6" className="card-header">
@@ -1039,7 +917,7 @@ const FallOfAvalonCampaign = () => {
       </Card>
     );
 
-    const renderPlayerNotesTab = () => (
+    const renderPlayerNotesPanel = () => (
       <Card className="card">
         <CardContent>
           <Typography variant="h6" className="card-header">
@@ -1123,17 +1001,11 @@ const FallOfAvalonCampaign = () => {
           value={activeTab}
           onChange={(e, newValue) => setActiveTab(newValue)}
           className="campaign-tabs"
-          variant="scrollable"
-          scrollButtons="auto"
+          variant="fullWidth"
         >
           <Tab label={t('fallOfAvalon.tracker.title', 'Tracker')} />
-          <Tab label={t('fallOfAvalon.menhirs.title', 'Menhirs')} />
-          <Tab label={t('fallOfAvalon.questDials.title', 'Quest Dials')} />
-          <Tab label={t('fallOfAvalon.guardians.title', 'Guardians')} />
           <Tab label={t('fallOfAvalon.players.title', 'Players')} />
           <Tab label={t('fallOfAvalon.statuses.title', 'Statuses')} />
-          <Tab label={t('fallOfAvalon.removedLocations.title', 'Removed Locations')} />
-          <Tab label={t('fallOfAvalon.playerNotes.title', 'Player Notes')} />
         </Tabs>
 
         <Box className="tab-content">
