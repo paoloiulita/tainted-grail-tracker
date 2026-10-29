@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button, Menu, MenuItem, ListItemIcon, Typography } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 import type { Language } from '../types';
@@ -10,6 +11,7 @@ interface LanguageSelectorProps {
 }
 
 const LanguageSelector = ({ language, onChange, open, onOpenChange }: LanguageSelectorProps) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const languages = [
     { code: 'en' as const, name: 'English', flag: '🇺🇸' },
     { code: 'it' as const, name: 'Italian', flag: '🇮🇹' }
@@ -20,7 +22,15 @@ const LanguageSelector = ({ language, onChange, open, onOpenChange }: LanguageSe
   return (
     <div className="language-selector">
       <Button
-        onClick={() => onOpenChange(!open)}
+        onClick={(event) => {
+          if (open) {
+            setAnchorEl(null);
+            onOpenChange(false);
+          } else {
+            setAnchorEl(event.currentTarget);
+            onOpenChange(true);
+          }
+        }}
         className="btn btn-secondary"
         startIcon={<LanguageIcon />}
       >
@@ -31,15 +41,22 @@ const LanguageSelector = ({ language, onChange, open, onOpenChange }: LanguageSe
       </Button>
 
       <Menu
+        anchorEl={anchorEl}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={open}
-        onClose={() => onOpenChange(false)}
+        onClose={() => {
+          setAnchorEl(null);
+          onOpenChange(false);
+        }}
       >
         {languages.map((lang) => (
           <MenuItem
             key={lang.code}
-            onClick={() => onChange(lang.code)}
+            onClick={() => {
+              onChange(lang.code);
+              setAnchorEl(null);
+            }}
             selected={lang.code === language}
           >
             <ListItemIcon>{lang.flag}</ListItemIcon>

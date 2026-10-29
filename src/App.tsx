@@ -25,7 +25,6 @@ const App = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [showSnapshotManager, setShowSnapshotManager] = useState(false);
-  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
 
   // Campaign selection handler
   const handleCampaignSelect = useCallback((campaignId: CampaignId) => {
@@ -39,7 +38,6 @@ const App = () => {
   const handleLanguageChange = useCallback((language: Language) => {
     i18n.changeLanguage(language);
     localStorage.setItem('preferred-language', language);
-    setLanguageMenuOpen(false);
   }, [i18n]);
 
   // Get current campaign component
@@ -67,11 +65,8 @@ const App = () => {
       <div className="app-container">
         <Header
           currentCampaign={currentCampaign}
-          onCampaignSelect={handleCampaignSelect}
           language={i18n.resolvedLanguage === 'it' ? 'it' : 'en'}
           onLanguageChange={handleLanguageChange}
-          languageMenuOpen={languageMenuOpen}
-          setLanguageMenuOpen={setLanguageMenuOpen}
           campaigns={campaigns}
           snapshots={snapshots}
           onToggleSnapshotManager={() => setShowSnapshotManager(!showSnapshotManager)}
