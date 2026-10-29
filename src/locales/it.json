@@ -129,11 +129,14 @@
     },
     "characters": {
       "title": "Personaggi",
+      "characterName": "Nome personaggio",
+      "playerName": "Nome giocatore",
+      "unnamed": "Personaggio {{number}}",
       "addCharacter": "Aggiungi personaggio",
       "editCharacter": "Modifica personaggio",
       "deleteCharacter": "Elimina personaggio",
       "confirmDeleteTitle": "Eliminare il personaggio?",
-      "confirmDelete": "Vuoi davvero eliminare {{name}}? Questa azione non può essere annullata.",
+      "confirmDelete": "Vuoi davvero eliminare {{characterName}}? Questa azione non può essere annullata.",
       "maximumCharacters": "Massimo 4 personaggi"
     },
     "attributes": {

@@ -53,8 +53,8 @@ export type CharacterAttribute = keyof CharacterAttributes;
 
 export interface Character {
   id: string;
-  name: string;
-  location: string;
+  characterName: string;
+  playerName: string;
   dial: number;
   health: number;
   energy: number;

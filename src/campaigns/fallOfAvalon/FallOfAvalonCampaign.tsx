@@ -46,25 +46,34 @@ const boundedCharacterStat = (value: string, maximum = 10) => {
   return Number.isNaN(parsedValue) ? 0 : Math.min(maximum, Math.max(0, parsedValue));
 };
 
-const normalizeCharacter = (character: Character): Character => ({
-  ...character,
-  health: Math.min(10, Math.max(0, character.health)),
-  energy: Math.min(10, Math.max(0, character.energy)),
-  terror: Math.min(10, Math.max(0, character.terror)),
-  experience: Math.min(10, Math.max(0, character.experience)),
-  reputation: Math.min(10, Math.max(0, character.reputation)),
-  magic: Math.min(10, Math.max(0, character.magic)),
-  food: Math.min(10, Math.max(0, character.food)),
-  wealth: Math.min(10, Math.max(0, character.wealth)),
-  attributes: {
-    aggression: Math.min(5, Math.max(0, character.attributes.aggression)),
-    caution: Math.min(5, Math.max(0, character.attributes.caution)),
-    courage: Math.min(5, Math.max(0, character.attributes.courage)),
-    empathy: Math.min(5, Math.max(0, character.attributes.empathy)),
-    practicality: Math.min(5, Math.max(0, character.attributes.practicality)),
-    spirituality: Math.min(5, Math.max(0, character.attributes.spirituality))
-  }
-});
+const normalizeCharacter = (character: Character): Character => {
+  const legacyName = 'name' in character && typeof character.name === 'string' ? character.name : '';
+  const legacyCharacterName = 'characterName' in character && typeof character.characterName === 'string'
+    ? character.characterName
+    : '';
+  return {
+    id: character.id,
+    characterName: legacyCharacterName || legacyName || 'Character',
+    playerName: character.playerName || legacyName,
+    dial: character.dial,
+    health: Math.min(10, Math.max(0, character.health)),
+    energy: Math.min(10, Math.max(0, character.energy)),
+    terror: Math.min(10, Math.max(0, character.terror)),
+    experience: Math.min(10, Math.max(0, character.experience)),
+    reputation: Math.min(10, Math.max(0, character.reputation)),
+    magic: Math.min(10, Math.max(0, character.magic)),
+    food: Math.min(10, Math.max(0, character.food)),
+    wealth: Math.min(10, Math.max(0, character.wealth)),
+    attributes: {
+      aggression: Math.min(5, Math.max(0, character.attributes.aggression)),
+      caution: Math.min(5, Math.max(0, character.attributes.caution)),
+      courage: Math.min(5, Math.max(0, character.attributes.courage)),
+      empathy: Math.min(5, Math.max(0, character.attributes.empathy)),
+      practicality: Math.min(5, Math.max(0, character.attributes.practicality)),
+      spirituality: Math.min(5, Math.max(0, character.attributes.spirituality))
+    }
+  };
+};
 
 const FallOfAvalonCampaign = () => {
   const { t } = useTranslation();
@@ -126,8 +135,8 @@ const FallOfAvalonCampaign = () => {
           characters: [
             {
               id: 'character-1',
-              name: 'Character 1',
-              location: '',
+              characterName: 'Character 1',
+              playerName: '',
               dial: 0,
               health: 10,
               energy: 10,
@@ -148,8 +157,8 @@ const FallOfAvalonCampaign = () => {
             },
             {
               id: 'character-2',
-              name: 'Character 2',
-              location: '',
+              characterName: 'Character 2',
+              playerName: '',
               dial: 0,
               health: 10,
               energy: 10,
@@ -170,8 +179,8 @@ const FallOfAvalonCampaign = () => {
             },
             {
               id: 'character-3',
-              name: 'Character 3',
-              location: '',
+              characterName: 'Character 3',
+              playerName: '',
               dial: 0,
               health: 10,
               energy: 10,
@@ -192,8 +201,8 @@ const FallOfAvalonCampaign = () => {
             },
             {
               id: 'character-4',
-              name: 'Character 4',
-              location: '',
+              characterName: 'Character 4',
+              playerName: '',
               dial: 0,
               health: 10,
               energy: 10,
@@ -421,8 +430,8 @@ const FallOfAvalonCampaign = () => {
 
       const newCharacter = {
         id: `character-${Date.now()}`,
-        name: `Character ${state.characters.length + 1}`,
-        location: '',
+        characterName: `Character ${state.characters.length + 1}`,
+        playerName: '',
         dial: 0,
         health: 10,
         energy: 10,
@@ -648,13 +657,16 @@ const FallOfAvalonCampaign = () => {
         </Box>
 
         <Grid container spacing={3}>
-          {state.characters.map((character) => (
+          {state.characters.map((character, index) => (
             <Grid item xs={12} md={6} lg={4} key={character.id}>
               <Card className="card character-card">
                 <CardContent className="character-card-content">
                   <Box className="character-card-header">
                     <Typography variant="h6" className="text-gold">
-                      {character.name}
+                      {character.characterName || t('fallOfAvalon.characters.unnamed', {
+                        number: index + 1,
+                        defaultValue: `Character ${index + 1}`
+                      })}
                     </Typography>
                     <Box className="character-actions">
                       <IconButton
@@ -676,18 +688,9 @@ const FallOfAvalonCampaign = () => {
 
                   <TextField
                     fullWidth
-                    label={t('fallOfAvalon.characterNotes.title', 'Name')}
-                    value={character.name}
-                    onChange={(e) => updateCharacter(character.id, 'name', e.target.value)}
-                    size="small"
-                    className="mb-2"
-                  />
-
-                  <TextField
-                    fullWidth
-                    label={t('fallOfAvalon.characterNotes.title', 'Location')}
-                    value={character.location}
-                    onChange={(e) => updateCharacter(character.id, 'location', e.target.value)}
+                    label={t('fallOfAvalon.characters.playerName', 'Player Name')}
+                    value={character.playerName}
+                    onChange={(e) => updateCharacter(character.id, 'playerName', e.target.value)}
                     size="small"
                     className="mb-2"
                   />
@@ -989,10 +992,10 @@ const FallOfAvalonCampaign = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label={t('fallOfAvalon.characterNotes.title', 'Name')}
-                  value={editCharacterDialog.character.name}
+                  label={t('fallOfAvalon.characters.characterName', 'Character Name')}
+                  value={editCharacterDialog.character.characterName}
                   onChange={(e) => setEditCharacterDialog(prev => prev.character
-                    ? { ...prev, character: { ...prev.character, name: e.target.value } }
+                    ? { ...prev, character: { ...prev.character, characterName: e.target.value } }
                     : prev
                   )}
                 />
@@ -1041,8 +1044,8 @@ const FallOfAvalonCampaign = () => {
         <DialogContent>
           <Typography id="delete-character-dialog-description" color="text.secondary">
             {t('fallOfAvalon.characters.confirmDelete', {
-              name: characterPendingDeletion?.name ?? '',
-              defaultValue: `Are you sure you want to delete ${characterPendingDeletion?.name ?? 'this character'}? This action cannot be undone.`
+              characterName: characterPendingDeletion?.characterName || '',
+              defaultValue: `Are you sure you want to delete ${characterPendingDeletion?.characterName || 'this character'}? This action cannot be undone.`
             })}
           </Typography>
         </DialogContent>

@@ -129,11 +129,14 @@
     },
     "characters": {
       "title": "Characters",
+      "characterName": "Character Name",
+      "playerName": "Player Name",
+      "unnamed": "Character {{number}}",
       "addCharacter": "Add Character",
       "editCharacter": "Edit Character",
       "deleteCharacter": "Delete Character",
       "confirmDeleteTitle": "Delete character?",
-      "confirmDelete": "Are you sure you want to delete {{name}}? This action cannot be undone.",
+      "confirmDelete": "Are you sure you want to delete {{characterName}}? This action cannot be undone.",
       "maximumCharacters": "Maximum 4 characters"
     },
     "attributes": {
