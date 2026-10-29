@@ -613,6 +613,46 @@ a,
   }
 }
 
+@media (max-width: 1000px) {
+  .campaign-tabs.MuiTabs-root {
+    overflow: visible;
+  }
+
+  .campaign-tabs .MuiTabs-scroller {
+    overflow: visible !important;
+  }
+
+  .campaign-tabs .MuiTabs-list {
+    flex-wrap: wrap;
+  }
+
+  .campaign-tabs .MuiTabs-indicator,
+  .campaign-tabs .MuiTabs-scrollButtons {
+    display: none;
+  }
+
+  .campaign-tabs .MuiTab-root {
+    flex: 0 0 25%;
+    max-width: 25%;
+    min-width: 0;
+    min-height: 56px;
+    padding: 8px 4px;
+    font-size: 0.72rem;
+    line-height: 1.2;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 884px) {
+  .campaign-tabs.MuiTabs-root {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .campaign-tabs .MuiTab-root.Mui-selected {
+    background: rgba(215, 183, 107, 0.08);
+  }
+}
+
 .mb-1 { margin-bottom: 4px !important; }
 .mb-2 { margin-bottom: 8px !important; }
 .mb-4 { margin-bottom: 16px !important; }
@@ -712,12 +752,6 @@ a,
     border-right: 0;
     border-left: 0;
     border-radius: 0;
-  }
-
-  .campaign-tabs .MuiTab-root {
-    min-width: auto;
-    padding-inline: 14px;
-    font-size: 0.78rem;
   }
 
   .snapshot-modal {
