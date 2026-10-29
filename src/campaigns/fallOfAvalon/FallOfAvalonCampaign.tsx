@@ -42,6 +42,7 @@ const FallOfAvalonCampaign = () => {
   const { setCampaign } = useCampaign();
   const [state, setState] = useState<CampaignState | null>(null);
   const [activeTab, setActiveTab] = useState(0);
+  const [focusedMenhirIndex, setFocusedMenhirIndex] = useState<number | null>(null);
   const [editPlayerDialog, setEditPlayerDialog] = useState<{ open: boolean; player: Player | null }>({
     open: false,
     player: null
@@ -490,17 +491,23 @@ const FallOfAvalonCampaign = () => {
                 {t('fallOfAvalon.menhirs.title', 'Menhirs')}
               </Typography>
               {state.menhirs.map((menhir, index) => (
-                <Grid container spacing={2} key={index} className="mb-2">
+                <Grid container spacing={2} alignItems="center" key={index} className="mb-2">
                   <Grid item xs={4}>
                     <TextField
                       fullWidth
-                      label={t('fallOfAvalon.menhirs.0', `Menhir ${index + 1}`)}
+                      label={
+                        focusedMenhirIndex === index || menhir.location
+                          ? t(`fallOfAvalon.menhirs.${index}`, `Menhir ${index + 1}`)
+                          : t('fallOfAvalon.menhirs.location', 'Location')
+                      }
                       value={menhir.location}
                       onChange={(e) => updateMenhir(index, 'location', e.target.value)}
+                      onFocus={() => setFocusedMenhirIndex(index)}
+                      onBlur={() => setFocusedMenhirIndex(null)}
                       size="small"
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
                     <TextField
                       fullWidth
                       label={t('fallOfAvalon.menhirs.dialValue', 'Dial Value')}
@@ -510,7 +517,7 @@ const FallOfAvalonCampaign = () => {
                       size="small"
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={5} className="dial-slider-grid">
                     <Slider
                       value={menhir.dialValue}
                       onChange={(_event, value) => updateMenhir(index, 'dialValue', sliderNumber(value))}
@@ -534,7 +541,7 @@ const FallOfAvalonCampaign = () => {
                 {t('fallOfAvalon.questDials.title', 'Quest Dials')}
               </Typography>
               {state.questDials.map((dial, index) => (
-                <Grid container spacing={2} key={index} className="mb-2">
+                <Grid container spacing={2} alignItems="center" key={index} className="mb-2">
                   <Grid item xs={4}>
                     <TextField
                       fullWidth
@@ -544,7 +551,7 @@ const FallOfAvalonCampaign = () => {
                       size="small"
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
                     <TextField
                       fullWidth
                       label={t('fallOfAvalon.questDials.dialValue', 'Dial Value')}
@@ -554,7 +561,7 @@ const FallOfAvalonCampaign = () => {
                       size="small"
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={5} className="dial-slider-grid">
                     <Slider
                       value={dial.dialValue}
                       onChange={(_event, value) => updateQuestDial(index, 'dialValue', sliderNumber(value))}
@@ -877,7 +884,7 @@ const FallOfAvalonCampaign = () => {
                   {(Object.entries(player.attributes) as Array<[PlayerAttribute, number]>).map(([attr, value]) => (
                     <Box key={attr} className="attribute-row">
                       <Grid container alignItems="center" spacing={1} className="mb-1">
-                        <Grid item xs={4}>
+                        <Grid item xs={5} className="dial-slider-grid">
                           <Typography variant="body2">
                             <img
                               className="attribute-icon"

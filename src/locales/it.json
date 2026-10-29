@@ -96,7 +96,7 @@
     },
     "menhirs": {
       "title": "Menhirs",
-      "location": "Location",
+      "location": "Luogo",
       "dialValue": "Dial Value",
       "0": "Menhir 1",
       "1": "Menhir 2",

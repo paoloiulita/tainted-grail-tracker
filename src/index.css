@@ -391,6 +391,15 @@ a,
   color: #e6ca83;
 }
 
+.dial-slider-grid.MuiGrid-item {
+  display: flex;
+  align-items: center;
+}
+
+.dial-slider-grid .MuiSlider-root {
+  margin: 0;
+}
+
 .tab-content > .MuiCard-root,
 .card.MuiCard-root {
   overflow: hidden;
