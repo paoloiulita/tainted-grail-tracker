@@ -879,6 +879,15 @@ const FallOfAvalonCampaign = () => {
                       <Grid container alignItems="center" spacing={1} className="mb-1">
                         <Grid item xs={4}>
                           <Typography variant="body2">
+                            <img
+                              className="attribute-icon"
+                              src={`${import.meta.env.BASE_URL}assets/attribute-icons/${attr}.svg`}
+                              alt=""
+                              aria-hidden="true"
+                              onError={(event) => {
+                                event.currentTarget.hidden = true;
+                              }}
+                            />
                             {t(`fallOfAvalon.attributes.${attr}`, attr.charAt(0).toUpperCase() + attr.slice(1))}
                           </Typography>
                         </Grid>

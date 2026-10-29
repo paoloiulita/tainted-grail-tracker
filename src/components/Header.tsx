@@ -33,8 +33,12 @@ const Header = ({
     <header className="header">
       <div className="header-content">
         <div className="logo-section">
-          <h1 className="app-title">Tainted Grail</h1>
-          <span className="app-subtitle">Save Sheet Tracker</span>
+          <img
+            className="app-logo"
+            src={`${import.meta.env.BASE_URL}assets/tainted-grail-logo-large.webp`}
+            alt="Tainted Grail"
+          />
+          <span className="app-subtitle">Save sheet tracker</span>
         </div>
 
         <div className="header-middle">
