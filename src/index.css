@@ -476,6 +476,22 @@ a,
   gap: 4px;
 }
 
+.character-stat-health .MuiOutlinedInput-root {
+  background-color: rgba(239, 68, 68, 0.12);
+}
+
+.character-stat-energy .MuiOutlinedInput-root {
+  background-color: rgba(34, 197, 94, 0.12);
+}
+
+.character-stat-terror .MuiOutlinedInput-root {
+  background-color: rgba(168, 85, 247, 0.12);
+}
+
+.character-stat-experience .MuiOutlinedInput-root {
+  background-color: rgba(56, 189, 248, 0.12);
+}
+
 .attribute-row {
   padding: 10px 12px;
   border-radius: 0;

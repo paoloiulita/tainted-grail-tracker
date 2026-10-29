@@ -706,6 +706,7 @@ const FallOfAvalonCampaign = () => {
                     <Grid item xs={6}>
                       <TextField
                         fullWidth
+                        className="character-stat-health"
                         label="Health"
                         type="number"
                         inputProps={{ min: 0, max: 10, step: 1 }}
@@ -717,6 +718,7 @@ const FallOfAvalonCampaign = () => {
                     <Grid item xs={6}>
                       <TextField
                         fullWidth
+                        className="character-stat-energy"
                         label="Energy"
                         type="number"
                         inputProps={{ min: 0, max: 10, step: 1 }}
@@ -731,6 +733,7 @@ const FallOfAvalonCampaign = () => {
                     <Grid item xs={6}>
                       <TextField
                         fullWidth
+                        className="character-stat-terror"
                         label="Terror"
                         type="number"
                         inputProps={{ min: 0, max: 10, step: 1 }}
@@ -742,6 +745,7 @@ const FallOfAvalonCampaign = () => {
                     <Grid item xs={6}>
                       <TextField
                         fullWidth
+                        className="character-stat-experience"
                         label="Experience"
                         type="number"
                         inputProps={{ min: 0, max: 10, step: 1 }}
