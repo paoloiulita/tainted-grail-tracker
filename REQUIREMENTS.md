@@ -36,7 +36,7 @@ Please structure the application state, project folders, and core components to 
 2. **Responsive Design:** Fully responsive layout optimized for tablets and smartphones, allowing players to use a mobile device comfortably at the gaming table.
 3. **Project Structure & Files:**
    - Provide the complete folder structure and modular component files (`components/`, `hooks/`, `styles/`, etc.).
-   - Configure `vite.config.js` with the correct `base` path for GitHub Pages.
+   - Configure `vite.config.ts` with the correct `base` path for GitHub Pages.
    - Provide the exact GitHub Actions workflow YAML file inside `.github/workflows/` to handle building and deploying to GitHub Pages automatically.
 4. **Game State History & Saved Snapshots**
 	- Manual Save / Snapshot System: Provide a prominent "Save" button that captures a complete snapshot of the current game state at that exact moment.
