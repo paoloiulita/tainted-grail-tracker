@@ -1,0 +1,227 @@
+{
+  "campaigns": {
+    "fallOfAvalon": {
+      "name": "Fall of Avalon",
+      "description": "The first campaign in the Tainted Grail series, following the quest for the Holy Grail in medieval England"
+    },
+    "lastKnight": {
+      "name": "Last Knight",
+      "description": "A standalone campaign focusing on the final orders of the Round Table"
+    },
+    "ageOfLegends": {
+      "name": "Age of Legends",
+      "description": "An epic saga spanning the entire history of the Grail world"
+    },
+    "redDeath": {
+      "name": "Red Death",
+      "description": "A dark campaign set during the height of the Plague"
+    },
+    "kingsOfRuin": {
+      "name": "Kings of Ruin",
+      "description": "Post-apocalyptic adventures in a world shattered by war"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "restore": "Restore",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous",
+    "select": "Select",
+    "selected": "Selected",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "error": "Error",
+    "warning": "Warning",
+    "success": "Success",
+    "search": "Search",
+    "clear": "Clear",
+    "saveChanges": "Save Changes",
+    "discardChanges": "Discard Changes",
+    "unsavedChanges": "You have unsaved changes",
+    "confirmExit": "Are you sure you want to leave? Unsaved changes will be lost.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "edit": "Edit",
+    "done": "Done",
+    "add": "Add",
+    "remove": "Remove",
+    "editItem": "Edit Item",
+    "deleteItem": "Delete Item"
+  },
+  "header": {
+    "campaign": "Campaign",
+    "language": "Language",
+    "saveHistory": "Save History",
+    "currentCampaign": "Current Campaign"
+  },
+  "home": {
+    "title": "Select Campaign",
+    "subtitle": "Choose a campaign to begin your Tainted Grail adventure"
+  },
+  "campaigns": {
+    "select": "Select Campaign...",
+    "selectToBegin": "Select a campaign to begin...",
+    "placeholder": "This campaign is under development.",
+    "comingSoon": "Coming soon!",
+    "selected": "Selected",
+    "implemented": "Implemented",
+    "placeholder": "Placeholder",
+    "planned": "Planned"
+  },
+  "snapshots": {
+    "title": "Save History",
+    "createNew": "Create New Save",
+    "save": "Save",
+    "namePlaceholder": "Enter save name...",
+    "list": "Save Files",
+    "empty": "No save files found.",
+    "searchPlaceholder": "Search saves...",
+    "confirmRestore": "Are you sure you want to restore this save? This will overwrite the current game state.",
+    "confirmDelete": "Are you sure you want to delete this save? This action cannot be undone.",
+    "successSave": "Save created successfully",
+    "successRestore": "Save restored successfully",
+    "successDelete": "Save deleted successfully"
+  },
+  "fallOfAvalon": {
+    "tracker": {
+      "campaign": "Campaign",
+      "chapter": "Chapter",
+      "day": "Day"
+    },
+    "menhirs": {
+      "title": "Menhirs",
+      "location": "Location",
+      "dialValue": "Dial Value",
+      "0": "Menhir 1",
+      "1": "Menhir 2",
+      "2": "Menhir 3"
+    },
+    "questDials": {
+      "title": "Quest Dials",
+      "location": "Location",
+      "dialValue": "Dial Value",
+      "0": "Quest Dial 1",
+      "1": "Quest Dial 2"
+    },
+    "guardians": {
+      "title": "Guardians",
+      "location": "Location",
+      "0": "Guardian 1",
+      "1": "Guardian 2"
+    },
+    "playerNotes": {
+      "title": "Player Notes",
+      "placeholder": "Enter notes about your campaign..."
+    },
+    "players": {
+      "title": "Players",
+      "addPlayer": "Add Player",
+      "editPlayer": "Edit Player",
+      "deletePlayer": "Delete Player"
+    },
+    "attributes": {
+      "aggression": "Aggression",
+      "caution": "Caution",
+      "courage": "Courage",
+      "empathy": "Empathy",
+      "practicality": "Practicality",
+      "spirituality": "Spirituality"
+    },
+    "statuses": {
+      "Allies of Avalon": { "steps": 5 },
+      "Black Cauldron": { "steps": 3 },
+      "Burning Mystery": { "steps": 8 },
+      "Call from Beyond": { "steps": 1 },
+      "Charred Knowledge": { "steps": 1 },
+      "Cherished Belongings": { "steps": 1 },
+      "Cold Pyre": { "steps": 1 },
+      "Cosuil": { "steps": 5 },
+      "Deal Breaker": { "steps": 1 },
+      "Deep Secret": { "steps": 1 },
+      "Diplomat": { "steps": 3 },
+      "Diplomatic Mission": { "steps": 6 },
+      "Disturbing Information": { "steps": 3 },
+      "Dreams and Prophecies": { "steps": 8 },
+      "Enemies of Avalon": { "steps": 3 },
+      "Escalation": { "steps": 3 },
+      "Fael's Legacy": { "steps": 1 },
+      "Fall of Chivalry": { "steps": 8 },
+      "Farpoint Clues": { "steps": 5 },
+      "Fate of the Expedition": { "steps": 9 },
+      "Final Confrontations": { "steps": 7 },
+      "Final Lesson": { "steps": 5 },
+      "Fortunate Meetings": { "steps": 5 },
+      "Gerraint's Successor": { "steps": 3 },
+      "Glen Ritual": { "steps": 2 },
+      "Guest of Honor": { "steps": 1 },
+      "Halfway Intrigue": { "steps": 3 },
+      "Helping Hand": { "steps": 6 },
+      "Helping the Knights": { "steps": 1 },
+      "Hidden Treasures": { "steps": 8 },
+      "Hunter's Mark": { "steps": 1 },
+      "Lady's Task": { "steps": 1 },
+      "Last Haven": { "steps": 5 },
+      "Left Behind": { "steps": 9 },
+      "Lost and Fallen": { "steps": 7 },
+      "Maggot's Redemption": { "steps": 1 },
+      "Matricide": { "steps": 1 },
+      "Monastery Discovered": { "steps": 1 },
+      "Moonring Mission": { "steps": 1 },
+      "Morgaine's Task": { "steps": 1 },
+      "Mourning Song": { "steps": 2 },
+      "Mystery Solved": { "steps": 1 },
+      "Pathfinder": { "steps": 8 },
+      "Peace in Borough": { "steps": 1 },
+      "People's Champion": { "steps": 1 },
+      "Pillager": { "steps": 5 },
+      "Reclamation": { "steps": 1 },
+      "Remedy": { "steps": 4 },
+      "Remnants": { "steps": 5 },
+      "Restoring the Order": { "steps": 8 },
+      "End of the Road": { "steps": 1 },
+      "Riddle of the Oldsteel": { "steps": 1 },
+      "Saved by the Goddess": { "steps": 1 },
+      "Scrounger": { "steps": 1 },
+      "Secrets of the Forest": { "steps": 4 },
+      "Shelter in the Storm": { "steps": 1 },
+      "Shrine Secure": { "steps": 1 },
+      "Something is Watching": { "steps": 1 },
+      "Stonemason's Secret": { "steps": 1 },
+      "Strange Encounters": { "steps": 8 },
+      "Supplying the Revolt": { "steps": 1 },
+      "Tangleroot Knowledge": { "steps": 2 },
+      "Traveling Menhir": { "steps": 2 },
+      "Tuathan Exploration": { "steps": 5 },
+      "Underfern": { "steps": 5 },
+      "War for Avalon": { "steps": 4 },
+      "Winds of Wyrdness": { "steps": 1 }
+    },
+    "removedLocations": {
+      "title": "Removed Locations",
+      "boxPlaceholder": "Box"
+    }
+  },
+  "ui": {
+    "grid": "Grid",
+    "list": "List",
+    "expandAll": "Expand All",
+    "collapseAll": "Collapse All",
+    "showCompleted": "Show Completed",
+    "hideCompleted": "Hide Completed",
+    "filter": "Filter",
+    "sort": "Sort",
+    "export": "Export",
+    "import": "Import",
+    "preview": "Preview",
+    "saveAs": "Save As",
+    "version": "Version",
+    "created": "Created",
+    "lastModified": "Last Modified"
+  }
+}
