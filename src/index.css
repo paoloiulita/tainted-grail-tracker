@@ -225,6 +225,20 @@ a,
   justify-content: flex-start;
 }
 
+.snapshot-manager-button .MuiButton-root {
+  position: relative;
+}
+
+.snapshot-manager-button .snapshot-count-badge {
+  position: static;
+}
+
+.snapshot-manager-button .snapshot-count-badge .MuiBadge-badge {
+  top: 0;
+  right: 0;
+  transform: translate(35%, -35%);
+}
+
 .current-campaign-info {
   display: flex;
   flex-direction: column;

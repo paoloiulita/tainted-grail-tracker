@@ -17,7 +17,12 @@ const SnapshotManagerButton = ({ onClick, snapshotCount }: SnapshotManagerButton
         className="btn btn-secondary"
         startIcon={<HistoryIcon />}
       >
-        <Badge badgeContent={snapshotCount} color="primary" sx={{ ml: 1 }}>
+        <Badge
+          badgeContent={snapshotCount}
+          color="primary"
+          className="snapshot-count-badge"
+          sx={{ ml: 1 }}
+        >
           {snapshotCount > 0 && <SaveIcon sx={{ fontSize: 16, mr: 1 }} />}
         </Badge>
         <span>{t('snapshots.title', 'Save History')}</span>
