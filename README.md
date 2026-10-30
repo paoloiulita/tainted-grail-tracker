@@ -1,5 +1,9 @@
 # Tainted Grail Save Sheet Tracker
 
+<p align="center">
+  <img src="./public/assets/tainted-grail-logo-large.webp" alt="Tainted Grail" width="360">
+</p>
+
 A responsive digital save sheet for tracking a *Tainted Grail* campaign during play.
 
 > **Published application:** [Tainted Grail Save Sheet Tracker](https://paoloiulita.github.io/tainted-grail-tracker/)
@@ -12,6 +16,10 @@ A responsive digital save sheet for tracking a *Tainted Grail* campaign during p
 - Save History supports named snapshots, restore, and delete.
 - Offline Backup downloads all local storage entries as JSON and can import a validated backup. Import replaces all local storage for this site in the current browser and should be treated as destructive.
 - The layout supports desktop, tablet, and mobile screens.
+
+## Asset notice
+
+All *Tainted Grail* game artwork, logos, character images, and other game-related assets used in this project are the property of Awaken Realms. This project is an unofficial fan-made tool and is not affiliated with or endorsed by Awaken Realms.
 
 ## Fall of Avalon tracker
 
