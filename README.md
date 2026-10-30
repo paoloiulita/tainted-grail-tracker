@@ -86,4 +86,4 @@ See [CONTRIBUTORS.md](./CONTRIBUTORS.md) for development and contribution guidan
 
 ## License
 
-This project is released under the [Unlicense](./LICENSE).
+The application source code is released under the [MIT License](./LICENSE). Third-party assets, including *Tainted Grail* artwork and logos, are excluded and remain the property of their respective owners.

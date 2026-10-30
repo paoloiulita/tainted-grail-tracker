@@ -74,4 +74,4 @@ Keep changes focused, follow existing naming and formatting, and include tests f
 
 ## License
 
-Contributions are subject to the [Unlicense](./LICENSE).
+Contributions to the application source code are subject to the [MIT License](./LICENSE). Third-party assets are excluded and remain the property of their respective owners.
