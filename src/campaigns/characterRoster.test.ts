@@ -1,7 +1,37 @@
 import { describe, expect, it } from 'vitest';
-import { CHARACTER_ROSTERS } from './characterRoster';
+import {
+  CHARACTER_DISPLAY_COLORS,
+  CHARACTER_ROSTERS,
+  getCharacterDisplayColor
+} from './characterRoster';
 
 describe('character rosters', () => {
+  it('assigns a display color to every character independently of campaign and localization', () => {
+    expect(CHARACTER_DISPLAY_COLORS).toEqual({
+      Beor: 'blue',
+      Ailei: 'green',
+      Arev: 'grey',
+      Maggot: 'brown',
+      Niamh: 'red',
+      Mabd: 'brown',
+      Dagan: 'blue',
+      Sloan: 'grey',
+      Fyul: 'green',
+      Naazer: 'green',
+      Thebalt: 'grey',
+      Caolin: 'blue',
+      Duana: 'brown',
+      Gerdwyn: 'blue',
+      Elgan: 'blue',
+      Iunis: 'blue',
+      Osbert: 'blue'
+    });
+  });
+
+  it('uses blue for unknown legacy character names', () => {
+    expect(getCharacterDisplayColor('Unknown')).toBe('blue');
+  });
+
   it('matches the characters available in each campaign', () => {
     expect(CHARACTER_ROSTERS).toEqual({
       fallOfAvalon: ['Beor', 'Ailei', 'Arev', 'Maggot', 'Niamh'],

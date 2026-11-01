@@ -9,7 +9,7 @@ import { CAMPAIGN_REGISTRY, useAppState } from '../../hooks/useAppState';
 import { useCampaign } from '../../contexts/CampaignContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import CharacterNotesEditor from '../../components/CharacterNotesEditor';
-import { CHARACTER_ROSTERS, type CharacterName } from '../characterRoster';
+import { getCharacterDisplayColor, CHARACTER_ROSTERS, type CharacterName } from '../characterRoster';
 import {
   FALL_OF_AVALON_REMOVED_LOCATION_COUNT,
   FALL_OF_AVALON_STATUS_DEFINITIONS
@@ -520,7 +520,7 @@ const FallOfAvalonCampaign = () => {
                 <Box
                   className="character-nameplate"
                   style={{
-                    backgroundImage: `url("${import.meta.env.BASE_URL}assets/characters/display/blue.png")`
+                    backgroundImage: `url("${import.meta.env.BASE_URL}assets/characters/display/${getCharacterDisplayColor(character.characterName)}.png")`
                   }}
                 >
                   <Typography variant="h6">
