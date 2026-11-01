@@ -28,11 +28,22 @@ export type CampaignIdentity = Pick<CampaignInfo, 'id' | 'name'> &
 
 export interface Menhir {
   location: string;
+  dialValue?: number;
+  markers?: string;
+}
+
+export interface QuestDial {
+  location: string;
   dialValue: number;
 }
 
 export interface Guardian {
   location: string;
+}
+
+export interface EnemyArmy {
+  location: string;
+  units: string;
 }
 
 export interface CharacterAttributes {
@@ -79,8 +90,9 @@ export interface RemovedLocation {
 export interface CampaignState {
   campaign: CampaignInfo;
   menhirs: Menhir[];
-  questDials: Menhir[];
+  questDials: QuestDial[];
   guardians: Guardian[];
+  enemyArmies?: EnemyArmy[];
   characterNotes: string;
   characters: Character[];
   statuses: Record<string, CampaignStatusProgress>;

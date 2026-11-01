@@ -5,23 +5,48 @@ import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { CAMPAIGN_REGISTRY, useAppState } from '../../hooks/useAppState';
-import { useCampaign } from '../../contexts/CampaignContext';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import CharacterNotesEditor from '../../components/CharacterNotesEditor';
-import { getCharacterDisplayColor, CHARACTER_ROSTERS, type CharacterName } from '../characterRoster';
+import { CAMPAIGN_REGISTRY, useAppState } from '../hooks/useAppState';
+import { useCampaign } from '../contexts/CampaignContext';
+import LoadingSpinner from '../components/LoadingSpinner';
+import CharacterNotesEditor from '../components/CharacterNotesEditor';
+import { getCharacterDisplayColor, CHARACTER_ROSTERS, type CharacterName } from './characterRoster';
+import {
+  AGE_OF_LEGENDS_REMOVED_LOCATION_COUNT,
+  AGE_OF_LEGENDS_STATUS_DEFINITIONS
+} from './ageOfLegends/statusDefinitions';
 import {
   FALL_OF_AVALON_REMOVED_LOCATION_COUNT,
   FALL_OF_AVALON_STATUS_DEFINITIONS
-} from './statusDefinitions';
+} from './fallOfAvalon/statusDefinitions';
 import type {
+  CampaignId,
+  CampaignStatusDefinition,
   CampaignState,
+  EnemyArmy,
   Guardian,
   Menhir,
   Character,
   CharacterAttribute,
+  QuestDial,
   RemovedLocation
-} from '../../types';
+} from '../types';
+
+type TrackerCampaignId = Extract<CampaignId, 'fallOfAvalon' | 'ageOfLegends'>;
+
+const STATUS_DEFINITIONS: Record<TrackerCampaignId, Record<string, CampaignStatusDefinition>> = {
+  fallOfAvalon: FALL_OF_AVALON_STATUS_DEFINITIONS,
+  ageOfLegends: AGE_OF_LEGENDS_STATUS_DEFINITIONS
+};
+
+const REMOVED_LOCATION_COUNTS: Record<TrackerCampaignId, number> = {
+  fallOfAvalon: FALL_OF_AVALON_REMOVED_LOCATION_COUNT,
+  ageOfLegends: AGE_OF_LEGENDS_REMOVED_LOCATION_COUNT
+};
+
+const CAMPAIGN_BACKGROUNDS: Record<TrackerCampaignId, string> = {
+  fallOfAvalon: 'fall-of-avalon-cover.webp',
+  ageOfLegends: 'age-of-legends-cover.webp'
+};
 
 function isCampaignState(value: unknown): value is CampaignState {
   if (typeof value !== 'object' || value === null) {
@@ -51,10 +76,11 @@ const boundedCharacterStat = (value: string, maximum = 10) => {
 };
 
 const normalizeStatuses = (
-  savedStatuses: CampaignState['statuses']
+  savedStatuses: CampaignState['statuses'],
+  definitions: Record<string, CampaignStatusDefinition>
 ): CampaignState['statuses'] => {
   const statuses: CampaignState['statuses'] = {};
-  Object.keys(FALL_OF_AVALON_STATUS_DEFINITIONS).forEach((statusName) => {
+  Object.keys(definitions).forEach((statusName) => {
     statuses[statusName] = {
       completed: savedStatuses[statusName]?.completed ?? []
     };
@@ -91,8 +117,20 @@ const normalizeCharacter = (character: Character): Character => {
   };
 };
 
-const FallOfAvalonCampaign = () => {
-  const { t } = useTranslation();
+interface CampaignTrackerProps {
+  campaignId: TrackerCampaignId;
+}
+
+const CampaignTracker = ({ campaignId }: CampaignTrackerProps) => {
+  const { t: translate } = useTranslation();
+  const campaignTranslationKey = (key: string) =>
+    key.replace(/^fallOfAvalon\./, `${campaignId}.`);
+  const t = (key: string, defaultValue?: string) => {
+    const localizedKey = campaignTranslationKey(key);
+    return defaultValue === undefined
+      ? translate(localizedKey)
+      : translate(localizedKey, defaultValue);
+  };
   const { getCampaignState, updateCampaignState } = useAppState();
   const { setCampaign } = useCampaign();
   const [state, setState] = useState<CampaignState | null>(null);
@@ -101,6 +139,8 @@ const FallOfAvalonCampaign = () => {
   const [addCharacterDialogOpen, setAddCharacterDialogOpen] = useState(false);
   const [selectedCharacterName, setSelectedCharacterName] = useState('');
   const [characterPendingDeletion, setCharacterPendingDeletion] = useState<Character | null>(null);
+  const statusDefinitions = STATUS_DEFINITIONS[campaignId];
+  const removedLocationCount = REMOVED_LOCATION_COUNTS[campaignId];
   const updateState = (updater: (current: CampaignState) => CampaignState) => {
     setState((current) => current ? updater(current) : current);
   };
@@ -108,56 +148,75 @@ const FallOfAvalonCampaign = () => {
   // Load campaign state
   useEffect(() => {
     const loadState = () => {
-      const savedState = getCampaignState('fallOfAvalon');
-      if (savedState !== null) {
-        if (!isCampaignState(savedState)) {
-          throw new Error('Stored Fall of Avalon campaign data has an invalid shape.');
-        }
-        setState({
-          ...savedState,
-          characters: savedState.characters.map(normalizeCharacter),
-          statuses: normalizeStatuses(savedState.statuses),
-          removedLocations: Array.from(
-            { length: FALL_OF_AVALON_REMOVED_LOCATION_COUNT },
-            (_, index) => savedState.removedLocations[index] ?? { box1: '', box2: '' }
-          )
-        });
-        return;
+      const campaignDefinition = CAMPAIGN_REGISTRY[campaignId];
+      const defaultState = campaignDefinition.defaultState;
+      if (!isCampaignState(defaultState)) {
+        throw new Error(`${campaignDefinition.name} campaign default has an invalid shape.`);
       }
 
-      const defaultState = CAMPAIGN_REGISTRY.fallOfAvalon.defaultState;
-      if (!isCampaignState(defaultState)) {
-        throw new Error('Fall of Avalon campaign default has an invalid shape.');
+      const savedState = getCampaignState(campaignId);
+      const isUninitializedPlaceholder = savedState !== null && Object.keys(savedState).length === 0;
+      const sourceState = savedState !== null && !isUninitializedPlaceholder ? savedState : defaultState;
+
+      if (!isCampaignState(sourceState)) {
+        throw new Error(`Stored ${campaignDefinition.name} campaign data has an invalid shape.`);
       }
-      setState(defaultState);
-      updateCampaignState('fallOfAvalon', defaultState);
+
+      const normalizedState: CampaignState = {
+        ...sourceState,
+        menhirs: Array.from({ length: defaultState.menhirs.length }, (_, index) => {
+          const menhir = sourceState.menhirs[index] ?? defaultState.menhirs[index];
+          return campaignId === 'ageOfLegends'
+            ? { location: menhir.location, markers: menhir.markers ?? '' }
+            : { location: menhir.location, dialValue: menhir.dialValue ?? 0 };
+        }),
+        characters: sourceState.characters.map(normalizeCharacter),
+        statuses: normalizeStatuses(sourceState.statuses, statusDefinitions),
+        removedLocations: Array.from(
+          { length: removedLocationCount },
+          (_, index) => sourceState.removedLocations[index] ?? { box1: '', box2: '' }
+        ),
+        ...(campaignId === 'ageOfLegends'
+          ? {
+              enemyArmies: Array.from(
+                { length: 1 },
+                (_, index) => sourceState.enemyArmies?.[index] ?? { location: '', units: '' }
+              )
+            }
+          : {})
+      };
+
+      setState(normalizedState);
+      if (savedState === null || isUninitializedPlaceholder) {
+        updateCampaignState(campaignId, normalizedState);
+      }
     };
 
     loadState();
-  }, [getCampaignState, updateCampaignState]);
+  }, [campaignId, getCampaignState, removedLocationCount, statusDefinitions, updateCampaignState]);
 
   // Save state to localStorage when it changes
   useEffect(() => {
     if (state) {
-      updateCampaignState('fallOfAvalon', state);
+      updateCampaignState(campaignId, state);
     }
-  }, [state, updateCampaignState]);
+  }, [campaignId, state, updateCampaignState]);
 
   // Update campaign info when component mounts
   useEffect(() => {
     setCampaign({
-      id: 'fallOfAvalon',
-      name: 'Fall of Avalon',
+      id: campaignId,
+      name: CAMPAIGN_REGISTRY[campaignId].name,
       chapter: state?.campaign?.chapter || 1,
       day: state?.campaign?.day || 1
     });
-  }, [state, setCampaign]);
+  }, [campaignId, state, setCampaign]);
 
   if (!state) {
     return <LoadingSpinner message={t('common.loading', 'Loading...')} />;
   }
 
-  const availableCharacterNames = CHARACTER_ROSTERS.fallOfAvalon.filter(
+  const availableCharacterNames = CHARACTER_ROSTERS[campaignId].filter(
     characterName => !state.characters.some(character => character.characterName === characterName)
   );
 
@@ -183,11 +242,20 @@ const FallOfAvalonCampaign = () => {
     };
 
     // Quest dial handlers
-    const updateQuestDial = <K extends keyof Menhir>(index: number, field: K, value: Menhir[K]) => {
+    const updateQuestDial = <K extends keyof QuestDial>(index: number, field: K, value: QuestDial[K]) => {
       updateState(prev => ({
         ...prev,
         questDials: prev.questDials.map((dial, i) =>
           i === index ? { ...dial, [field]: value } : dial
+        )
+      }));
+    };
+
+    const updateEnemyArmy = <K extends keyof EnemyArmy>(index: number, field: K, value: EnemyArmy[K]) => {
+      updateState(prev => ({
+        ...prev,
+        enemyArmies: (prev.enemyArmies ?? []).map((army, i) =>
+          i === index ? { ...army, [field]: value } : army
         )
       }));
     };
@@ -263,7 +331,7 @@ const FallOfAvalonCampaign = () => {
     };
 
     const addCharacter = (characterName: CharacterName) => {
-      if (!CHARACTER_ROSTERS.fallOfAvalon.includes(characterName)) {
+      if (!CHARACTER_ROSTERS[campaignId].includes(characterName)) {
         return;
       }
 
@@ -367,47 +435,106 @@ const FallOfAvalonCampaign = () => {
               </Typography>
               {state.menhirs.map((menhir, index) => (
                 <Grid container spacing={2} alignItems="center" key={index} className="mb-2">
-                  <Grid item xs={4}>
-                    <TextField
-                      fullWidth
-                      label={
-                        focusedMenhirIndex === index || menhir.location
-                          ? t(`fallOfAvalon.menhirs.${index}`, `Menhir ${index + 1}`)
-                          : t('fallOfAvalon.menhirs.location', 'Location')
-                      }
-                      value={menhir.location}
-                      onChange={(e) => updateMenhir(index, 'location', e.target.value)}
-                      onFocus={() => setFocusedMenhirIndex(index)}
-                      onBlur={() => setFocusedMenhirIndex(null)}
-                      size="small"
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <TextField
-                      fullWidth
-                      label={t('fallOfAvalon.menhirs.dialValue', 'Dial Value')}
-                      type="number"
-                      value={menhir.dialValue}
-                      onChange={(e) => updateMenhir(index, 'dialValue', parseInt(e.target.value) || 0)}
-                      size="small"
-                    />
-                  </Grid>
-                  <Grid item xs={5} className="dial-slider-grid">
-                    <Slider
-                      value={menhir.dialValue}
-                      onChange={(_event, value) => updateMenhir(index, 'dialValue', sliderNumber(value))}
-                      min={0}
-                      max={10}
-                      size="small"
-                      marks
-                      valueLabelDisplay="auto"
-                    />
-                  </Grid>
+                  {campaignId === 'ageOfLegends' ? (
+                    <>
+                      <Grid item xs={6}>
+                        <TextField
+                          fullWidth
+                          label={t('fallOfAvalon.menhirs.location', 'Location')}
+                          value={menhir.location}
+                          onChange={(e) => updateMenhir(index, 'location', e.target.value)}
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          fullWidth
+                          label={t('ageOfLegends.menhirs.markers', 'Markers')}
+                          value={menhir.markers ?? ''}
+                          onChange={(e) => updateMenhir(index, 'markers', e.target.value)}
+                          size="small"
+                        />
+                      </Grid>
+                    </>
+                  ) : (
+                    <>
+                      <Grid item xs={4}>
+                        <TextField
+                          fullWidth
+                          label={
+                            focusedMenhirIndex === index || menhir.location
+                              ? t(`fallOfAvalon.menhirs.${index}`, `Menhir ${index + 1}`)
+                              : t('fallOfAvalon.menhirs.location', 'Location')
+                          }
+                          value={menhir.location}
+                          onChange={(e) => updateMenhir(index, 'location', e.target.value)}
+                          onFocus={() => setFocusedMenhirIndex(index)}
+                          onBlur={() => setFocusedMenhirIndex(null)}
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <TextField
+                          fullWidth
+                          label={t('fallOfAvalon.menhirs.dialValue', 'Dial Value')}
+                          type="number"
+                          value={menhir.dialValue ?? 0}
+                          onChange={(e) => updateMenhir(index, 'dialValue', parseInt(e.target.value) || 0)}
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item xs={5} className="dial-slider-grid">
+                        <Slider
+                          value={menhir.dialValue ?? 0}
+                          onChange={(_event, value) => updateMenhir(index, 'dialValue', sliderNumber(value))}
+                          min={0}
+                          max={10}
+                          size="small"
+                          marks
+                          valueLabelDisplay="auto"
+                        />
+                      </Grid>
+                    </>
+                  )}
                 </Grid>
               ))}
             </CardContent>
           </Card>
         </Grid>
+
+        {campaignId === 'ageOfLegends' && (
+          <Grid item xs={12} md={6}>
+            <Card className="card">
+              <CardContent>
+                <Typography variant="h6" className="card-header">
+                  {t('ageOfLegends.enemyArmy.title', 'Enemy Army')}
+                </Typography>
+                {(state.enemyArmies ?? []).map((army, index) => (
+                  <Grid container spacing={2} key={index} className="mb-2">
+                    <Grid item xs={6}>
+                      <TextField
+                        fullWidth
+                        label={t('ageOfLegends.enemyArmy.location', 'Location')}
+                        value={army.location}
+                        onChange={(e) => updateEnemyArmy(index, 'location', e.target.value)}
+                        size="small"
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        fullWidth
+                        label={t('ageOfLegends.enemyArmy.units', 'Units')}
+                        value={army.units}
+                        onChange={(e) => updateEnemyArmy(index, 'units', e.target.value)}
+                        size="small"
+                      />
+                    </Grid>
+                  </Grid>
+                ))}
+              </CardContent>
+            </Card>
+          </Grid>
+        )}
 
         <Grid item xs={12} md={6}>
           <Card className="card">
@@ -730,7 +857,7 @@ const FallOfAvalonCampaign = () => {
 
     const renderStatusesTab = () => {
       // Get all status names sorted alphabetically
-      const statusNames = Object.keys(FALL_OF_AVALON_STATUS_DEFINITIONS).sort();
+      const statusNames = Object.keys(statusDefinitions).sort();
 
       return (
         <Card className="card">
@@ -749,7 +876,7 @@ const FallOfAvalonCampaign = () => {
                 <TableBody>
                   {statusNames.map((statusName) => {
                     const status = state.statuses[statusName];
-                    const definition = FALL_OF_AVALON_STATUS_DEFINITIONS[statusName];
+                    const definition = statusDefinitions[statusName];
                     const caption = t(`fallOfAvalon.statuses.captions.${statusName}`, '');
                     return (
                       <TableRow key={statusName} className="status-row">
@@ -846,6 +973,7 @@ const FallOfAvalonCampaign = () => {
             {t('fallOfAvalon.characterNotes.title', 'Character Notes')}
           </Typography>
           <CharacterNotesEditor
+            campaignId={campaignId}
             value={state.characterNotes}
             onChange={(characterNotes) => updateState(prev => ({ ...prev, characterNotes }))}
             placeholder={t('fallOfAvalon.characterNotes.placeholder', 'Enter notes about your campaign...')}
@@ -927,7 +1055,7 @@ const FallOfAvalonCampaign = () => {
         </DialogTitle>
         <DialogContent>
           <Typography id="delete-character-dialog-description" color="text.secondary">
-            {t('fallOfAvalon.characters.confirmDelete', {
+            {translate(campaignTranslationKey('fallOfAvalon.characters.confirmDelete'), {
               characterName: characterPendingDeletion
                 ? t(`characterNames.${characterPendingDeletion.characterName}`, characterPendingDeletion.characterName)
                 : '',
@@ -948,9 +1076,14 @@ const FallOfAvalonCampaign = () => {
 
     return (
       <div className="campaign-container">
-        <Box className="campaign-header">
+        <Box
+          className="campaign-header"
+          style={{
+            backgroundImage: `linear-gradient(115deg, rgba(14, 20, 25, 0.78), rgba(15, 22, 29, 0.62)), url("${import.meta.env.BASE_URL}assets/campaign-backgrounds/${CAMPAIGN_BACKGROUNDS[campaignId]}")`
+          }}
+        >
           <Typography variant="h4" className="campaign-title">
-            {t('campaigns.fallOfAvalon.name', 'Fall of Avalon')}
+            {t(`campaigns.${campaignId}.name`, CAMPAIGN_REGISTRY[campaignId].name)}
           </Typography>
         </Box>
 
@@ -975,4 +1108,4 @@ const FallOfAvalonCampaign = () => {
     );
   };
 
-export default FallOfAvalonCampaign;
+export default CampaignTracker;

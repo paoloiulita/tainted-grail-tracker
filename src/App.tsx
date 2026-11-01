@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import CampaignSelector from './components/CampaignSelector';
 import Header from './components/Header';
-import FallOfAvalonCampaign from './campaigns/fallOfAvalon/FallOfAvalonCampaign';
+import CampaignTracker from './campaigns/CampaignTracker';
 import { useAppState } from './hooks/useAppState';
 import SnapshotManager from './components/SnapshotManager';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -47,7 +47,8 @@ const App = () => {
 
     switch (campaign.id) {
       case 'fallOfAvalon':
-        return <FallOfAvalonCampaign />;
+      case 'ageOfLegends':
+        return <CampaignTracker key={campaign.id} campaignId={campaign.id} />;
       default:
         // Return placeholder for unimplemented campaigns
         return (

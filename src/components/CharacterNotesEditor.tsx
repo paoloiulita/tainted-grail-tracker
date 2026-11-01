@@ -7,8 +7,10 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import { useTranslation } from 'react-i18next';
+import type { CampaignId } from '../types';
 
 interface CharacterNotesEditorProps {
+  campaignId: Extract<CampaignId, 'fallOfAvalon' | 'ageOfLegends'>;
   value: string;
   placeholder: string;
   onChange: (value: string) => void;
@@ -46,8 +48,10 @@ const sanitizeNotesHtml = (html: string) => {
   return sanitized.innerHTML;
 };
 
-const CharacterNotesEditor = ({ value, placeholder, onChange }: CharacterNotesEditorProps) => {
+const CharacterNotesEditor = ({ campaignId, value, placeholder, onChange }: CharacterNotesEditorProps) => {
   const { t } = useTranslation();
+  const tNotes = (key: string, defaultValue: string) =>
+    t(`${campaignId}.characterNotes.${key}`, defaultValue);
   const editorRef = useRef<HTMLDivElement>(null);
   const lastEmittedValue = useRef<string | null>(null);
 
@@ -123,17 +127,17 @@ const CharacterNotesEditor = ({ value, placeholder, onChange }: CharacterNotesEd
   };
 
   const toolbarActions = [
-    { command: 'bold', label: t('fallOfAvalon.characterNotes.bold', 'Bold'), icon: <FormatBoldIcon /> },
-    { command: 'italic', label: t('fallOfAvalon.characterNotes.italic', 'Italic'), icon: <FormatItalicIcon /> },
-    { command: 'underline', label: t('fallOfAvalon.characterNotes.underline', 'Underline'), icon: <FormatUnderlinedIcon /> },
-    { command: 'insertUnorderedList', label: t('fallOfAvalon.characterNotes.bulletedList', 'Bulleted list'), icon: <FormatListBulletedIcon /> },
-    { command: 'insertOrderedList', label: t('fallOfAvalon.characterNotes.numberedList', 'Numbered list'), icon: <FormatListNumberedIcon /> },
-    { command: 'removeFormat', label: t('fallOfAvalon.characterNotes.clearFormatting', 'Clear formatting'), icon: <FormatClearIcon /> }
+    { command: 'bold', label: tNotes('bold', 'Bold'), icon: <FormatBoldIcon /> },
+    { command: 'italic', label: tNotes('italic', 'Italic'), icon: <FormatItalicIcon /> },
+    { command: 'underline', label: tNotes('underline', 'Underline'), icon: <FormatUnderlinedIcon /> },
+    { command: 'insertUnorderedList', label: tNotes('bulletedList', 'Bulleted list'), icon: <FormatListBulletedIcon /> },
+    { command: 'insertOrderedList', label: tNotes('numberedList', 'Numbered list'), icon: <FormatListNumberedIcon /> },
+    { command: 'removeFormat', label: tNotes('clearFormatting', 'Clear formatting'), icon: <FormatClearIcon /> }
   ];
 
   return (
     <div className="character-notes-editor">
-      <div className="character-notes-toolbar" role="toolbar" aria-label={t('fallOfAvalon.characterNotes.formatting', 'Text formatting')}>
+      <div className="character-notes-toolbar" role="toolbar" aria-label={tNotes('formatting', 'Text formatting')}>
         {toolbarActions.map(({ command, label, icon }) => (
           <Tooltip title={label} key={command}>
             <IconButton
@@ -153,7 +157,7 @@ const CharacterNotesEditor = ({ value, placeholder, onChange }: CharacterNotesEd
         contentEditable
         suppressContentEditableWarning
         role="textbox"
-        aria-label={t('fallOfAvalon.characterNotes.title', 'Character Notes')}
+        aria-label={tNotes('title', 'Character Notes')}
         aria-placeholder={placeholder}
         aria-multiline="true"
         data-placeholder={placeholder}

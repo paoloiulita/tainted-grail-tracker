@@ -76,10 +76,10 @@ export const FALL_OF_AVALON_STATUS_DEFINITIONS: Record<string, CampaignStatusDef
 
 export const FALL_OF_AVALON_REMOVED_LOCATION_COUNT = 16;
 
-export function createInitialStatusProgress(): Record<string, CampaignStatusProgress> {
-  const statuses: Record<string, CampaignStatusProgress> = {};
-  Object.keys(FALL_OF_AVALON_STATUS_DEFINITIONS).forEach((statusName) => {
-    statuses[statusName] = { completed: [] };
-  });
-  return statuses;
+export function createInitialStatusProgress(
+  definitions: Record<string, CampaignStatusDefinition> = FALL_OF_AVALON_STATUS_DEFINITIONS
+): Record<string, CampaignStatusProgress> {
+  return Object.fromEntries(
+    Object.keys(definitions).map(statusName => [statusName, { completed: [] }])
+  );
 }

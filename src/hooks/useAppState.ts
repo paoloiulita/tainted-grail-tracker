@@ -11,6 +11,10 @@ import {
   createInitialStatusProgress,
   FALL_OF_AVALON_REMOVED_LOCATION_COUNT
 } from '../campaigns/fallOfAvalon/statusDefinitions';
+import {
+  AGE_OF_LEGENDS_REMOVED_LOCATION_COUNT,
+  createInitialStatusProgress as createInitialAgeOfLegendsStatusProgress
+} from '../campaigns/ageOfLegends/statusDefinitions';
 
 // Central campaign metadata and default save states
 export const CAMPAIGN_REGISTRY = {
@@ -43,15 +47,44 @@ export const CAMPAIGN_REGISTRY = {
       removedLocations: Array.from({ length: FALL_OF_AVALON_REMOVED_LOCATION_COUNT }, () => ({ box1: '', box2: '' }))
     }
   },
-  // Placeholder campaigns
-  lastKnight: {
-    id: 'lastKnight',
-    name: 'Last Knight',
-    defaultState: {}
-  },
   ageOfLegends: {
     id: 'ageOfLegends',
     name: 'Age of Legends',
+    defaultState: {
+      campaign: {
+        id: 'ageOfLegends',
+        name: 'Age of Legends',
+        chapter: 1,
+        day: 1
+      },
+      menhirs: [
+        { location: '', markers: '' },
+        { location: '', markers: '' },
+        { location: '', markers: '' }
+      ],
+      questDials: [
+        { location: '', dialValue: 0 },
+        { location: '', dialValue: 0 }
+      ],
+      guardians: [
+        { location: '' },
+        { location: '' }
+      ],
+      enemyArmies: [
+        { location: '', units: '' }
+      ],
+      characterNotes: '',
+      characters: [],
+      statuses: createInitialAgeOfLegendsStatusProgress(),
+      removedLocations: Array.from(
+        { length: AGE_OF_LEGENDS_REMOVED_LOCATION_COUNT },
+        () => ({ box1: '', box2: '' })
+      )
+    }
+  },
+  lastKnight: {
+    id: 'lastKnight',
+    name: 'Last Knight',
     defaultState: {}
   },
   redDeath: {

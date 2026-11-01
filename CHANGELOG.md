@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- A playable Age of Legends tracker with three Menhirs that track free-text locations and markers, plus an Enemy Army section for free-text locations and units.
+- The PDF-verified Age of Legends statuses, including 59 status rows and the Odds and Ends caption.
+
 ## [1.1.0] - 2026-11-01
 
 ### Added

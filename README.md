@@ -10,7 +10,7 @@ A responsive digital save sheet for tracking a *Tainted Grail* campaign during p
 
 ## Current release scope
 
-- **Fall of Avalon** is the only playable campaign. Last Knight, Age of Legends, Red Death, and Kings of Ruin are shown as coming soon.
+- **Fall of Avalon** and **Age of Legends** are playable. Last Knight, Red Death, and Kings of Ruin are shown as coming soon.
 - The interface is currently available in English. The app uses i18next; additional translations can be added later.
 - Campaign progress is saved automatically in the browser's local storage.
 - Save History supports named snapshots, restore, and delete.
@@ -21,7 +21,9 @@ A responsive digital save sheet for tracking a *Tainted Grail* campaign during p
 
 All *Tainted Grail* game artwork, logos, character images, and other game-related assets used in this project are the property of Awaken Realms. This project is an unofficial fan-made tool and is not affiliated with or endorsed by Awaken Realms.
 
-## Fall of Avalon tracker
+## Campaign trackers
+
+### Fall of Avalon
 
 The campaign includes:
 
@@ -29,6 +31,16 @@ The campaign includes:
 - Three Menhirs, two quest dials, and two Guardian locations
 - Up to four character sheets with player names, stats, resources, and attributes
 - 71 statuses with their box counts, enumeration, and status captions
+- 16 removed-location rows
+- Campaign notes
+
+### Age of Legends
+
+- Chapter and day tracking
+- Three Menhirs with free-text locations and markers
+- Two quest dials, two Guardian locations, and an Enemy Army entry with free-text location and units
+- Up to four character sheets with player names, stats, resources, and attributes
+- 59 statuses with the PDF-verified box counts, numbering, and the Odds and Ends caption
 - 16 removed-location rows
 - Campaign notes
 
@@ -65,8 +77,11 @@ The GitHub Actions workflow in `.github/workflows/gh-pages.yml` runs lint, type-
 ```text
 src/
 ├── campaigns/
+│   ├── ageOfLegends/
+│   │   ├── statusDefinitions.ts
+│   │   └── statusDefinitions.test.ts
+│   ├── CampaignTracker.tsx
 │   └── fallOfAvalon/
-│       ├── FallOfAvalonCampaign.tsx
 │       ├── statusDefinitions.ts
 │       └── statusDefinitions.test.ts
 ├── components/       # Shared UI, campaign selector, saves, and notes
