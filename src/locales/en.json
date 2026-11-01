@@ -41,6 +41,11 @@
     "homeLink": "Tainted Grail Save Sheet Tracker home",
     "openMenu": "Open menu"
   },
+  "footer": {
+    "assetCopyright": "Tainted Grail images and artwork are copyrighted by Awaken Realms.",
+    "websiteLink": "Visit the Awaken Realms website",
+    "unofficialNotice": "This is an unofficial fan-made project and is not affiliated with or endorsed by Awaken Realms."
+  },
   "home": {
     "title": "Select Campaign",
     "subtitle": "Choose a campaign to begin your Tainted Grail adventure"

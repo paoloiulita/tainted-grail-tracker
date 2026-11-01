@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.1.0] - 2026-11-01
+
+### Added
+
+- Character-specific display colors on character nameplates.
+- A footer crediting Awaken Realms for *Tainted Grail* images and artwork, with a link to the publisher's website.
+
+### Changed
+
+- Moved the character delete control to the top-right of each character card and replaced the bin icon with a circled X.
+
+## [1.0.1] - 2026-10-30
+
+### Changed
+
+- Changed the application source license from the Unlicense to the MIT License.
+
 ## [1.0.0] - 2026-10-30
 
 The first release of the Tainted Grail Save Sheet Tracker is now available.

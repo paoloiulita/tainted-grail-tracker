@@ -92,6 +92,19 @@ const App = () => {
           </Routes>
         </main>
 
+        <footer className="app-footer">
+          <p>
+            {t('footer.assetCopyright', 'Tainted Grail images and artwork are copyrighted by Awaken Realms.')}
+            {' '}
+            <a href="https://awakenrealms.com">
+              {t('footer.websiteLink', 'Visit the Awaken Realms website')}
+            </a>
+          </p>
+          <p>
+            {t('footer.unofficialNotice', 'This is an unofficial fan-made project and is not affiliated with or endorsed by Awaken Realms.')}
+          </p>
+        </footer>
+
         {showSnapshotManager && (
           <SnapshotManager
             snapshots={snapshots[currentCampaign] || []}
