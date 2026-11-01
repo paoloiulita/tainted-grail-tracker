@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Grid, Card, CardContent, Typography, TextField, Button, ButtonBase, Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Slider, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { CAMPAIGN_REGISTRY, useAppState } from '../../hooks/useAppState';
 import { useCampaign } from '../../contexts/CampaignContext';
@@ -527,6 +527,15 @@ const FallOfAvalonCampaign = () => {
                     {t(`characterNames.${character.characterName}`, character.characterName)}
                   </Typography>
                 </Box>
+                <IconButton
+                  className="character-delete-button"
+                  aria-label={t('fallOfAvalon.characters.deleteCharacter', 'Delete Character')}
+                  onClick={() => setCharacterPendingDeletion(character)}
+                  color="error"
+                  size="small"
+                >
+                  <CloseIcon />
+                </IconButton>
                 <CardContent className="character-card-content">
                   <TextField
                     fullWidth
@@ -710,16 +719,6 @@ const FallOfAvalonCampaign = () => {
                         />
                       </Box>
                     ))}
-                  </Box>
-                  <Box className="character-card-footer">
-                    <IconButton
-                      size="small"
-                      aria-label={t('fallOfAvalon.characters.deleteCharacter', 'Delete Character')}
-                      onClick={() => setCharacterPendingDeletion(character)}
-                      color="error"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
                   </Box>
                 </CardContent>
               </Card>

@@ -570,6 +570,23 @@ a,
   white-space: nowrap;
 }
 
+.character-delete-button.MuiIconButton-root {
+  position: absolute;
+  z-index: 3;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(221, 207, 176, 0.4);
+  background-color: rgba(17, 24, 32, 0.78);
+  color: #e58b82;
+}
+
+.character-delete-button.MuiIconButton-root:hover {
+  border-color: #e58b82;
+  background-color: rgba(17, 24, 32, 0.96);
+}
+
 .character-card-content.MuiCardContent-root {
   position: relative;
   z-index: 1;
@@ -578,12 +595,6 @@ a,
 
 .character-card .character-field-spacing {
   margin-bottom: 20px;
-}
-
-.character-card-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 12px;
 }
 
 .character-stat-field {
