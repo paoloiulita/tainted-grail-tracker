@@ -15,6 +15,10 @@ import {
   AGE_OF_LEGENDS_STATUS_DEFINITIONS
 } from './ageOfLegends/statusDefinitions';
 import {
+  LAST_KNIGHT_REMOVED_LOCATION_COUNT,
+  LAST_KNIGHT_STATUS_DEFINITIONS
+} from './lastKnight/statusDefinitions';
+import {
   FALL_OF_AVALON_REMOVED_LOCATION_COUNT,
   FALL_OF_AVALON_STATUS_DEFINITIONS
 } from './fallOfAvalon/statusDefinitions';
@@ -31,21 +35,24 @@ import type {
   RemovedLocation
 } from '../types';
 
-type TrackerCampaignId = Extract<CampaignId, 'fallOfAvalon' | 'ageOfLegends'>;
+type TrackerCampaignId = Extract<CampaignId, 'fallOfAvalon' | 'ageOfLegends' | 'lastKnight'>;
 
 const STATUS_DEFINITIONS: Record<TrackerCampaignId, Record<string, CampaignStatusDefinition>> = {
   fallOfAvalon: FALL_OF_AVALON_STATUS_DEFINITIONS,
-  ageOfLegends: AGE_OF_LEGENDS_STATUS_DEFINITIONS
+  ageOfLegends: AGE_OF_LEGENDS_STATUS_DEFINITIONS,
+  lastKnight: LAST_KNIGHT_STATUS_DEFINITIONS
 };
 
 const REMOVED_LOCATION_COUNTS: Record<TrackerCampaignId, number> = {
   fallOfAvalon: FALL_OF_AVALON_REMOVED_LOCATION_COUNT,
-  ageOfLegends: AGE_OF_LEGENDS_REMOVED_LOCATION_COUNT
+  ageOfLegends: AGE_OF_LEGENDS_REMOVED_LOCATION_COUNT,
+  lastKnight: LAST_KNIGHT_REMOVED_LOCATION_COUNT
 };
 
 const CAMPAIGN_BACKGROUNDS: Record<TrackerCampaignId, string> = {
   fallOfAvalon: 'fall-of-avalon-cover.webp',
-  ageOfLegends: 'age-of-legends-cover.webp'
+  ageOfLegends: 'age-of-legends-cover.webp',
+  lastKnight: 'last-knight-cover.webp'
 };
 
 function isCampaignState(value: unknown): value is CampaignState {

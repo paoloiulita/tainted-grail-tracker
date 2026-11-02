@@ -106,6 +106,135 @@
     "successRestore": "Save restored successfully",
     "successDelete": "Save deleted successfully"
   },
+  "lastKnight": {
+    "tracker": {
+      "title": "Tracker",
+      "campaign": "Campaign",
+      "chapter": "Chapter",
+      "day": "Day"
+    },
+    "menhirs": {
+      "title": "Menhirs",
+      "location": "Location",
+      "dialValue": "Dial Value",
+      "0": "Menhir 1",
+      "1": "Menhir 2",
+      "2": "Menhir 3"
+    },
+    "questDials": {
+      "title": "Quest Dials",
+      "location": "Location",
+      "dialValue": "Dial Value",
+      "0": "Quest Dial 1",
+      "1": "Quest Dial 2"
+    },
+    "guardians": {
+      "title": "Guardians",
+      "location": "Location",
+      "0": "Guardian 1",
+      "1": "Guardian 2"
+    },
+    "characterNotes": {
+      "title": "Character Notes",
+      "placeholder": "Enter notes about your campaign...",
+      "formatting": "Text formatting",
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Underline",
+      "bulletedList": "Bulleted list",
+      "numberedList": "Numbered list",
+      "clearFormatting": "Clear formatting"
+    },
+    "characters": {
+      "title": "Characters",
+      "characterName": "Character Name",
+      "playerName": "Player Name",
+      "dial": "Dial",
+      "health": "Health",
+      "energy": "Energy",
+      "terror": "Terror",
+      "experience": "Experience",
+      "reputation": "Reputation",
+      "magic": "Magic",
+      "food": "Food",
+      "wealth": "Wealth",
+      "addCharacter": "Add Character",
+      "selectCharacter": "Select Character",
+      "selectCharacterPlaceholder": "Choose a character",
+      "addSelectedCharacter": "Add Character",
+      "deleteCharacter": "Delete Character",
+      "confirmDeleteTitle": "Delete character?",
+      "confirmDelete": "Are you sure you want to delete {{characterName}}? This action cannot be undone.",
+      "maximumCharacters": "Maximum 4 characters",
+      "allCharactersAdded": "All characters available in this campaign have been added."
+    },
+    "attributes": {
+      "title": "Attributes",
+      "aggression": "Aggression",
+      "caution": "Caution",
+      "courage": "Courage",
+      "empathy": "Empathy",
+      "practicality": "Practicality",
+      "spirituality": "Spirituality"
+    },
+    "statuses": {
+      "title": "Statuses",
+      "status": "Status",
+      "completed": "Completed",
+      "captionInfo": "Status information",
+      "names": {
+        "Allfather’s Blessing": "Allfather’s Blessing",
+        "Carving": "Carving",
+        "Chalk Horse": "Chalk Horse",
+        "Clues": "Clues",
+        "Cracked Sanctuary": "Cracked Sanctuary",
+        "Darkness": "Darkness",
+        "Darkness Gift": "Darkness Gift",
+        "Decision": "Decision",
+        "Dismay": "Dismay",
+        "Fallen Wyrdhunters": "Fallen Wyrdhunters",
+        "Friends": "Friends",
+        "Gifts": "Gifts",
+        "Great Deed": "Great Deed",
+        "Hidden Caches": "Hidden Caches",
+        "Horrors": "Horrors",
+        "Initiation": "Initiation",
+        "Keeper": "Keeper",
+        "Legacy": "Legacy",
+        "Lessons of the Past": "Lessons of the Past",
+        "Liberation": "Liberation",
+        "Lost Apprentice": "Lost Apprentice",
+        "Lost Treasures": "Lost Treasures",
+        "Means of Survival": "Means of Survival",
+        "Missions": "Missions",
+        "Murder": "Murder",
+        "Mysteries and Visions": "Mysteries and Visions",
+        "Needed Supplies": "Needed Supplies",
+        "Parting Gift": "Parting Gift",
+        "Past": "Past",
+        "Pillars Magic": "Pillars Magic",
+        "Resentful Goddess": "Resentful Goddess",
+        "Retracing": "Retracing",
+        "Riches of the Past": "Riches of the Past",
+        "Saved by the Goddess": "Saved by the Goddess",
+        "Secrets of the Forest": "Secrets of the Forest",
+        "Shifting Menhir": "Shifting Menhir",
+        "Strangeness": "Strangeness",
+        "Time": "Time",
+        "Truth": "Truth",
+        "Tuathan": "Tuathan",
+        "Wilderness Encounters": "Wilderness Encounters"
+      },
+      "captions": {
+        "Dismay": "When you have any six parts of this status, go to BoS, Verse 724"
+      }
+    },
+    "removedLocations": {
+      "title": "Removed Locations",
+      "from": "Removed location from",
+      "to": "Removed location to"
+    }
+  },
   "ageOfLegends": {
     "tracker": {
       "title": "Tracker",

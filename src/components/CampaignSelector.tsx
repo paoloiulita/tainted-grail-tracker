@@ -25,7 +25,9 @@ const CampaignSelector = ({ campaigns, onSelect }: CampaignSelectorProps) => {
         </Typography>
         <Grid container spacing={2}>
           {campaigns.map((campaign) => {
-            const isAvailable = campaign.id === 'fallOfAvalon' || campaign.id === 'ageOfLegends';
+            const isAvailable = campaign.id === 'fallOfAvalon'
+              || campaign.id === 'ageOfLegends'
+              || campaign.id === 'lastKnight';
 
             return (
               <Grid item xs={12} sm={6} md={4} key={campaign.id}>

@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import type { CampaignId } from '../types';
 
 interface CharacterNotesEditorProps {
-  campaignId: Extract<CampaignId, 'fallOfAvalon' | 'ageOfLegends'>;
+  campaignId: Extract<CampaignId, 'fallOfAvalon' | 'ageOfLegends' | 'lastKnight'>;
   value: string;
   placeholder: string;
   onChange: (value: string) => void;

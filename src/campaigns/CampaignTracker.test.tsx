@@ -93,7 +93,24 @@ describe('campaign tracker', () => {
     expect(screen.getByText('Odds and Ends')).toBeInTheDocument();
   }, 20000);
 
-  it('makes Age of Legends selectable while leaving other unfinished campaigns unavailable', async () => {
+  it('renders the Last Knight PDF statuses and its single caption', async () => {
+    const i18n = await createTestI18n();
+    render(
+      <I18nextProvider i18n={i18n}>
+        <CampaignProvider>
+          <CampaignTracker campaignId="lastKnight" />
+        </CampaignProvider>
+      </I18nextProvider>
+    );
+
+    expect(screen.getAllByLabelText(/^Removed location from/)).toHaveLength(20);
+    fireEvent.click(screen.getByRole('tab', { name: 'Statuses' }));
+    expect(screen.getAllByRole('row')).toHaveLength(42);
+    expect(screen.getAllByRole('button', { name: 'Status information' })).toHaveLength(1);
+    expect(screen.getByText('Dismay')).toBeInTheDocument();
+  }, 20000);
+
+  it('makes implemented campaigns selectable while leaving other unfinished campaigns unavailable', async () => {
     const i18n = await createTestI18n();
     const onSelect = vi.fn();
     render(
@@ -104,6 +121,8 @@ describe('campaign tracker', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Age of Legends' }));
     expect(onSelect).toHaveBeenCalledWith('ageOfLegends');
-    expect(screen.getByRole('button', { name: 'Last Knight' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Last Knight' }));
+    expect(onSelect).toHaveBeenLastCalledWith('lastKnight');
+    expect(screen.getByRole('button', { name: 'Red Death' })).toBeDisabled();
   });
 });

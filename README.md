@@ -10,7 +10,7 @@ A responsive digital save sheet for tracking a *Tainted Grail* campaign during p
 
 ## Current release scope
 
-- **Fall of Avalon** and **Age of Legends** are playable. Last Knight, Red Death, and Kings of Ruin are shown as coming soon.
+- **Fall of Avalon**, **Age of Legends**, and **Last Knight** are playable. Red Death and Kings of Ruin are shown as coming soon.
 - The interface is currently available in English. The app uses i18next; additional translations can be added later.
 - Campaign progress is saved automatically in the browser's local storage.
 - Save History supports named snapshots, restore, and delete.
@@ -43,6 +43,13 @@ The campaign includes:
 - 59 statuses with the PDF-verified box counts, numbering, and the Odds and Ends caption
 - 16 removed-location rows
 - Campaign notes
+
+### Last Knight
+
+- Chapter and day tracking, plus three Menhir dials, two quest dials, and two Guardian locations
+- Up to four character sheets with player names, stats, resources, and attributes
+- 41 statuses with PDF-verified box counts, numbering, and the Dismay caption
+- 20 removed-location rows and campaign notes
 
 ## Run locally
 
@@ -78,6 +85,9 @@ The GitHub Actions workflow in `.github/workflows/gh-pages.yml` runs lint, type-
 src/
 ├── campaigns/
 │   ├── ageOfLegends/
+│   │   ├── statusDefinitions.ts
+│   │   └── statusDefinitions.test.ts
+│   ├── lastKnight/
 │   │   ├── statusDefinitions.ts
 │   │   └── statusDefinitions.test.ts
 │   ├── CampaignTracker.tsx

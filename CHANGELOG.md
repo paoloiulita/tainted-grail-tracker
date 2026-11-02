@@ -6,6 +6,7 @@
 
 - A playable Age of Legends tracker with three Menhirs that track free-text locations and markers, plus an Enemy Army section for free-text locations and units.
 - The PDF-verified Age of Legends statuses, including 59 status rows and the Odds and Ends caption.
+- A playable Last Knight tracker with 41 PDF-verified statuses and its Dismay caption.
 
 ## [1.1.0] - 2026-11-01
 

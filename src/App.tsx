@@ -48,6 +48,7 @@ const App = () => {
     switch (campaign.id) {
       case 'fallOfAvalon':
       case 'ageOfLegends':
+      case 'lastKnight':
         return <CampaignTracker key={campaign.id} campaignId={campaign.id} />;
       default:
         // Return placeholder for unimplemented campaigns

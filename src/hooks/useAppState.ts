@@ -15,6 +15,10 @@ import {
   AGE_OF_LEGENDS_REMOVED_LOCATION_COUNT,
   createInitialStatusProgress as createInitialAgeOfLegendsStatusProgress
 } from '../campaigns/ageOfLegends/statusDefinitions';
+import {
+  LAST_KNIGHT_REMOVED_LOCATION_COUNT,
+  createInitialStatusProgress as createInitialLastKnightStatusProgress
+} from '../campaigns/lastKnight/statusDefinitions';
 
 // Central campaign metadata and default save states
 export const CAMPAIGN_REGISTRY = {
@@ -85,7 +89,34 @@ export const CAMPAIGN_REGISTRY = {
   lastKnight: {
     id: 'lastKnight',
     name: 'Last Knight',
-    defaultState: {}
+    defaultState: {
+      campaign: {
+        id: 'lastKnight',
+        name: 'Last Knight',
+        chapter: 1,
+        day: 1
+      },
+      menhirs: [
+        { location: '', dialValue: 0 },
+        { location: '', dialValue: 0 },
+        { location: '', dialValue: 0 }
+      ],
+      questDials: [
+        { location: '', dialValue: 0 },
+        { location: '', dialValue: 0 }
+      ],
+      guardians: [
+        { location: '' },
+        { location: '' }
+      ],
+      characterNotes: '',
+      characters: [],
+      statuses: createInitialLastKnightStatusProgress(),
+      removedLocations: Array.from(
+        { length: LAST_KNIGHT_REMOVED_LOCATION_COUNT },
+        () => ({ box1: '', box2: '' })
+      )
+    }
   },
   redDeath: {
     id: 'redDeath',
